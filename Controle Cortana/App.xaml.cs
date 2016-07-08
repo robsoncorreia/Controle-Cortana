@@ -111,7 +111,7 @@ namespace Controle_Cortana
                 MainPage mainpage = new MainPage();
                 switch (textSpoken)
                 {
-                    case "turn on room":                        
+                    case "turn on room":
                         mainpage.ligarSala();
                         break;
                     case "turn off room":

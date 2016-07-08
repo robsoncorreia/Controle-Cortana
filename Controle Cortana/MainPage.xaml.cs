@@ -29,15 +29,19 @@ namespace Controle_Cortana
             this.InitializeComponent();
         }
         
-
         Uri liga_quarto = new Uri("http://192.168.1.2/?pin=LIGA1");
         Uri desliga_quarto = new Uri("http://192.168.1.2/?pin=DESLIGA1");
         Uri liga_sala = new Uri("http://192.168.1.2/?pin=LIGA2");
         Uri desliga_sala = new Uri("http://192.168.1.2/?pin=DESLIGA2");
-        public void ligarQuarto()
+        public void toggleQuartoLigado()
         {
+            
+        }
+        public void ligarQuarto()
+        {     
             web.Navigate(liga_quarto);
         }
+
         public void desligarQuarto()
         {
             web.Navigate(desliga_quarto);
