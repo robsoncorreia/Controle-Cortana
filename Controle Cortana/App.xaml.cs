@@ -94,34 +94,49 @@ namespace Controle_Cortana
                 }
             }
         }
-        
+
         protected override void OnActivated(IActivatedEventArgs args)
         {
             base.OnActivated(args);
             
             if(args.Kind == ActivationKind.VoiceCommand)
             {
-                var commandArgs = args as VoiceCommandActivatedEventArgs;
+                Frame rootFlame = Window.Current.Content as Frame;
+                if(rootFlame == null)
+                {
+                    rootFlame = new Frame();
+                    Window.Current.Content = rootFlame;
+                    Window.Current.Activate();
+                }
+                VoiceCommandActivatedEventArgs vcArgs = args as VoiceCommandActivatedEventArgs;
 
-                Windows.Media.SpeechRecognition.SpeechRecognitionResult speechRecognitionResult = commandArgs.Result;
+                var commandArgs = args as VoiceCommandActivatedEventArgs;
+                
+                SpeechRecognitionResult speechRecognitionResult = commandArgs.Result;
 
                 string voiceCommandName = speechRecognitionResult.RulePath[0];
                 string textSpoken = speechRecognitionResult.Text;
                 string commandMode = SemanticInterpretation("commandMode", speechRecognitionResult);
+
                 MainPage mainpage = new MainPage();
+      
                 switch (textSpoken)
                 {
                     case "turn on room":
+                        rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         mainpage.ligarSala();
                         break;
                     case "turn off room":
+                        rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         mainpage.desligarSala();
                         break;
                     case "turn on bedroom":
+                        rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         mainpage.ligarQuarto();
                         break;
                     case "turn off bedroom":
-                         mainpage.desligarQuarto();
+                        rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
+                        mainpage.desligarQuarto();
                         break;
                 }
             }
