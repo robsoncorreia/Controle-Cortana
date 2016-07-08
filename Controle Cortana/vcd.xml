@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VoiceCommands xmlns="http://schemas.microsoft.com/voicecommands/1.2">
+  <CommandSet xml:lang="en-us"  Name="AdventureWorksCommandSet_en-us">
+    <CommandPrefix> Control [lights] </CommandPrefix>
+    <Example> turn on </Example>
+    
+    <Command Name="estado_Ligado">
+      <Example> Control lights turn on light room </Example>
+      <ListenFor> turn on [light] {comodos} </ListenFor>
+      <Feedback> turning on light {comodos}... </Feedback>
+      <Navigate Target="MainPage.xaml"/>
+    </Command>
+    
+    <Command Name="estado_Desligado">
+      <Example> Control lights turn off room </Example>
+      <ListenFor> turn off [light] {comodos} </ListenFor>
+      <Feedback> turning off light {comodos}...</Feedback>
+      <Navigate Target="MainPage.xaml"/>
+    </Command>
+
+    <PhraseList Label="comodos">
+      <Item> room </Item>
+      <Item> bedroom </Item>
+    </PhraseList>
+  
+  </CommandSet>
+  
+  <!-- Other CommandSets for other languages -->
+
+</VoiceCommands>

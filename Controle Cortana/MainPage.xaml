@@ -7,7 +7,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    <Grid Background="#FF757575">
+        <Rectangle Fill="#FFF4F4F5" Height="100" Margin="30,30,30,0" Stroke="Black" VerticalAlignment="Top"/>
+        <Rectangle Fill="#FFF4F4F5" Height="100" Margin="30,160,30,0" Stroke="Black" VerticalAlignment="Top"/>
+        <Image x:Name="image" HorizontalAlignment="Left" Margin="42,33,0,0" VerticalAlignment="Top" Width="80" Height="80" Source="Assets/hotel-bed-1.png" Canvas.ZIndex="1"/>
+        <Image x:Name="image1" HorizontalAlignment="Left" Height="80" Margin="44,172,0,0" VerticalAlignment="Top" Width="80" Source="Assets/Outline.png"/>
+        <ToggleSwitch x:Name="toggleSwitchQuarto" Header="" HorizontalAlignment="Right" Margin="0,58,0,0" VerticalAlignment="Top" OffContent="Desliga" OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled"/>
+        <ToggleSwitch x:Name="toggleSwitchSala" Header="" HorizontalAlignment="Right" Margin="0,186,0,0" VerticalAlignment="Top" OffContent="Desliga" OnContent="Liga" Toggled="toggleSwitchSala_Toggled"/>
+        <WebView x:Name="web" HorizontalAlignment="Left" Height="100" Margin="10,384,0,0" VerticalAlignment="Top" Width="100" Visibility="Collapsed"/>
     </Grid>
 </Page>

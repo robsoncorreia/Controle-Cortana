@@ -7,6 +7,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -14,12 +15,15 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.Media.SpeechRecognition;
+using System.Threading.Tasks;
 
 namespace Controle_Cortana
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
+    
     sealed partial class App : Application
     {
         /// <summary>
@@ -37,7 +41,7 @@ namespace Controle_Cortana
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
@@ -76,9 +80,57 @@ namespace Controle_Cortana
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
+                try
+                {
+                    // Install the main VCD. Since there's no simple way to test that the VCD has been imported, or that it's your most recent
+                    // version, it's not unreasonable to do this upon app load.
+                    StorageFile vcdStorageFile = await Package.Current.InstalledLocation.GetFileAsync(@"vcd.xml");
+
+                    await Windows.ApplicationModel.VoiceCommands.VoiceCommandDefinitionManager.InstallCommandDefinitionsFromStorageFileAsync(vcdStorageFile);
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine("Installing Voice Commands Failed: " + ex.ToString());
+                }
             }
         }
+        
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            base.OnActivated(args);
+            
+            if(args.Kind == ActivationKind.VoiceCommand)
+            {
+                var commandArgs = args as VoiceCommandActivatedEventArgs;
 
+                Windows.Media.SpeechRecognition.SpeechRecognitionResult speechRecognitionResult = commandArgs.Result;
+
+                string voiceCommandName = speechRecognitionResult.RulePath[0];
+                string textSpoken = speechRecognitionResult.Text;
+                string commandMode = SemanticInterpretation("commandMode", speechRecognitionResult);
+                MainPage mainpage = new MainPage();
+                switch (textSpoken)
+                {
+                    case "turn on room":                        
+                        mainpage.ligarSala();
+                        break;
+                    case "turn off room":
+                        mainpage.desligarSala();
+                        break;
+                    case "turn on bedroom":
+                        mainpage.ligarQuarto();
+                        break;
+                    case "turn off bedroom":
+                         mainpage.desligarQuarto();
+                        break;
+                }
+            }
+        }
+        
+        private string SemanticInterpretation(string interpretationKey, SpeechRecognitionResult speechRecognitionResult)
+        {
+            return speechRecognitionResult.SemanticInterpretation.Properties[interpretationKey].FirstOrDefault();
+        }
         /// <summary>
         /// Invoked when Navigation to a certain page fails
         /// </summary>
