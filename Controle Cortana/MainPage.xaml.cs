@@ -38,7 +38,8 @@ namespace Controle_Cortana
             
         }
         public void ligarQuarto()
-        {     
+        {
+            toggleSwitchQuarto.IsTapEnabled = true;
             web.Navigate(liga_quarto);
         }
 

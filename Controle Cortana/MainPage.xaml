@@ -8,12 +8,10 @@
     mc:Ignorable="d">
 
     <Grid Background="#FF757575">
-        <Rectangle Fill="#FFF4F4F5" Height="100" Margin="10,30,10,0" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1"/>
+        <Rectangle Height="100" Margin="10,30,10,0" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" Fill="#FFF4F4F5"/>
         <Rectangle Fill="#FFF4F4F5" Height="100" Margin="10,132,10,0" VerticalAlignment="Top"/>
-        <!--<Image x:Name="image" HorizontalAlignment="Left" Margin="44,30,0,0" VerticalAlignment="Top" Source="Assets/hotel-bed-1.png" Canvas.ZIndex="1" Height="80" Width="89"/>
-        <Image x:Name="image1" HorizontalAlignment="Left" Height="80" Margin="44,172,0,0" VerticalAlignment="Top" Width="80" Source="Assets/Outline.png"/>-->
-        <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" HorizontalAlignment="Left" Margin="30,49,476,0" VerticalAlignment="Top" OffContent="Desliga" OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" RenderTransformOrigin="0.472,0.472" FontSize="20"/>
-        <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" HorizontalAlignment="Left" Margin="30,149,476,0" VerticalAlignment="Top" OffContent="Desliga" OnContent="Liga" Toggled="toggleSwitchSala_Toggled" FontSize="20" Grid.Row="1" Grid.Column="1"/>
+        <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" HorizontalAlignment="Left" Margin="30,49,0,0" VerticalAlignment="Top" OffContent="Desliga" OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" FontSize="20"/>
+        <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" HorizontalAlignment="Left" Margin="30,149,0,0" VerticalAlignment="Top" OffContent="Desliga" OnContent="Liga" Toggled="toggleSwitchSala_Toggled" FontSize="20"/>
         <WebView x:Name="web" HorizontalAlignment="Left" Height="100" Margin="10,384,0,0" VerticalAlignment="Top" Width="100" Visibility="Collapsed"/>
     </Grid>
 </Page>
