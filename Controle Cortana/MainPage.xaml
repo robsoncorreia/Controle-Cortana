@@ -7,9 +7,15 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="#FF757575">
-        <Rectangle Height="100" Margin="10,30,10,0" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" Fill="#FFF4F4F5"/>
-        <Rectangle Fill="#FFF4F4F5" Height="100" Margin="10,132,10,0" VerticalAlignment="Top"/>
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FF1D1F53" Offset="0.247"/>
+                <GradientStop Color="#FF854646" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Rectangle Height="100" Margin="10,30,10,0" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" Fill="#FFF4F4F5" RadiusX="6" RadiusY="6"/>
+        <Rectangle Fill="#FFF4F4F5" Height="100" Margin="10,132,10,0" VerticalAlignment="Top" RadiusX="6" RadiusY="5"/>
         <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" HorizontalAlignment="Left" Margin="30,49,0,0" VerticalAlignment="Top" OffContent="Desliga" OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" FontSize="20"/>
         <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" HorizontalAlignment="Left" Margin="30,149,0,0" VerticalAlignment="Top" OffContent="Desliga" OnContent="Liga" Toggled="toggleSwitchSala_Toggled" FontSize="20"/>
         <WebView x:Name="web" HorizontalAlignment="Left" Height="100" Margin="10,384,0,0" VerticalAlignment="Top" Width="100" Visibility="Collapsed"/>
