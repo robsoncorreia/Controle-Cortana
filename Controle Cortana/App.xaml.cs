@@ -114,9 +114,9 @@ namespace Controle_Cortana
                 
                 SpeechRecognitionResult speechRecognitionResult = commandArgs.Result;
 
-                string voiceCommandName = speechRecognitionResult.RulePath[0];
+                //string voiceCommandName = speechRecognitionResult.RulePath[0];
                 string textSpoken = speechRecognitionResult.Text;
-                string commandMode = SemanticInterpretation("commandMode", speechRecognitionResult);
+                //string commandMode = SemanticInterpretation("commandMode", speechRecognitionResult);
 
                 MainPage mainpage = new MainPage();
       
