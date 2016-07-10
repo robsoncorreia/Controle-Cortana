@@ -7,14 +7,14 @@
     <Command Name="estado_Ligado">
       <Example> Control lights turn on light room </Example>
       <ListenFor> turn on [light] {comodos} </ListenFor>
-      <Feedback> turning on [light] {comodos}... </Feedback>
+      <Feedback> turning on light {comodos}... </Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
     
     <Command Name="estado_Desligado">
       <Example> Control lights turn off room </Example>
       <ListenFor> turn off [light] {comodos} </ListenFor>
-      <Feedback> turning off [light] {comodos}...</Feedback>
+      <Feedback> turning off light {comodos}...</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
 
