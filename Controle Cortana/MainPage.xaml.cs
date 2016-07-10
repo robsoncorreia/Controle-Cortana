@@ -47,13 +47,13 @@ namespace Controle_Cortana
         {
             if (toggleSwitchQuarto != null)
             {
-                if (toggleSwitchQuarto.IsOn == true)
+                if (toggleSwitchQuarto.IsOn == false)
                 {
-                    ligarQuarto();
+                    desligarQuarto();
                 }
                 else
                 {
-                    desligarQuarto();
+                    ligarQuarto();
                 }
             }
         }
@@ -61,13 +61,13 @@ namespace Controle_Cortana
         {
             if (toggleSwitchSala != null)
             {
-                if (toggleSwitchSala.IsOn == true)
+                if (toggleSwitchSala.IsOn == false)
                 {
-                    ligarSala();
+                    desligarSala();
                 }
                 else
                 {
-                    desligarSala();
+                    ligarSala();
                 }
             }
         }
