@@ -2,6 +2,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.Devices.Sensors;
+using Windows.UI.Xaml.Input;
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace Controle_Cortana
@@ -70,6 +71,12 @@ namespace Controle_Cortana
                     ligarSala();
                 }
             }
+        }
+        BlankPage blankpage = new BlankPage();
+        private void Rectangle_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Frame rootFlame = Window.Current.Content as Frame;
+            rootFlame.Navigate(typeof(BlankPage));
         }
     }
 }
