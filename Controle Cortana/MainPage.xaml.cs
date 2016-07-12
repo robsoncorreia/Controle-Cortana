@@ -16,31 +16,29 @@ namespace Controle_Cortana
         public MainPage()
         {
             this.InitializeComponent();
+            Sensor();
         }
 
         Uri liga_quarto = new Uri("http://192.168.1.2/?pin=LIGA1");
         Uri desliga_quarto = new Uri("http://192.168.1.2/?pin=DESLIGA1");
         Uri liga_sala = new Uri("http://192.168.1.2/?pin=LIGA2");
         Uri desliga_sala = new Uri("http://192.168.1.2/?pin=DESLIGA2");
-        
+        int contadorSensor;
+
         public void ligarQuarto()
         {
-            textBox.Text = "(▀̿Ĺ̯▀̿ ̿)";
             web.Navigate(liga_quarto);
         }
         public void desligarQuarto()
         {
-            textBox.Text = "( ͡° ͜ʖ ͡°)";
             web.Navigate(desliga_quarto);
         }
         public void ligarSala()
         {
-            textBox.Text = "(▀̿Ĺ̯▀̿ ̿)";
             web.Navigate(liga_sala);
         }
         public void desligarSala()
         {
-            textBox.Text = "( ͡° ͜ʖ ͡°)";
             web.Navigate(desliga_sala);
         }
 
@@ -71,12 +69,6 @@ namespace Controle_Cortana
                     ligarSala();
                 }
             }
-        }
-        BlankPage blankpage = new BlankPage();
-        private void Rectangle_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            Frame rootFlame = Window.Current.Content as Frame;
-            rootFlame.Navigate(typeof(BlankPage));
         }
     }
 }

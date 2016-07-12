@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Windows.Devices.Sensors;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -12,17 +14,9 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-using Windows.UI.Core; // Required to access the core dispatcher object
-using Windows.Devices.Sensors; // Required to access the sensor platform and the ALS
-
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/p/?linkid=234238
-
 namespace Controle_Cortana
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class BlankPage : Page
+    public sealed partial class MainPage : Page
     {
         private LightSensor _lightsensor; // Our app' s lightsensor object
 
@@ -34,11 +28,20 @@ namespace Controle_Cortana
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 LightSensorReading reading = e.Reading;
-                txtLuxValue.Text = String.Format("{0,5:0.00}", reading.IlluminanceInLux);
+                sensorDeLuz.Text = "Lux: " + string.Format("{0,5:0.00}", reading.IlluminanceInLux);
+
+                if (contadorSensor < 2)
+                {
+                    contadorSensor++;
+                }
+                if (reading.IlluminanceInLux == 0 && contadorSensor == 1)
+                {
+                    ligarQuarto();
+                }
             });
         }
 
-        public BlankPage()
+        public void Sensor()
         {
             InitializeComponent();
             _lightsensor = LightSensor.GetDefault(); // Get the default light sensor object
@@ -54,14 +57,12 @@ namespace Controle_Cortana
                 // Establish the even thandler
                 _lightsensor.ReadingChanged += new TypedEventHandler<LightSensor, LightSensorReadingChangedEventArgs>(ReadingChanged);
             }
-
-        }
-        
-        private void txtLuxValue_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            
-            Frame rootFlame = Window.Current.Content as Frame;
-            rootFlame.Navigate(typeof(MainPage));
+            else
+            {
+                textoSensorLuz.Text = ":(";
+                sensorDeLuz.Text = "Aparelho na possui sensor de luminosidade.";
+            }
         }
     }
 }
+
