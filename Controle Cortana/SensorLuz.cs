@@ -60,7 +60,7 @@ namespace Controle_Cortana
             else
             {
                 textoSensorLuz.Text = ":(";
-                sensorDeLuz.Text = "Aparelho na possui sensor de luminosidade.";
+                sensorDeLuz.Text = "Aparelho não possui sensor de luminosidade.";
             }
         }
     }
