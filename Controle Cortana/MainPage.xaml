@@ -6,20 +6,33 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-
-    <Grid>
-        <Grid.Background>
+    <Pivot x:Name="rootPivot" Title="Control Lights">
+        <Pivot.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="#FF1D1F53" Offset="0.247"/>
-                <GradientStop Color="#FF854646" Offset="1"/>
+                <GradientStop Color="#FF2645B0" Offset="0.008"/>
+                <GradientStop Color="#FF992E50" Offset="0.992"/>
             </LinearGradientBrush>
-        </Grid.Background>
-        <Rectangle Height="100" Margin="10,30,10,0" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" Fill="#FFF4F4F5" RadiusX="6" RadiusY="6"/>
-        <Rectangle Fill="#FFF4F4F5" Height="100" Margin="10,132,10,0" VerticalAlignment="Top" RadiusX="6" RadiusY="5"/>
-        <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" HorizontalAlignment="Left" Margin="30,49,0,0" VerticalAlignment="Top" OffContent="Desliga" OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" FontSize="20"/>
-        <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" HorizontalAlignment="Left" Margin="30,149,0,0" VerticalAlignment="Top" OffContent="Desliga" OnContent="Liga" Toggled="toggleSwitchSala_Toggled" FontSize="20"/>
-        <WebView x:Name="web" HorizontalAlignment="Left" Height="100" Margin="10,384,0,0" VerticalAlignment="Top" Width="100" Visibility="Collapsed"/>
-        <Rectangle Fill="#FFF4F4F5" Height="100" Margin="10,0,10,30" VerticalAlignment="Bottom" RadiusX="6" RadiusY="5" Tapped="Rectangle_Tapped"/>
-        <TextBlock x:Name="textBox" HorizontalAlignment="Left" Margin="30,0,0,70" TextWrapping="Wrap" Text="Sensor de Luminosidade" VerticalAlignment="Bottom" FontSize="20"/>
-    </Grid>
+        </Pivot.Background>
+        <PivotItem Header="Lampadas">
+            <Grid>
+                <Rectangle Height="100" Margin="10,30,10,0" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" Fill="#FFF4F4F5" RadiusX="6" RadiusY="6"/>
+                <Rectangle Fill="#FFF4F4F5" Height="100" Margin="10,132,10,0" VerticalAlignment="Top" RadiusX="6" RadiusY="5"/>
+                <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" HorizontalAlignment="Left" Margin="30,49,0,0" VerticalAlignment="Top" OffContent="Desliga" OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" FontSize="20"/>
+                <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" HorizontalAlignment="Left" Margin="30,149,0,0" VerticalAlignment="Top" OffContent="Desliga" OnContent="Liga" Toggled="toggleSwitchSala_Toggled" FontSize="20"/>
+                <WebView x:Name="web" HorizontalAlignment="Left" Height="100" Margin="10,384,0,0" VerticalAlignment="Top" Width="100" Visibility="Collapsed"/>
+                <Rectangle Fill="#FFF4F4F5" Height="100" Margin="10,0,10,30" VerticalAlignment="Bottom" RadiusX="6" RadiusY="5"/>
+                <TextBlock x:Name="textBox" HorizontalAlignment="Left" Margin="30,0,0,70" TextWrapping="Wrap" Text="Sensor de Luminosidade" VerticalAlignment="Bottom" FontSize="20"/>
+            </Grid>
+        </PivotItem>
+        <PivotItem Header="Sensor de Luz">
+            <Grid x:Name="LayoutRoot" Background="White">
+                <TextBox x:Name="textBox1" HorizontalAlignment="Left" Margin="170,147,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+
+            </Grid>
+        </PivotItem>
+        <PivotItem Header="Pivot Item 3">
+            <!--Pivot content goes here-->
+            <TextBlock Text="Content of pivot item 3."/>
+        </PivotItem>
+    </Pivot>
 </Page>
