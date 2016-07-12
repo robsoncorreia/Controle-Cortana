@@ -70,5 +70,10 @@ namespace Controle_Cortana
                 }
             }
         }
+
+        private void toggleAutomatico_Toggled(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

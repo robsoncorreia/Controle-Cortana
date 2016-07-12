@@ -59,6 +59,8 @@ namespace Controle_Cortana
             }
             else
             {
+                toggleAutomatico.Visibility = Visibility.Collapsed;
+                retangudoAutomatico.Visibility = Visibility.Collapsed;
                 textoSensorLuz.Text = ":(";
                 sensorDeLuz.Text = "Aparelho não possui sensor de luminosidade.";
             }
