@@ -30,13 +30,19 @@ namespace Controle_Cortana
                 LightSensorReading reading = e.Reading;
                 sensorDeLuz.Text = "Lux: " + string.Format("{0,5:0.00}", reading.IlluminanceInLux);
 
-                if (contadorSensor < 2)
+                if (toggleAutomatico != null)
                 {
-                    contadorSensor++;
-                }
-                if (reading.IlluminanceInLux == 0 && contadorSensor == 1)
-                {
-                    ligarQuarto();
+                    if (toggleAutomatico.IsOn == true)
+                    {
+                        if (contadorSensor < 2)
+                        {
+                            contadorSensor++;
+                        }
+                        if (reading.IlluminanceInLux <= 1 && contadorSensor == 1)
+                        {
+                            ligarQuarto();
+                        }
+                    }
                 }
             });
         }
@@ -62,7 +68,7 @@ namespace Controle_Cortana
                 toggleAutomatico.Visibility = Visibility.Collapsed;
                 retangudoAutomatico.Visibility = Visibility.Collapsed;
                 textoSensorLuz.Text = ":(";
-                sensorDeLuz.Text = "Aparelho não possui sensor de luminosidade.";
+                sensorDeLuz.Text = "Dispositivo não possui sensor de luminosidade.";
             }
         }
     }
