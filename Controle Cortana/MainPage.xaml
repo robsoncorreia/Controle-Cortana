@@ -12,8 +12,8 @@
                 <Rectangle Height="5" Margin="0,-11,10,0" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" Fill="#FFFF6800" Width="106" HorizontalAlignment="Left"/>
                 <Rectangle Height="100" Margin="10,30,10,0" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" Fill="#FFF4F4F5" RadiusX="6" RadiusY="6" Stroke="#19000000"/>
                 <Rectangle Fill="#FFF4F4F5" Height="100" Margin="10,132,10,0" VerticalAlignment="Top" RadiusX="6" RadiusY="5" Stroke="#19000000"/>
-                <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" HorizontalAlignment="Left" Margin="30,49,0,0" VerticalAlignment="Top" OffContent="Desliga" OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" FontSize="20"/>
-                <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" HorizontalAlignment="Left" Margin="30,149,0,0" VerticalAlignment="Top" OffContent="Desliga" OnContent="Liga" Toggled="toggleSwitchSala_Toggled" FontSize="20"/>
+                <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" HorizontalAlignment="Left" Margin="30,49,0,0" VerticalAlignment="Top" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" FontSize="20"/>
+                <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" HorizontalAlignment="Left" Margin="30,149,0,0" VerticalAlignment="Top" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchSala_Toggled" FontSize="20"/>
                 <WebView x:Name="web" HorizontalAlignment="Left" Height="100" Margin="10,384,0,0" VerticalAlignment="Top" Width="100" Visibility="Collapsed"/>
             </Grid>
         </PivotItem>

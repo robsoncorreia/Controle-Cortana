@@ -20,16 +20,13 @@ namespace Controle_Cortana
     {
         private LightSensor _lightsensor; // Our app' s lightsensor object
 
-        // This event handler writes the current light-sensor reading to 
-        // the textbox named "txtLUX" on the app' s main page.
-
+        int contadorSensor;
         async private void ReadingChanged(object sender, LightSensorReadingChangedEventArgs e)
         {
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 LightSensorReading reading = e.Reading;
                 sensorDeLuz.Text = "Lux: " + string.Format("{0,5:0.00}", reading.IlluminanceInLux);
-
                 if (toggleAutomatico != null)
                 {
                     if (toggleAutomatico.IsOn == true)
@@ -45,8 +42,8 @@ namespace Controle_Cortana
                     }
                 }
             });
-        }
 
+        }
         public void Sensor()
         {
             InitializeComponent();
@@ -68,7 +65,7 @@ namespace Controle_Cortana
                 toggleAutomatico.Visibility = Visibility.Collapsed;
                 retangudoAutomatico.Visibility = Visibility.Collapsed;
                 textoSensorLuz.Text = ":(";
-                sensorDeLuz.Text = "Dispositivo não possui sensor de luminosidade.";
+                sensorDeLuz.Text = "Dispositivo não possui sensor.";
             }
         }
     }

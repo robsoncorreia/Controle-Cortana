@@ -15,27 +15,27 @@ namespace Controle_Cortana
 
     public sealed partial class MainPage : Page
     {
-        public MainPage()
-        {
-            this.InitializeComponent();
-            Sensor();
-            settings();
-        }
-
         Uri liga_quarto = new Uri("http://192.168.1.2/?pin=LIGA1");
         Uri desliga_quarto = new Uri("http://192.168.1.2/?pin=DESLIGA1");
         Uri liga_sala = new Uri("http://192.168.1.2/?pin=LIGA2");
         Uri desliga_sala = new Uri("http://192.168.1.2/?pin=DESLIGA2");
 
-        int contadorSensor;
+        StorageFolder localFolder = null;
+        const string filename = "sampleFile.txt";
 
-        public void settings()
-        {           
-            toggleAutomatico.IsOn = true;          
+        public MainPage()
+        {
+            this.InitializeComponent();
+            localFolder = ApplicationData.Current.LocalFolder;
+            Sensor();
+            Read_Local();
         }
+
         public void ligarQuarto()
         {
             web.Navigate(liga_quarto);
+
+
         }
         public void desligarQuarto()
         {
@@ -65,9 +65,9 @@ namespace Controle_Cortana
                 }
             }
         }
+        
         public void toggleSwitchSala_Toggled(object sender, RoutedEventArgs e)
         {
-
             if (toggleSwitchSala != null)
             {
                 if (toggleSwitchSala.IsOn == false)
@@ -81,9 +81,24 @@ namespace Controle_Cortana
             }
         }
 
-        private void toggleAutomatico_Toggled(object sender, RoutedEventArgs e)
+        async void toggleAutomatico_Toggled(object sender, RoutedEventArgs e)
         {
+            StorageFile file = await localFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
+            await FileIO.WriteTextAsync(file, toggleAutomatico.IsOn.ToString());
+        }
+        async void Read_Local()
+        {
+            StorageFile file = await localFolder.GetFileAsync(filename);
+            string text = await FileIO.ReadTextAsync(file);
 
+            if (text == "True")
+            {
+                toggleAutomatico.IsOn = true;
+            }
+            else
+            {
+                toggleAutomatico.IsOn = false;
+            }
         }
     }
 }
