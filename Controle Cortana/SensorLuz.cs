@@ -24,25 +24,24 @@ namespace Controle_Cortana
         {
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                bool[] togglesIsOn = {toggleAutomaticoQuarto.IsOn, toggleAutomaticoSala.IsOn };
-                string[] comodos = {"quarto","sala"};
+                bool[] togglesIsOn = { toggleAutomaticoQuarto.IsOn, toggleAutomaticoSala.IsOn };
+                string[] comodos = { "quarto", "sala" };
                 LightSensorReading reading = e.Reading;
                 sensorDeLuz.Text = "Lux: " + string.Format("{0,5:0.00}", reading.IlluminanceInLux);
 
-                for ( i = 0; i < 2; i++ )
+                for (i = 0; i < 2; i++)
                 {
                     if (togglesIsOn[i] != null)
                     {
                         if (togglesIsOn[i] == true && reading.IlluminanceInLux < 2)
-                        {                           
-                            switch (comodos[i])
+                        {
+                            if (comodos[i] == "quarto")
                             {
-                                case "quarto":
-                                    ligarQuarto();
-                                    break;
-                                case "sala":
-                                    ligarSala();
-                                    break;
+                                ligarQuarto();
+                            }
+                            if (comodos[i] == "sala")
+                            {
+                                ligarSala();
                             }
                         }
                     }
