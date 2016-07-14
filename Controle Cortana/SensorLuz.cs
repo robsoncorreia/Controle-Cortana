@@ -19,7 +19,6 @@ namespace Controle_Cortana
     public sealed partial class MainPage : Page
     {
         private LightSensor _lightsensor; // Our app' s lightsensor object
-
         int contadorSensor;
         async private void ReadingChanged(object sender, LightSensorReadingChangedEventArgs e)
         {
@@ -27,9 +26,10 @@ namespace Controle_Cortana
             {
                 LightSensorReading reading = e.Reading;
                 sensorDeLuz.Text = "Lux: " + string.Format("{0,5:0.00}", reading.IlluminanceInLux);
-                if (toggleAutomatico != null)
+                
+                if (toggleAutomaticoQuarto != null)
                 {
-                    if (toggleAutomatico.IsOn == true)
+                    if (toggleAutomaticoQuarto.IsOn == true)
                     {
                         if (contadorSensor < 2)
                         {
@@ -62,8 +62,10 @@ namespace Controle_Cortana
             }
             else
             {
-                toggleAutomatico.Visibility = Visibility.Collapsed;
-                retangudoAutomatico.Visibility = Visibility.Collapsed;
+                toggleAutomaticoQuarto.Visibility = Visibility.Collapsed;
+                retangudoAutomaticoQuarto.Visibility = Visibility.Collapsed;
+                toggleAutomaticoSala.Visibility = Visibility.Collapsed;
+                retangudoAutomaticoSala.Visibility = Visibility.Collapsed;
                 textoSensorLuz.Text = ":(";
                 sensorDeLuz.Text = "Dispositivo não possui sensor.";
             }
