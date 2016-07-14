@@ -31,18 +31,15 @@ namespace Controle_Cortana
 
                 for (i = 0; i < 2; i++)
                 {
-                    if (togglesIsOn[i] != null)
+                    if (togglesIsOn[i] == true && reading.IlluminanceInLux < 2)
                     {
-                        if (togglesIsOn[i] == true && reading.IlluminanceInLux < 2)
+                        if (comodos[i] == "quarto")
                         {
-                            if (comodos[i] == "quarto")
-                            {
-                                ligarQuarto();
-                            }
-                            if (comodos[i] == "sala")
-                            {
-                                ligarSala();
-                            }
+                            ligarQuarto();
+                        }
+                        if (comodos[i] == "sala")
+                        {
+                            ligarSala();
                         }
                     }
                 }
