@@ -33,7 +33,7 @@ namespace Controle_Cortana
                 {
                     if (togglesIsOn[i] != null)
                     {
-                        if (togglesIsOn[i] == true)
+                        if (togglesIsOn[i] == true && reading.IlluminanceInLux < 2)
                         {                           
                             switch (comodos[i])
                             {
