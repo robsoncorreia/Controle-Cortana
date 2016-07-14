@@ -9,10 +9,6 @@ using System.IO;
 
 namespace Controle_Cortana
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-
     public sealed partial class MainPage : Page
     {
         Uri liga_quarto = new Uri("http://192.168.1.2/?pin=LIGA1");
@@ -34,9 +30,10 @@ namespace Controle_Cortana
         }
         void Setting()
         {
-            Object valueQuarto =  localSettings.Values[settingQuarto];
-            if( valueQuarto != null){
-               //toggleSwitchQuarto.IsOn = ((bool)valueQuarto);
+            Object valueQuarto = localSettings.Values[settingQuarto];
+            if (valueQuarto != null)
+            {
+                //toggleSwitchQuarto.IsOn = ((bool)valueQuarto);
             }
             Object valueSala = localSettings.Values[settingSala];
             if (valueSala != null)
@@ -77,7 +74,6 @@ namespace Controle_Cortana
 
         public void toggleSwitchQuarto_Toggled(object sender, RoutedEventArgs e)
         {
-
             if (toggleSwitchQuarto != null)
             {
                 if (toggleSwitchQuarto.IsOn == false)
@@ -90,7 +86,6 @@ namespace Controle_Cortana
                 }
             }
         }
-
         public void toggleSwitchSala_Toggled(object sender, RoutedEventArgs e)
         {
             if (toggleSwitchSala != null)
@@ -107,7 +102,7 @@ namespace Controle_Cortana
         }
         public void toggleAutomaticoQuarto_Toggled(object sender, RoutedEventArgs e)
         {
-            if(toggleAutomaticoQuarto != null)
+            if (toggleAutomaticoQuarto != null)
             {
                 if (toggleAutomaticoQuarto.IsOn == true)
                 {
@@ -121,7 +116,7 @@ namespace Controle_Cortana
         }
         public void toggleAutomaticoSala_Toggled(object sender, RoutedEventArgs e)
         {
-            if(toggleAutomaticoSala != null)
+            if (toggleAutomaticoSala != null)
             {
                 if (toggleAutomaticoSala.IsOn == true)
                 {

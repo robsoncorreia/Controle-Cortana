@@ -19,30 +19,36 @@ namespace Controle_Cortana
     public sealed partial class MainPage : Page
     {
         private LightSensor _lightsensor; // Our app' s lightsensor object
-        int contadorSensor;
+        int i;
         async private void ReadingChanged(object sender, LightSensorReadingChangedEventArgs e)
         {
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
+                bool[] togglesIsOn = {toggleAutomaticoQuarto.IsOn, toggleAutomaticoSala.IsOn };
+                string[] comodos = {"quarto","sala"};
                 LightSensorReading reading = e.Reading;
                 sensorDeLuz.Text = "Lux: " + string.Format("{0,5:0.00}", reading.IlluminanceInLux);
-                
-                if (toggleAutomaticoQuarto != null)
+
+                for ( i = 0; i < 2; i++ )
                 {
-                    if (toggleAutomaticoQuarto.IsOn == true)
+                    if (togglesIsOn[i] != null)
                     {
-                        if (contadorSensor < 2)
-                        {
-                            contadorSensor++;
-                        }
-                        if (reading.IlluminanceInLux <= 1 && contadorSensor == 1)
-                        {
-                            ligarQuarto();
+                        if (togglesIsOn[i] == true)
+                        {                           
+                            switch (comodos[i])
+                            {
+                                case "quarto":
+                                    ligarQuarto();
+                                    break;
+                                case "sala":
+                                    ligarSala();
+                                    break;
+                            }
                         }
                     }
                 }
+                i = 0;
             });
-
         }
         public void Sensor()
         {
