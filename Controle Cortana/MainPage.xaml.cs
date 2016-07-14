@@ -58,7 +58,6 @@ namespace Controle_Cortana
         {
             web.Navigate(liga_quarto);
             localSettings.Values[settingQuarto] = true;
-
         }
         public void desligarQuarto()
         {
@@ -106,26 +105,6 @@ namespace Controle_Cortana
                 }
             }
         }
-        private void Rectangle_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
-        {
-            toggleSwitchQuarto.IsOn = !toggleSwitchQuarto.IsOn;
-        }
-
-        private void Rectangle_Tapped_1(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
-        {
-            toggleSwitchSala.IsOn = !toggleSwitchSala.IsOn;
-        }
-
-        private void retangudoAutomaticoQuarto_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
-        {
-            toggleAutomaticoQuarto.IsOn = !toggleAutomaticoQuarto.IsOn;
-        }
-
-        private void retangudoAutomaticoSala_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
-        {
-            toggleAutomaticoSala.IsOn = !toggleAutomaticoSala.IsOn;
-        }
-
         public void toggleAutomaticoQuarto_Toggled(object sender, RoutedEventArgs e)
         {
             if(toggleAutomaticoQuarto != null)
