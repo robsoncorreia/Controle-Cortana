@@ -126,7 +126,7 @@ namespace Controle_Cortana
             toggleAutomaticoSala.IsOn = !toggleAutomaticoSala.IsOn;
         }
 
-        async void toggleAutomaticoQuarto_Toggled(object sender, RoutedEventArgs e)
+        public void toggleAutomaticoQuarto_Toggled(object sender, RoutedEventArgs e)
         {
             if(toggleAutomaticoQuarto != null)
             {
@@ -140,7 +140,7 @@ namespace Controle_Cortana
                 }
             }
         }
-        async void toggleAutomaticoSala_Toggled(object sender, RoutedEventArgs e)
+        public void toggleAutomaticoSala_Toggled(object sender, RoutedEventArgs e)
         {
             if(toggleAutomaticoSala != null)
             {
