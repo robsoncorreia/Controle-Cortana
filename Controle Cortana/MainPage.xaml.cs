@@ -30,22 +30,22 @@ namespace Controle_Cortana
         }
         void Setting()
         {
-            Object valueQuarto = localSettings.Values[settingQuarto];
+            object valueQuarto = localSettings.Values[settingQuarto];
             if (valueQuarto != null)
             {
-                //toggleSwitchQuarto.IsOn = ((bool)valueQuarto);
+                toggleSwitchQuarto.IsOn = ((bool)valueQuarto);
             }
-            Object valueSala = localSettings.Values[settingSala];
+            object valueSala = localSettings.Values[settingSala];
             if (valueSala != null)
             {
-                //toggleSwitchSala.IsOn = ((bool)valueSala);
+                toggleSwitchSala.IsOn = ((bool)valueSala);
             }
-            Object valueAutoQuarto = localSettings.Values[settingAutoQuarto];
+            object valueAutoQuarto = localSettings.Values[settingAutoQuarto];
             if (valueAutoQuarto != null)
             {
                 toggleAutomaticoQuarto.IsOn = ((bool)valueAutoQuarto);
             }
-            Object valueAutoSala = localSettings.Values[settingAutoSala];
+            object valueAutoSala = localSettings.Values[settingAutoSala];
             if (valueAutoSala != null)
             {
                 toggleAutomaticoSala.IsOn = ((bool)valueAutoSala);
@@ -53,23 +53,23 @@ namespace Controle_Cortana
         }
         public void ligarQuarto()
         {
-            web.Navigate(liga_quarto);
             localSettings.Values[settingQuarto] = true;
+            web.Navigate(liga_quarto);
         }
         public void desligarQuarto()
         {
-            web.Navigate(desliga_quarto);
             localSettings.Values[settingQuarto] = false;
+            web.Navigate(desliga_quarto);
         }
         public void ligarSala()
         {
-            web.Navigate(liga_sala);
             localSettings.Values[settingSala] = true;
+            web.Navigate(liga_sala);
         }
         public void desligarSala()
         {
-            web.Navigate(desliga_sala);
             localSettings.Values[settingSala] = false;
+            web.Navigate(desliga_sala);
         }
 
         public void toggleSwitchQuarto_Toggled(object sender, RoutedEventArgs e)

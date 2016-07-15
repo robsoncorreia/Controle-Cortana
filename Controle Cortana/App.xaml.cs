@@ -35,7 +35,6 @@ namespace Controle_Cortana
             this.InitializeComponent();
             this.Suspending += OnSuspending;
         }
-
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file.
@@ -68,7 +67,6 @@ namespace Controle_Cortana
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
-
             if (e.PrelaunchActivated == false)
             {
                 if (rootFrame.Content == null)
@@ -94,7 +92,6 @@ namespace Controle_Cortana
                 }
             }
         }
-
         protected override void OnActivated(IActivatedEventArgs args)
         {
             base.OnActivated(args);
@@ -123,25 +120,26 @@ namespace Controle_Cortana
                 switch (textSpoken)
                 {
                     case "turn on room":
-                        rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         mainpage.ligarSala();
+                        rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         break;
                     case "turn off room":
-                        rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         mainpage.desligarSala();
+                        rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
+                        
                         break;
                     case "turn on bedroom":
-                        rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         mainpage.ligarQuarto();
+                        rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
+                        
                         break;
                     case "turn off bedroom":
-                        rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         mainpage.desligarQuarto();
+                        rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         break;
                 }
             }
         }
-        
         private string SemanticInterpretation(string interpretationKey, SpeechRecognitionResult speechRecognitionResult)
         {
             return speechRecognitionResult.SemanticInterpretation.Properties[interpretationKey].FirstOrDefault();
