@@ -5,6 +5,7 @@ using Windows.Storage;
 using System.Net.Http;
 using System.Net;
 using System.IO;
+using Windows.UI.Core;
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace Controle_Cortana

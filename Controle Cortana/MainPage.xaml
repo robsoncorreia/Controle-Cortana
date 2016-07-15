@@ -9,7 +9,6 @@
     <Pivot x:Name="rootPivot" Background="#FFC1C1C1" >
         <PivotItem Header="Lampadas">
             <Grid>
-                <Rectangle Height="5" Margin="0,-11,10,0" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" Fill="#FFFF6800" Width="106" HorizontalAlignment="Left"/>
                 <Rectangle x:Name="retanguloQuarto" Height="100" Margin="10,30,10,0" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" Fill="#FFF4F4F5" RadiusX="6" RadiusY="6" Stroke="#19000000"/>
                 <Rectangle x:Name="retanguloSala" Fill="#FFF4F4F5" Height="100" Margin="10,132,10,0" VerticalAlignment="Top" RadiusX="6" RadiusY="5" Stroke="#19000000"/>
                 <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" HorizontalAlignment="Left" Margin="30,49,0,0" VerticalAlignment="Top" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" FontSize="20"/>
@@ -19,7 +18,6 @@
         </PivotItem>
         <PivotItem Header="Sensor de Luz">
             <Grid >
-                <Rectangle Height="5" Margin="128,-11,10,0" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" Fill="#FFFF6800" Width="148" HorizontalAlignment="Left"/>
                 <Rectangle Fill="#FFF4F4F5" Height="100" Margin="10,30" VerticalAlignment="Top" RadiusX="6" RadiusY="5" Stroke="#19000000"/>
                 <Rectangle x:Name="retangudoAutomaticoQuarto" Fill="#FFF4F4F5" Height="100" Margin="10,132,10,0" VerticalAlignment="Top" RadiusX="6" RadiusY="5" Stroke="#19000000"/>
                 <Rectangle x:Name="retangudoAutomaticoSala" Fill="#FFF4F4F5" Height="100" Margin="10,234,10,0" VerticalAlignment="Top" RadiusX="6" RadiusY="5" Stroke="#19000000"/>
@@ -27,6 +25,10 @@
                 <TextBlock x:Name="sensorDeLuz" HorizontalAlignment="Left" Margin="30,80,0,70" TextWrapping="Wrap" Text="Sensor de Luminosidade" VerticalAlignment="Top" FontSize="20"/>
                 <ToggleSwitch x:Name="toggleAutomaticoSala" Header="Sala Auto." HorizontalAlignment="Left" Margin="30,249,0,0" VerticalAlignment="Top" FontSize="20" OffContent="Desl." OnContent="Liga" Toggled="toggleAutomaticoSala_Toggled" />
                 <ToggleSwitch x:Name="toggleAutomaticoQuarto" Header="Quarto Auto." HorizontalAlignment="Left" Margin="30,150,0,0" VerticalAlignment="Top" FontSize="20" OffContent="Desl." OnContent="Liga" Toggled="toggleAutomaticoQuarto_Toggled" />
+            </Grid>
+        </PivotItem>
+        <PivotItem Header="Consumo">
+            <Grid>
             </Grid>
         </PivotItem>
     </Pivot>
