@@ -126,12 +126,10 @@ namespace Controle_Cortana
                     case "turn off room":
                         mainpage.desligarSala();
                         rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
-                        
                         break;
                     case "turn on bedroom":
                         mainpage.ligarQuarto();
                         rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
-                        
                         break;
                     case "turn off bedroom":
                         mainpage.desligarQuarto();
