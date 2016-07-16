@@ -51,6 +51,16 @@ namespace Controle_Cortana
                 toggleAutomaticoSala.IsOn = ((bool)valueAutoSala);
             }
         }
+        public void ligarQuartoAuto()
+        {
+            web.Navigate(liga_quarto);
+            toggleSwitchQuarto.IsOn = true;
+        }
+        public void ligarSalaAuto()
+        {
+            web.Navigate(liga_sala);
+            toggleSwitchSala.IsOn = true;
+        }
         public void ligarQuarto()
         {
             localSettings.Values[settingQuarto] = true;
@@ -130,24 +140,40 @@ namespace Controle_Cortana
         }
         private LightSensor _lightsensor;
         int i;
-
+        bool x;
+        int j;
         async private void ReadingChanged(object sender, LightSensorReadingChangedEventArgs e)
         {
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 LightSensorReading reading = e.Reading;
                 sensorDeLuz.Text = "Lux: " + string.Format("{0,5:0.00}", reading.IlluminanceInLux);
-                if (i < 11)
+                if (pivotItemSensor.IsHitTestVisible == true && x == true)
+                {
+                    x = false;
+                    i = 0;
+                }
+                if (toggleAutomaticoQuarto.IsOn == true && toggleAutomaticoSala.IsOn == true)
+                {
+                    toggleAutomaticoQuarto.IsOn = false;
+                    toggleAutomaticoSala.IsOn = false;
+                }
+                if (pivotItemSensor.IsHitTestVisible == false)
+                {
+                    x = true;
+                }
+                if (i < 2 || j < 2)
                 {
                     i++;
-                    if (i == 1 && toggleAutomaticoQuarto.IsOn == true && reading.IlluminanceInLux < 2)
-                    {
-                        ligarQuarto();
-                    }
+                    j++;
 
-                    if (i == 10 && toggleAutomaticoSala.IsOn == true && reading.IlluminanceInLux < 2)
+                    if ((i == 1 || j == 1) && toggleAutomaticoQuarto.IsOn == true && reading.IlluminanceInLux < 2)
                     {
-                        ligarSala();
+                        ligarQuartoAuto();
+                    }
+                    else if ((i == 1 || j == 1) && toggleAutomaticoSala.IsOn == true && reading.IlluminanceInLux < 2)
+                    {
+                        ligarSalaAuto();
                     }
                 }
             });
@@ -179,8 +205,8 @@ namespace Controle_Cortana
             }
         }
 
-        private  void Page_Loaded(object sender, RoutedEventArgs e)
-        {        
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
             localSettings = ApplicationData.Current.LocalSettings;
             Sensor();
             Setting();

@@ -9,9 +9,7 @@
 
 
         <Grid Background="{ThemeResource AppBarBackgroundThemeBrush}" Margin="0">
-        <ToggleButton Width="40" Height="40" VerticalAlignment="Top">
-
-        </ToggleButton>
+        <ToggleButton Width="40" Height="40" VerticalAlignment="Top"/>
         <Pivot x:Name="rootPivot" Background="#FFE6E6E6" BorderThickness="0" Margin="0,40,0,0" >
             <PivotItem x:Name="pivotItemIluminação" Header="Iluminação" FontSize="15">
                 <Grid>
@@ -22,7 +20,7 @@
                     <WebView x:Name="web" HorizontalAlignment="Left" Height="100" Margin="10,384,0,0" VerticalAlignment="Top" Width="100" Visibility="Collapsed"/>
                 </Grid>
             </PivotItem>
-            <PivotItem x:Name="pivotItemSensor" Header="Sensor de Luz" LostFocus="pivotItemSensor_LostFocus">
+            <PivotItem x:Name="pivotItemSensor" Header="Sensor de Luz">
                 <Grid >
                     <Rectangle Fill="#FFF4F4F5" Height="100" Margin="0,30" VerticalAlignment="Top"  Stroke="#19000000"/>
                     <Rectangle x:Name="retangudoAutomaticoQuarto" Fill="#FFF4F4F5" Height="100" Margin="0,132,0,0" VerticalAlignment="Top"  Stroke="#19000000"/>
