@@ -27,9 +27,6 @@ namespace Controle_Cortana
         public MainPage()
         {
             this.InitializeComponent();
-            localSettings = ApplicationData.Current.LocalSettings;
-            Sensor();
-            Setting();
         }
         void Setting()
         {
@@ -133,6 +130,7 @@ namespace Controle_Cortana
         }
         private LightSensor _lightsensor;
         int i;
+
         async private void ReadingChanged(object sender, LightSensorReadingChangedEventArgs e)
         {
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
@@ -179,6 +177,13 @@ namespace Controle_Cortana
                 textoSensorLuz.Text = ":(";
                 sensorDeLuz.Text = "Dispositivo não possui sensor.";
             }
+        }
+
+        private  void Page_Loaded(object sender, RoutedEventArgs e)
+        {        
+            localSettings = ApplicationData.Current.LocalSettings;
+            Sensor();
+            Setting();
         }
     }
 }
