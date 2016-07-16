@@ -111,27 +111,27 @@ namespace Controle_Cortana
                 
                 SpeechRecognitionResult speechRecognitionResult = commandArgs.Result;
 
-                //string voiceCommandName = speechRecognitionResult.RulePath[0];
+                string voiceCommandName = speechRecognitionResult.RulePath[0];
                 string textSpoken = speechRecognitionResult.Text;
                 //string commandMode = SemanticInterpretation("commandMode", speechRecognitionResult);
 
                 MainPage mainpage = new MainPage();
       
-                switch (textSpoken)
+                switch (voiceCommandName)
                 {
-                    case "turn on room":
+                    case "ligarSala":
                         mainpage.ligarSala();
                         rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         break;
-                    case "turn off room":
+                    case "desligarSala":
                         mainpage.desligarSala();
                         rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         break;
-                    case "turn on bedroom":
+                    case "ligarQuarto":
                         mainpage.ligarQuarto();
                         rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         break;
-                    case "turn off bedroom":
+                    case "desligarQuarto":
                         mainpage.desligarQuarto();
                         rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         break;

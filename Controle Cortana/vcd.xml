@@ -1,30 +1,65 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <VoiceCommands xmlns="http://schemas.microsoft.com/voicecommands/1.2">
-  <CommandSet xml:lang="en-us"  Name="AdventureWorksCommandSet_en-us">
-    <CommandPrefix> Control lights </CommandPrefix>
-    <Example> turn on </Example>
-    
-    <Command Name="estado_Ligado">
-      <Example> Control lights turn on light room </Example>
-      <ListenFor> turn on [light] {comodos} </ListenFor>
-      <Feedback> turning on light {comodos}... </Feedback>
+  <CommandSet xml:lang="pt-br"  Name="controleLuzesBR">
+    <CommandPrefix> Controle de luzes </CommandPrefix>
+    <Example> Controle de luze ligar luz da sala </Example>
+    <Command Name="ligarSala">
+      <Example> Controle de luz ligar luz da sala </Example>
+      <ListenFor> ligar [luz] [da] sala </ListenFor>
+      <Feedback> ligando luz da sala... </Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
-    
-    <Command Name="estado_Desligado">
-      <Example> Control lights turn off room </Example>
-      <ListenFor> turn off [light] {comodos} </ListenFor>
-      <Feedback> turning off light {comodos}...</Feedback>
+    <Command Name="desligarSala">
+      <Example> Controle de luze ligar luz da sala </Example>
+      <ListenFor> desligar [luz] [da] sala </ListenFor>
+      <Feedback> desligando luz da sala... </Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
-
-    <PhraseList Label="comodos">
-      <Item> room </Item>
-      <Item> bedroom </Item>
-    </PhraseList>
-  
+    <Command Name="ligarQuarto">
+      <Example> Controle de luz ligar luz do quarto </Example>
+      <ListenFor> ligar [luz] [do] quarto </ListenFor>
+      <Feedback> ligando luz do quarto...</Feedback>
+      <Navigate Target="MainPage.xaml"/>
+    </Command>
+    <Command Name="desligarQuarto">
+      <Example> Controle de luz desligar luz do quarto </Example>
+      <ListenFor> desligar [luz] [do] quarto </ListenFor>
+      <Feedback> desligando luz do quarto...</Feedback>
+      <Navigate Target="MainPage.xaml"/>
+    </Command>
+    <!--<PhraseList Label="comodos">
+      <Item> sala </Item>
+      <Item> quarto
+      [</Item>
+    </PhraseList>-->
   </CommandSet>
-  
-  <!-- Other CommandSets for other languages -->
 
+  <CommandSet xml:lang="en-us"  Name="controleLuzesEN">
+    <CommandPrefix> Control lights </CommandPrefix>
+    <Example> Control lights turn on room </Example>
+    <Command Name="ligarSala">
+      <Example> Control lights turn on room </Example>
+      <ListenFor> turn on [light] room </ListenFor>
+      <Feedback> turning on light room... </Feedback>
+      <Navigate Target="MainPage.xaml"/>
+    </Command>
+    <Command Name="desligarSala">
+      <Example> Control lights turn off room </Example>
+      <ListenFor> turn off [light] room </ListenFor>
+      <Feedback> turning off light room... </Feedback>
+      <Navigate Target="MainPage.xaml"/>
+    </Command>
+    <Command Name="ligarQuarto">
+      <Example> Control lights turn on bedroom </Example>
+      <ListenFor> turn on [light] bedroom </ListenFor>
+      <Feedback> turning on light bedroom...</Feedback>
+      <Navigate Target="MainPage.xaml"/>
+    </Command>
+    <Command Name="desligarQuarto">
+      <Example> Control lights turn off bedroom</Example>
+      <ListenFor> turn off [light] bedroom </ListenFor>
+      <Feedback> turning off light bedroom......</Feedback>
+      <Navigate Target="MainPage.xaml"/>
+    </Command>
+  </CommandSet>
 </VoiceCommands>

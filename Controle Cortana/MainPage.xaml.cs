@@ -27,6 +27,7 @@ namespace Controle_Cortana
         public MainPage()
         {
             this.InitializeComponent();
+            localSettings = ApplicationData.Current.LocalSettings;
         }
         void Setting()
         {
@@ -207,7 +208,7 @@ namespace Controle_Cortana
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            localSettings = ApplicationData.Current.LocalSettings;
+            
             Sensor();
             Setting();
         }
