@@ -8,6 +8,7 @@ using System.IO;
 using Windows.UI.Core;
 using Windows.Devices.Sensors;
 using Windows.Foundation;
+using Windows.UI.Xaml.Controls.Primitives;
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace Controle_Cortana
@@ -85,8 +86,10 @@ namespace Controle_Cortana
 
         public void toggleSwitchQuarto_Toggled(object sender, RoutedEventArgs e)
         {
+
             if (toggleSwitchQuarto != null)
             {
+
                 if (toggleSwitchQuarto.IsOn == false)
                 {
                     desligarQuarto();
@@ -94,6 +97,7 @@ namespace Controle_Cortana
                 else
                 {
                     ligarQuarto();
+                    FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
                 }
             }
         }
@@ -108,6 +112,7 @@ namespace Controle_Cortana
                 else
                 {
                     ligarSala();
+                    FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
                 }
             }
         }
@@ -158,6 +163,7 @@ namespace Controle_Cortana
                 {
                     toggleAutomaticoQuarto.IsOn = false;
                     toggleAutomaticoSala.IsOn = false;
+                    aviso();
                 }
                 if (pivotItemSensor.IsHitTestVisible == false)
                 {
@@ -168,16 +174,27 @@ namespace Controle_Cortana
                     i++;
                     j++;
 
-                    if ((i == 1 || j == 1) && toggleAutomaticoQuarto.IsOn == true && reading.IlluminanceInLux < 2)
+                    if ((i == 1 || j == 1) && toggleAutomaticoQuarto.IsOn == true && reading.IlluminanceInLux < 1)
                     {
                         ligarQuartoAuto();
                     }
-                    else if ((i == 1 || j == 1) && toggleAutomaticoSala.IsOn == true && reading.IlluminanceInLux < 2)
+                    else if ((i == 1 || j == 1) && toggleAutomaticoSala.IsOn == true && reading.IlluminanceInLux < 1)
                     {
                         ligarSalaAuto();
                     }
                 }
             });
+        }
+        public async void aviso()
+        {
+            ContentDialog noWifiDialog = new ContentDialog()
+            {
+                Title = "Não é permitido.",
+                Content = "Por motivos lógicos não é permitido ligar os dois botões ao mesmo tempo.",
+                PrimaryButtonText = ":)"
+            };
+
+            ContentDialogResult result = await noWifiDialog.ShowAsync();
         }
         void Sensor()
         {
@@ -208,9 +225,20 @@ namespace Controle_Cortana
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            
             Sensor();
             Setting();
+        }
+        private void AppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (timerGrid.Visibility == Visibility)
+            {
+                timerGrid.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                timerGrid.Visibility = Visibility;
+            }
         }
     }
 }
