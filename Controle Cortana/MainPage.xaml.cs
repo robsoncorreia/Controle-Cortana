@@ -2,9 +2,6 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.Storage;
-using System.Net.Http;
-using System.Net;
-using System.IO;
 using Windows.UI.Core;
 using Windows.Devices.Sensors;
 using Windows.Foundation;
@@ -25,10 +22,15 @@ namespace Controle_Cortana
         const string settingSala = "salaSetting";
         const string settingAutoQuarto = "AutoQuartoSetting";
         const string settingAutoSala = "AutoSalaSetting";
+        const string horaTimerSetting = "horaTimer";
+        const string minutoTimerSetting = "minutoTimer";
+        int horaProgramada;
+        int minutoProgramado;
         public MainPage()
         {
             this.InitializeComponent();
             localSettings = ApplicationData.Current.LocalSettings;
+            mostrarTimer();
         }
         void Setting()
         {
@@ -51,6 +53,16 @@ namespace Controle_Cortana
             if (valueAutoSala != null)
             {
                 toggleAutomaticoSala.IsOn = ((bool)valueAutoSala);
+            }
+            object valueHoraProgramada = localSettings.Values[horaTimerSetting];
+            if (valueHoraProgramada != null)
+            {
+                horaProgramada = (int)valueHoraProgramada;
+            }
+            object valueMinutoProgramada = localSettings.Values[minutoTimerSetting];
+            if (valueMinutoProgramada != null)
+            {
+                minutoProgramado = (int)valueMinutoProgramada;
             }
         }
         public void ligarQuartoAuto()
@@ -231,14 +243,56 @@ namespace Controle_Cortana
         private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
 
-            if (timerGrid.Visibility == Visibility)
+        }
+
+        private void AppBarButton_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (rootPivot.SelectedIndex > 0)
             {
-                timerGrid.Visibility = Visibility.Collapsed;
+                // If not at the first item, go back to the previous one.
+                rootPivot.SelectedIndex -= 1;
             }
             else
             {
-                timerGrid.Visibility = Visibility;
+                // The first PivotItem is selected, so loop around to the last item.
+                rootPivot.SelectedIndex = rootPivot.Items.Count - 1;
             }
+        }
+        private void relogioTimerPicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
+        {
+            horaProgramada = relogioTimerPicker.Time.Hours;
+            minutoProgramado = relogioTimerPicker.Time.Minutes;
+
+            localSettings.Values[horaTimerSetting] = horaProgramada;
+            localSettings.Values[minutoTimerSetting] = minutoProgramado;
+
+            
+            if (minutoProgramado < 10)
+            {
+                alarmeSalvoTextBlock.Text = horaProgramada + ":0" + minutoProgramado;
+            }
+            else
+            {
+                alarmeSalvoTextBlock.Text = horaProgramada + ":" + minutoProgramado;
+            }
+        }
+        public void mostrarTimer()
+        {
+            object valueHoraProgramada = localSettings.Values[horaTimerSetting];
+            object valueMinutoProgramada = localSettings.Values[minutoTimerSetting];
+            if ((valueHoraProgramada != null) && (valueMinutoProgramada != null))
+            {
+                if ((int)valueMinutoProgramada < 10)
+                {
+                    alarmeSalvoTextBlock.Text = (int)valueHoraProgramada + ":0" + (int)valueMinutoProgramada;
+                }
+                else
+                {
+                    alarmeSalvoTextBlock.Text = (int)valueHoraProgramada + ":" + (int)valueMinutoProgramada;
+                }
+            }
+
         }
     }
 }
+

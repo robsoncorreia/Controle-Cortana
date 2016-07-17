@@ -6,54 +6,65 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" Loaded="Page_Loaded">
-
-    <Pivot x:Name="rootPivot" Background="#FFE6E6E6">
-        <PivotItem x:Name="pivotItemIluminação" Header="Iluminação">
-            <Grid>
-                <Rectangle x:Name="retanguloQuarto" Height="100" Margin="0,30,0,0" VerticalAlignment="Top" Fill="#FFF4F4F5" Stroke="#19000000"/>
-                <Rectangle x:Name="retanguloSala" Fill="#FFF4F4F5" Height="100" Margin="0,132,0,0" VerticalAlignment="Top" Stroke="#19000000" Canvas.ZIndex="1"/>
-                <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" HorizontalAlignment="Left" Margin="30,50,0,0" VerticalAlignment="Top" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" FontSize="20">
-                    <FlyoutBase.AttachedFlyout>
-                        <Flyout>
-                            <TextBlock TextWrapping="Wrap" Text="Luz do quarto ligada."  />
-                        </Flyout>
-                    </FlyoutBase.AttachedFlyout>
-                </ToggleSwitch>
-                <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" HorizontalAlignment="Left" Margin="30,152,0,0" VerticalAlignment="Top" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchSala_Toggled" FontSize="20" Canvas.ZIndex="1">
-                    <FlyoutBase.AttachedFlyout>
-                        <Flyout>
-                            <TextBlock TextWrapping="Wrap" Text="Luz do sala ligada."  />
-                        </Flyout>
-                    </FlyoutBase.AttachedFlyout>
-                </ToggleSwitch>
-                <WebView x:Name="web" HorizontalAlignment="Left" Height="100" Margin="10,384,0,0" VerticalAlignment="Top" Width="100" Visibility="Collapsed"/>
-            </Grid>
-        </PivotItem>
-        <PivotItem x:Name="pivotItemSensor" Header="Sensor de Luz">
-            <Grid>
-                <Rectangle Fill="#FFF4F4F5" Height="100" Margin="0,30" VerticalAlignment="Top"  Stroke="#19000000"/>
-                <Rectangle x:Name="retangudoAutomaticoQuarto" Fill="#FFF4F4F5" Height="100" Margin="0,132,0,0" VerticalAlignment="Top"  Stroke="#19000000"/>
-                <Rectangle x:Name="retangudoAutomaticoSala" Fill="#FFF4F4F5" Height="100" Margin="0,234,0,0" VerticalAlignment="Top"  Stroke="#19000000"/>
-                <TextBlock x:Name="textoSensorLuz" HorizontalAlignment="Left" Margin="30,44,0,70" TextWrapping="Wrap" Text="Sensor de Luminosidade" VerticalAlignment="Top" FontSize="20"/>
-                <TextBlock x:Name="sensorDeLuz" HorizontalAlignment="Left" Margin="30,80,0,70" TextWrapping="Wrap" Text="Sensor de Luminosidade" VerticalAlignment="Top" FontSize="20"/>
-                <ToggleSwitch x:Name="toggleAutomaticoSala" Header="Sala Auto." FontSize="20" HorizontalAlignment="Left" Margin="30,249,0,0" VerticalAlignment="Top"  OffContent="Desl." OnContent="Liga" Toggled="toggleAutomaticoSala_Toggled"/>
-                <ToggleSwitch x:Name="toggleAutomaticoQuarto" Header="Quarto Auto." FontSize="20" HorizontalAlignment="Left" Margin="30,150,0,0" VerticalAlignment="Top"  OffContent="Desl." OnContent="Liga" Toggled="toggleAutomaticoQuarto_Toggled" />
-            </Grid>
-        </PivotItem>
-        <PivotItem x:Name="pivotItemTimer" Header="Timer">
-            <Grid>
-                <FlyoutBase.AttachedFlyout>
-                    <TimePickerFlyout/>
-                </FlyoutBase.AttachedFlyout>
-                <Grid x:Name="timerGrid">
-                    <TextBlock Text="Escolha o horário:" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,40,0,0" Canvas.ZIndex="1" />
-                    <Rectangle Fill="#FFF4F4F5" Height="100" Margin="0,30" VerticalAlignment="Top"  Stroke="#19000000"/>
-                    <TimePicker HorizontalAlignment="Left" Margin="20,80,0,0" VerticalAlignment="Top"/>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Pivot x:Name="rootPivot" Background="#FFE6E6E6">
+            <Pivot.LeftHeader>
+                <AppBarButton Icon="Back" Click="AppBarButton_Click_1" Width="60" />
+            </Pivot.LeftHeader>
+            <PivotItem x:Name="pivotItemIluminação" Header="Iluminação">
+                <Grid>
+                    <Rectangle x:Name="retanguloQuarto" Height="100" Margin="0,30,0,0" VerticalAlignment="Top" Fill="#FFF4F4F5" Stroke="#19000000"/>
+                    <Rectangle x:Name="retanguloSala" Fill="#FFF4F4F5" Height="100" Margin="0,132,0,0" VerticalAlignment="Top" Stroke="#19000000" Canvas.ZIndex="1"/>
+                    <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" HorizontalAlignment="Left" Margin="30,50,0,0" VerticalAlignment="Top" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" FontSize="20">
+                        <FlyoutBase.AttachedFlyout>
+                            <Flyout>
+                                <TextBlock TextWrapping="Wrap" Text="Luz do quarto ligada."  />
+                            </Flyout>
+                        </FlyoutBase.AttachedFlyout>
+                    </ToggleSwitch>
+                    <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" HorizontalAlignment="Left" Margin="30,152,0,0" VerticalAlignment="Top" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchSala_Toggled" FontSize="20" Canvas.ZIndex="1">
+                        <FlyoutBase.AttachedFlyout>
+                            <Flyout>
+                                <TextBlock TextWrapping="Wrap" Text="Luz do sala ligada."  />
+                            </Flyout>
+                        </FlyoutBase.AttachedFlyout>
+                    </ToggleSwitch>
+                    <WebView x:Name="web" HorizontalAlignment="Left" Height="100" Margin="10,384,0,0" VerticalAlignment="Top" Width="100" Visibility="Collapsed"/>
                 </Grid>
-                <CommandBar VerticalAlignment="Bottom">
-                    <AppBarButton Icon="Add" Label="Novo Timer" Click="AppBarButton_Click"/>
-                </CommandBar>
-            </Grid>
-        </PivotItem>
-    </Pivot>
+            </PivotItem>
+            <PivotItem x:Name="pivotItemSensor" Header="Sensor de Luz">
+                <Grid>
+                    <Rectangle Fill="#FFF4F4F5" Height="100" Margin="0,30" VerticalAlignment="Top"  Stroke="#19000000"/>
+                    <Rectangle x:Name="retangudoAutomaticoQuarto" Fill="#FFF4F4F5" Height="100" Margin="0,132,0,0" VerticalAlignment="Top"  Stroke="#19000000"/>
+                    <Rectangle x:Name="retangudoAutomaticoSala" Fill="#FFF4F4F5" Height="100" Margin="0,234,0,0" VerticalAlignment="Top"  Stroke="#19000000"/>
+                    <TextBlock x:Name="textoSensorLuz" HorizontalAlignment="Left" Margin="30,44,0,70" TextWrapping="Wrap" Text="Sensor de Luminosidade" VerticalAlignment="Top" FontSize="20"/>
+                    <TextBlock x:Name="sensorDeLuz" HorizontalAlignment="Left" Margin="30,80,0,70" TextWrapping="Wrap" Text="Sensor de Luminosidade" VerticalAlignment="Top" FontSize="20"/>
+                    <ToggleSwitch x:Name="toggleAutomaticoSala" Header="Sala Auto." FontSize="20" HorizontalAlignment="Left" Margin="30,249,0,0" VerticalAlignment="Top"  OffContent="Desl." OnContent="Liga" Toggled="toggleAutomaticoSala_Toggled"/>
+                    <ToggleSwitch x:Name="toggleAutomaticoQuarto" Header="Quarto Auto." FontSize="20" HorizontalAlignment="Left" Margin="30,150,0,0" VerticalAlignment="Top"  OffContent="Desl." OnContent="Liga" Toggled="toggleAutomaticoQuarto_Toggled" />
+                </Grid>
+            </PivotItem>
+            <PivotItem x:Name="pivotItemTimer" Header="Timer">
+                <Grid>
+                    <FlyoutBase.AttachedFlyout>
+                        <TimePickerFlyout/>
+                    </FlyoutBase.AttachedFlyout>
+                    <Grid x:Name="timerGrid">
+                        <TextBlock Text="Escolha o horário:" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,40,0,0" Canvas.ZIndex="1" />
+                        <Rectangle Fill="#FFF4F4F5" Height="100" Margin="0,30" VerticalAlignment="Top"  Stroke="#19000000"/>
+                        <TimePicker x:Name="relogioTimerPicker" HorizontalAlignment="Left" Margin="20,80,0,0" VerticalAlignment="Top" TimeChanged="relogioTimerPicker_TimeChanged" ClockIdentifier="24HourClock"/>
+                    </Grid>
+                    <Grid>
+                        <TextBlock x:Name="alarmeSalvoTextBlock" Text="Alarme Salvo" FontSize="20" Margin="20,166" Canvas.ZIndex="1" />
+                        <Rectangle x:Name="horarioSalvoRectangle" Fill="#FFF4F4F5" Height="100" Margin="0,132" VerticalAlignment="Top"  Stroke="#19000000"/>
+                    </Grid> 
+                    <CommandBar VerticalAlignment="Bottom">
+                        <AppBarButton Icon="Add" Label="Novo Timer" Click="AppBarButton_Click"/>
+                    </CommandBar>
+                </Grid>
+            </PivotItem>
+            <PivotItem x:Name="consumoPivotItem" Header="Consumo">
+
+            </PivotItem>
+        </Pivot>
+    </Grid>
 </Page>
