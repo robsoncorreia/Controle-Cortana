@@ -6,6 +6,8 @@ using Windows.UI.Core;
 using Windows.Devices.Sensors;
 using Windows.Foundation;
 using Windows.UI.Xaml.Controls.Primitives;
+using System.Threading.Tasks;
+using System.Net.Http;
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace Controle_Cortana
@@ -16,6 +18,7 @@ namespace Controle_Cortana
         Uri desliga_quarto = new Uri("http://192.168.1.2/?pin=DESLIGA1");
         Uri liga_sala = new Uri("http://192.168.1.2/?pin=LIGA2");
         Uri desliga_sala = new Uri("http://192.168.1.2/?pin=DESLIGA2");
+        HttpClient client = new HttpClient();
         ApplicationDataContainer localSettings = null;
 
         const string settingQuarto = "quartoSetting";
@@ -24,6 +27,7 @@ namespace Controle_Cortana
         const string settingAutoSala = "AutoSalaSetting";
         const string horaTimerSetting = "horaTimer";
         const string minutoTimerSetting = "minutoTimer";
+        const string timerToggleSetting = "timerToggleSetting";
         int horaProgramada;
         int minutoProgramado;
         public MainPage()
@@ -64,36 +68,41 @@ namespace Controle_Cortana
             {
                 minutoProgramado = (int)valueMinutoProgramada;
             }
+            object valuetimerToggle = localSettings.Values[timerToggleSetting];
+            if (valuetimerToggle != null)
+            {
+                timerToggle.IsOn = (bool)valuetimerToggle;
+            }
         }
         public void ligarQuartoAuto()
-        {
-            web.Navigate(liga_quarto);
+        {         
+            client.GetStringAsync(liga_quarto);
             toggleSwitchQuarto.IsOn = true;
         }
         public void ligarSalaAuto()
         {
-            web.Navigate(liga_sala);
+            client.GetStringAsync(liga_sala);
             toggleSwitchSala.IsOn = true;
         }
         public void ligarQuarto()
         {
             localSettings.Values[settingQuarto] = true;
-            web.Navigate(liga_quarto);
+            client.GetStringAsync(liga_quarto);
         }
         public void desligarQuarto()
         {
             localSettings.Values[settingQuarto] = false;
-            web.Navigate(desliga_quarto);
+            client.GetStringAsync(desliga_quarto);
         }
         public void ligarSala()
         {
             localSettings.Values[settingSala] = true;
-            web.Navigate(liga_sala);
+            client.GetStringAsync(liga_sala);
         }
         public void desligarSala()
         {
             localSettings.Values[settingSala] = false;
-            web.Navigate(desliga_sala);
+            client.GetStringAsync(desliga_sala);
         }
 
         public void toggleSwitchQuarto_Toggled(object sender, RoutedEventArgs e)
@@ -162,22 +171,24 @@ namespace Controle_Cortana
         int j;
         async private void ReadingChanged(object sender, LightSensorReadingChangedEventArgs e)
         {
+            
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 LightSensorReading reading = e.Reading;
-                sensorDeLuz.Text = "Lux: " + string.Format("{0,5:0.00}", reading.IlluminanceInLux);
-                if (pivotItemSensor.IsHitTestVisible == true && x == true)
-                {
-                    x = false;
-                    i = 0;
-                }
+                sensorDeLuz.Text = "Lux: " + string.Format("{0,5:0.00}", reading.IlluminanceInLux);comparaTempo();
+            
                 if (toggleAutomaticoQuarto.IsOn == true && toggleAutomaticoSala.IsOn == true)
                 {
                     toggleAutomaticoQuarto.IsOn = false;
                     toggleAutomaticoSala.IsOn = false;
                     aviso();
                 }
-                if (pivotItemSensor.IsHitTestVisible == false)
+                if (rootPivot.SelectedIndex == 1 && x == true)
+                {
+                    x = false;
+                    i = 0;
+                }
+                if (rootPivot.SelectedIndex != 1)
                 {
                     x = true;
                 }
@@ -186,11 +197,11 @@ namespace Controle_Cortana
                     i++;
                     j++;
 
-                    if ((i == 1 || j == 1) && toggleAutomaticoQuarto.IsOn == true && reading.IlluminanceInLux < 1)
+                    if ((i == 1 || j == 1) && toggleAutomaticoQuarto.IsOn == true && reading.IlluminanceInLux < 2)
                     {
                         ligarQuartoAuto();
                     }
-                    else if ((i == 1 || j == 1) && toggleAutomaticoSala.IsOn == true && reading.IlluminanceInLux < 1)
+                    if ((i == 1 || j == 1) && toggleAutomaticoSala.IsOn == true && reading.IlluminanceInLux < 2)
                     {
                         ligarSalaAuto();
                     }
@@ -266,7 +277,7 @@ namespace Controle_Cortana
             localSettings.Values[horaTimerSetting] = horaProgramada;
             localSettings.Values[minutoTimerSetting] = minutoProgramado;
 
-            
+
             if (minutoProgramado < 10)
             {
                 alarmeSalvoTextBlock.Text = horaProgramada + ":0" + minutoProgramado;
@@ -293,6 +304,36 @@ namespace Controle_Cortana
             }
 
         }
+        
+
+        public void comparaTempo()
+        {
+            DateTime dataTempo = DateTime.Now;
+            int horaNow = dataTempo.Hour;
+            int minutoNow = dataTempo.Minute;
+            int segundoNow = dataTempo.Second;
+
+            if (timerToggle.IsOn == true)
+            {
+                if ((horaNow == horaProgramada) && (minutoNow == minutoProgramado)&&(segundoNow == 0))
+                {
+                    toggleSwitchQuarto.IsOn = true;
+                }
+            }
+        }
+        
+        private void timerToggle_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (timerToggle.IsOn == true)
+            {
+                localSettings.Values[timerToggleSetting] = true;
+            }
+            else
+            {
+                localSettings.Values[timerToggleSetting] = false;
+            }
+        }
     }
 }
+
 

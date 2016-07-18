@@ -29,7 +29,6 @@
                             </Flyout>
                         </FlyoutBase.AttachedFlyout>
                     </ToggleSwitch>
-                    <WebView x:Name="web" HorizontalAlignment="Left" Height="100" Margin="10,384,0,0" VerticalAlignment="Top" Width="100" Visibility="Collapsed"/>
                 </Grid>
             </PivotItem>
             <PivotItem x:Name="pivotItemSensor" Header="Sensor de Luz">
@@ -43,27 +42,28 @@
                     <ToggleSwitch x:Name="toggleAutomaticoQuarto" Header="Quarto Auto." FontSize="20" HorizontalAlignment="Left" Margin="30,150,0,0" VerticalAlignment="Top"  OffContent="Desl." OnContent="Liga" Toggled="toggleAutomaticoQuarto_Toggled" />
                 </Grid>
             </PivotItem>
-            <PivotItem x:Name="pivotItemTimer" Header="Timer">
+            <PivotItem x:Name="pivotItemTimer" Header="Timer" FontSize="20">
                 <Grid>
                     <FlyoutBase.AttachedFlyout>
                         <TimePickerFlyout/>
                     </FlyoutBase.AttachedFlyout>
                     <Grid x:Name="timerGrid">
-                        <TextBlock Text="Escolha o horário:" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,40,0,0" Canvas.ZIndex="1" />
-                        <Rectangle Fill="#FFF4F4F5" Height="100" Margin="0,30" VerticalAlignment="Top"  Stroke="#19000000"/>
+                        <TextBlock Text="Escolha o horário:" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,42,0,0" Canvas.ZIndex="1" />
+                        <Rectangle Fill="#FFF4F4F5" Height="100" Margin="0,30" VerticalAlignment="Top"  Stroke="#19000000" Grid.Row="1" Grid.Column="1"/>
                         <TimePicker x:Name="relogioTimerPicker" HorizontalAlignment="Left" Margin="20,80,0,0" VerticalAlignment="Top" TimeChanged="relogioTimerPicker_TimeChanged" ClockIdentifier="24HourClock"/>
                     </Grid>
-                    <Grid>
-                        <TextBlock x:Name="alarmeSalvoTextBlock" Text="Alarme Salvo" FontSize="20" Margin="20,166" Canvas.ZIndex="1" />
+                    <Grid Margin="0">
                         <Rectangle x:Name="horarioSalvoRectangle" Fill="#FFF4F4F5" Height="100" Margin="0,132" VerticalAlignment="Top"  Stroke="#19000000"/>
+                        <TextBlock Text="Timer" FontSize="20" Margin="20,150,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <TextBlock x:Name="alarmeSalvoTextBlock" Text="Alarme Salvo" FontSize="20" Margin="20,188,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ToggleSwitch x:Name="timerToggle" Margin="160,182,0,0" VerticalAlignment="Top" OffContent="" OnContent="" Toggled="timerToggle_Toggled" />
                     </Grid> 
                     <CommandBar VerticalAlignment="Bottom">
-                        <AppBarButton Icon="Add" Label="Novo Timer" Click="AppBarButton_Click"/>
+                        <AppBarButton Icon="Edit" Label="Novo Timer" Click="AppBarButton_Click"/>
                     </CommandBar>
                 </Grid>
             </PivotItem>
             <PivotItem x:Name="consumoPivotItem" Header="Consumo">
-
             </PivotItem>
         </Pivot>
     </Grid>
