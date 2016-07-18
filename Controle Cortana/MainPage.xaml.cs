@@ -1,13 +1,14 @@
 ﻿using System;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.Storage;
-using Windows.UI.Core;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using Windows.Devices.Sensors;
 using Windows.Foundation;
+using Windows.Storage;
+using Windows.UI.Core;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using System.Threading.Tasks;
-using System.Net.Http;
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace Controle_Cortana
@@ -18,9 +19,9 @@ namespace Controle_Cortana
         Uri desliga_quarto = new Uri("http://192.168.1.2/?pin=DESLIGA1");
         Uri liga_sala = new Uri("http://192.168.1.2/?pin=LIGA2");
         Uri desliga_sala = new Uri("http://192.168.1.2/?pin=DESLIGA2");
-        HttpClient client = new HttpClient();
         ApplicationDataContainer localSettings = null;
-
+        HttpClient client = new HttpClient();
+        private LightSensor _lightsensor;
         const string settingQuarto = "quartoSetting";
         const string settingSala = "salaSetting";
         const string settingAutoQuarto = "AutoQuartoSetting";
@@ -30,11 +31,20 @@ namespace Controle_Cortana
         const string timerToggleSetting = "timerToggleSetting";
         int horaProgramada;
         int minutoProgramado;
+        int i;
+        bool x;
+        int j;
+
         public MainPage()
         {
             this.InitializeComponent();
             localSettings = ApplicationData.Current.LocalSettings;
             mostrarTimer();
+        }
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            Sensor();
+            Setting();
         }
         void Setting()
         {
@@ -74,40 +84,39 @@ namespace Controle_Cortana
                 timerToggle.IsOn = (bool)valuetimerToggle;
             }
         }
-        public void ligarQuartoAuto()
-        {         
-            client.GetStringAsync(liga_quarto);
+        public async void  ligarQuarto()
+        {          
+            await client.GetStringAsync(liga_quarto);
+            localSettings.Values[settingQuarto] = true;
+        }
+        public async void desligarQuarto()
+        {
+            await client.GetStringAsync(desliga_quarto);
+            localSettings.Values[settingQuarto] = false;
+        } 
+        public async void ligarSala()
+        {
+            await Task.Delay(300);
+            await client.GetStringAsync(liga_sala);
+            localSettings.Values[settingSala] = true;
+        }
+        public async void desligarSala()
+        {
+            await client.GetStringAsync(desliga_sala);
+            localSettings.Values[settingSala] = false;
+        }
+        public async void ligarQuartoAuto()
+        {
+            await client.GetStringAsync(liga_quarto);
             toggleSwitchQuarto.IsOn = true;
         }
-        public void ligarSalaAuto()
+        public async void ligarSalaAuto()
         {
-            client.GetStringAsync(liga_sala);
+            await client.GetStringAsync(liga_sala);
             toggleSwitchSala.IsOn = true;
         }
-        public void ligarQuarto()
-        {
-            localSettings.Values[settingQuarto] = true;
-            client.GetStringAsync(liga_quarto);
-        }
-        public void desligarQuarto()
-        {
-            localSettings.Values[settingQuarto] = false;
-            client.GetStringAsync(desliga_quarto);
-        }
-        public void ligarSala()
-        {
-            localSettings.Values[settingSala] = true;
-            client.GetStringAsync(liga_sala);
-        }
-        public void desligarSala()
-        {
-            localSettings.Values[settingSala] = false;
-            client.GetStringAsync(desliga_sala);
-        }
-
         public void toggleSwitchQuarto_Toggled(object sender, RoutedEventArgs e)
         {
-
             if (toggleSwitchQuarto != null)
             {
 
@@ -165,24 +174,14 @@ namespace Controle_Cortana
                 }
             }
         }
-        private LightSensor _lightsensor;
-        int i;
-        bool x;
-        int j;
         async private void ReadingChanged(object sender, LightSensorReadingChangedEventArgs e)
         {
-            
+
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 LightSensorReading reading = e.Reading;
-                sensorDeLuz.Text = "Lux: " + string.Format("{0,5:0.00}", reading.IlluminanceInLux);comparaTempo();
-            
-                if (toggleAutomaticoQuarto.IsOn == true && toggleAutomaticoSala.IsOn == true)
-                {
-                    toggleAutomaticoQuarto.IsOn = false;
-                    toggleAutomaticoSala.IsOn = false;
-                    aviso();
-                }
+                sensorDeLuz.Text = "Lux: " + string.Format("{0,5:0.00}", reading.IlluminanceInLux);
+                comparaTempo(horaProgramada,minutoProgramado, 0);
                 if (rootPivot.SelectedIndex == 1 && x == true)
                 {
                     x = false;
@@ -208,17 +207,17 @@ namespace Controle_Cortana
                 }
             });
         }
-        public async void aviso()
-        {
-            ContentDialog noWifiDialog = new ContentDialog()
-            {
-                Title = "Não é permitido.",
-                Content = "Por motivos lógicos não é permitido ligar os dois botões ao mesmo tempo.",
-                PrimaryButtonText = ":)"
-            };
+        //public async void aviso()
+        //{
+        //    ContentDialog noWifiDialog = new ContentDialog()
+        //    {
+        //        Title = "Não é permitido.",
+        //        Content = "Por motivos lógicos não é permitido ligar os dois botões ao mesmo tempo.",
+        //        PrimaryButtonText = ":)"
+        //    };
 
-            ContentDialogResult result = await noWifiDialog.ShowAsync();
-        }
+        //    ContentDialogResult result = await noWifiDialog.ShowAsync();
+        //}
         void Sensor()
         {
             InitializeComponent();
@@ -245,17 +244,10 @@ namespace Controle_Cortana
                 sensorDeLuz.Text = "Dispositivo não possui sensor.";
             }
         }
-
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            Sensor();
-            Setting();
-        }
         private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
 
         }
-
         private void AppBarButton_Click_1(object sender, RoutedEventArgs e)
         {
             if (rootPivot.SelectedIndex > 0)
@@ -304,9 +296,7 @@ namespace Controle_Cortana
             }
 
         }
-        
-
-        public void comparaTempo()
+        public void comparaTempo(int hora, int minuto,int segundo)
         {
             DateTime dataTempo = DateTime.Now;
             int horaNow = dataTempo.Hour;
@@ -315,13 +305,19 @@ namespace Controle_Cortana
 
             if (timerToggle.IsOn == true)
             {
-                if ((horaNow == horaProgramada) && (minutoNow == minutoProgramado)&&(segundoNow == 0))
+                if ((horaNow == hora) && (minutoNow == minuto) && (segundoNow == segundo))
                 {
-                    toggleSwitchQuarto.IsOn = true;
+                    if (quartoCheckBox.IsChecked == true)
+                    {
+                        toggleSwitchQuarto.IsOn = true;
+                    }
+                    if (salaCheckBox.IsChecked == true)
+                    {
+                        toggleSwitchSala.IsOn = true;
+                    }
                 }
             }
         }
-        
         private void timerToggle_Toggled(object sender, RoutedEventArgs e)
         {
             if (timerToggle.IsOn == true)
@@ -332,6 +328,14 @@ namespace Controle_Cortana
             {
                 localSettings.Values[timerToggleSetting] = false;
             }
+        }
+        private void quartoCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void salaCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

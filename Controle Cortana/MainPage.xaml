@@ -8,9 +8,8 @@
     mc:Ignorable="d" Loaded="Page_Loaded">
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Pivot x:Name="rootPivot" Background="#FFE6E6E6">
-            <Pivot.LeftHeader>
-                <AppBarButton Icon="Back" Click="AppBarButton_Click_1" Width="60" />
-            </Pivot.LeftHeader>
+            <!--<Pivot.LeftHeader>
+            </Pivot.LeftHeader>-->
             <PivotItem x:Name="pivotItemIluminação" Header="Iluminação">
                 <Grid>
                     <Rectangle x:Name="retanguloQuarto" Height="100" Margin="0,30,0,0" VerticalAlignment="Top" Fill="#FFF4F4F5" Stroke="#19000000"/>
@@ -54,10 +53,15 @@
                     </Grid>
                     <Grid Margin="0">
                         <Rectangle x:Name="horarioSalvoRectangle" Fill="#FFF4F4F5" Height="100" Margin="0,132" VerticalAlignment="Top"  Stroke="#19000000"/>
-                        <TextBlock Text="Timer" FontSize="20" Margin="20,150,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <TextBlock x:Name="alarmeSalvoTextBlock" Text="Alarme Salvo" FontSize="20" Margin="20,188,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <ToggleSwitch x:Name="timerToggle" Margin="160,182,0,0" VerticalAlignment="Top" OffContent="" OnContent="" Toggled="timerToggle_Toggled" />
-                    </Grid> 
+                        <ToggleSwitch x:Name="timerToggle" Margin="20,147,0,0" VerticalAlignment="Top" OffContent="" OnContent="" Toggled="timerToggle_Toggled" FontSize="20" Header="Timer" />
+                    </Grid>
+                    <Grid>
+                        <Rectangle x:Name="autoComodosRectangle" Fill="#FFF4F4F5" Height="100" Margin="0,234,0,0" VerticalAlignment="Top"  Stroke="#19000000"/>
+                        <TextBlock Text="Qual será ligado automaticamente:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,250,0,0"/>
+                        <CheckBox x:Name="quartoCheckBox" VerticalAlignment="Top" Margin="20,286,0,0" Canvas.ZIndex="1" Content="Quarto" FontSize="20" Checked="quartoCheckBox_Checked"/>
+                        <CheckBox x:Name="salaCheckBox" Margin="189,286,0,0" VerticalAlignment="Top" Content="Sala" FontSize="20" Checked="salaCheckBox_Checked"/>
+                        <TextBlock x:Name="alarmeSalvoTextBlock" Text="Alarme Salvo" FontSize="20" Margin="100,148,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                    </Grid>
                     <CommandBar VerticalAlignment="Bottom">
                         <AppBarButton Icon="Edit" Label="Novo Timer" Click="AppBarButton_Click"/>
                     </CommandBar>
@@ -66,5 +70,6 @@
             <PivotItem x:Name="consumoPivotItem" Header="Consumo">
             </PivotItem>
         </Pivot>
+        <AppBarButton Icon="Back" Click="AppBarButton_Click_1" Width="48" VerticalAlignment="Bottom" FontSize="20" Height="48" />
     </Grid>
 </Page>
