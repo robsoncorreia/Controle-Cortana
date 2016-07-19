@@ -84,8 +84,8 @@ namespace Controle_Cortana
                 timerToggle.IsOn = (bool)valuetimerToggle;
             }
         }
-        public async void  ligarQuarto()
-        {          
+        public async void ligarQuarto()
+        {
             await client.GetStringAsync(liga_quarto);
             localSettings.Values[settingQuarto] = true;
         }
@@ -93,7 +93,7 @@ namespace Controle_Cortana
         {
             await client.GetStringAsync(desliga_quarto);
             localSettings.Values[settingQuarto] = false;
-        } 
+        }
         public async void ligarSala()
         {
             await Task.Delay(300);
@@ -181,7 +181,7 @@ namespace Controle_Cortana
             {
                 LightSensorReading reading = e.Reading;
                 sensorDeLuz.Text = "Lux: " + string.Format("{0,5:0.00}", reading.IlluminanceInLux);
-                comparaTempo(horaProgramada,minutoProgramado, 0);
+                comparaTempo(horaProgramada, minutoProgramado, 0, 250);
                 if (rootPivot.SelectedIndex == 1 && x == true)
                 {
                     x = false;
@@ -246,7 +246,7 @@ namespace Controle_Cortana
         }
         private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
-
+            FlyoutBase.ShowAttachedFlyout(autoComodosRectangle);
         }
         private void AppBarButton_Click_1(object sender, RoutedEventArgs e)
         {
@@ -296,7 +296,7 @@ namespace Controle_Cortana
             }
 
         }
-        public void comparaTempo(int hora, int minuto,int segundo)
+        public async void comparaTempo(int hora, int minuto, int segundo, int delay)
         {
             DateTime dataTempo = DateTime.Now;
             int horaNow = dataTempo.Hour;
@@ -311,6 +311,7 @@ namespace Controle_Cortana
                     {
                         toggleSwitchQuarto.IsOn = true;
                     }
+                    await Task.Delay(delay);
                     if (salaCheckBox.IsChecked == true)
                     {
                         toggleSwitchSala.IsOn = true;
@@ -320,14 +321,7 @@ namespace Controle_Cortana
         }
         private void timerToggle_Toggled(object sender, RoutedEventArgs e)
         {
-            if (timerToggle.IsOn == true)
-            {
-                localSettings.Values[timerToggleSetting] = true;
-            }
-            else
-            {
-                localSettings.Values[timerToggleSetting] = false;
-            }
+            localSettings.Values[timerToggleSetting] = timerToggle.IsOn;
         }
         private void quartoCheckBox_Checked(object sender, RoutedEventArgs e)
         {
