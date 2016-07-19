@@ -55,8 +55,8 @@
                         <TextBlock Text="Escolha o horário:" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,148,0,0" Canvas.ZIndex="1" />
                         <TimePicker x:Name="relogioTimerPicker" HorizontalAlignment="Left" Margin="20,182,0,0" VerticalAlignment="Top" TimeChanged="relogioTimerPicker_TimeChanged" ClockIdentifier="24HourClock"/>
                         <Rectangle Fill="#FFF4F4F5" Height="124" Margin="0,234,0,0" VerticalAlignment="Top"  Stroke="#19000000"/>
-                        <CheckBox x:Name="quartoCheckBox" VerticalAlignment="Top" Margin="20,276,0,0" Canvas.ZIndex="1" Content="Quarto" FontSize="16" Checked="quartoCheckBox_Checked" HorizontalAlignment="Left"/>
-                        <CheckBox x:Name="salaCheckBox" Margin="20,310,110,10" VerticalAlignment="Top" Content="Sala" FontSize="16" Checked="salaCheckBox_Checked" HorizontalAlignment="Left"/>
+                        <CheckBox x:Name="quartoCheckBox" VerticalAlignment="Top" Margin="20,276,0,0" Canvas.ZIndex="1" Content="Quarto" FontSize="16" HorizontalAlignment="Left" Click="quartoCheckBox_Click"/>
+                        <CheckBox x:Name="salaCheckBox" Margin="20,310,110,10" VerticalAlignment="Top" Content="Sala" FontSize="16" HorizontalAlignment="Left" Click="salaCheckBox_Click"/>
                         <TextBlock Text="Quais luzes seram automatizados:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,246,0,0"/>
                     </Grid>
                 </Grid>

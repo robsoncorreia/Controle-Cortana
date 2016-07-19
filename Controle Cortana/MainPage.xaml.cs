@@ -29,6 +29,9 @@ namespace Controle_Cortana
         const string horaTimerSetting = "horaTimer";
         const string minutoTimerSetting = "minutoTimer";
         const string timerToggleSetting = "timerToggleSetting";
+        const string quartoCheckBoxSetting = "quartoCheckBoxSetting";
+        const string salaCheckBoxSetting = "salaCheckBoxSetting";
+
         int horaProgramada;
         int minutoProgramado;
         int i;
@@ -83,37 +86,47 @@ namespace Controle_Cortana
             {
                 timerToggle.IsOn = (bool)valuetimerToggle;
             }
+            object valueQuartoCheckBox = localSettings.Values[quartoCheckBoxSetting];
+            if (valueQuartoCheckBox != null)
+            {
+                quartoCheckBox.IsChecked = (bool)valueQuartoCheckBox;
+            }
+            object valueSalaCheckBox = localSettings.Values[salaCheckBoxSetting];
+            if (valueSalaCheckBox != null)
+            {
+                salaCheckBox.IsChecked = (bool)valueSalaCheckBox;
+            }
         }
         public async void ligarQuarto()
         {
-            await client.GetStringAsync(liga_quarto);
             localSettings.Values[settingQuarto] = true;
+            await client.GetStringAsync(liga_quarto);
         }
         public async void desligarQuarto()
         {
-            await client.GetStringAsync(desliga_quarto);
             localSettings.Values[settingQuarto] = false;
+            await client.GetStringAsync(desliga_quarto);
         }
         public async void ligarSala()
         {
-            await Task.Delay(300);
-            await client.GetStringAsync(liga_sala);
             localSettings.Values[settingSala] = true;
+            await client.GetStringAsync(liga_sala);
+
         }
         public async void desligarSala()
         {
-            await client.GetStringAsync(desliga_sala);
             localSettings.Values[settingSala] = false;
+            await client.GetStringAsync(desliga_sala);
         }
         public async void ligarQuartoAuto()
         {
-            await client.GetStringAsync(liga_quarto);
             toggleSwitchQuarto.IsOn = true;
+            await client.GetStringAsync(liga_quarto);
         }
         public async void ligarSalaAuto()
         {
-            await client.GetStringAsync(liga_sala);
             toggleSwitchSala.IsOn = true;
+            await client.GetStringAsync(liga_sala);
         }
         public void toggleSwitchQuarto_Toggled(object sender, RoutedEventArgs e)
         {
@@ -244,10 +257,6 @@ namespace Controle_Cortana
                 sensorDeLuz.Text = "Dispositivo não possui sensor.";
             }
         }
-        private void AppBarButton_Click(object sender, RoutedEventArgs e)
-        {
-            FlyoutBase.ShowAttachedFlyout(autoComodosRectangle);
-        }
         private void AppBarButton_Click_1(object sender, RoutedEventArgs e)
         {
             if (rootPivot.SelectedIndex > 0)
@@ -323,13 +332,13 @@ namespace Controle_Cortana
         {
             localSettings.Values[timerToggleSetting] = timerToggle.IsOn;
         }
-        private void quartoCheckBox_Checked(object sender, RoutedEventArgs e)
+        private void quartoCheckBox_Click(object sender, RoutedEventArgs e)
         {
-
+            localSettings.Values[quartoCheckBoxSetting] = quartoCheckBox.IsChecked;
         }
-        private void salaCheckBox_Checked(object sender, RoutedEventArgs e)
+        private void salaCheckBox_Click(object sender, RoutedEventArgs e)
         {
-
+            localSettings.Values[salaCheckBoxSetting] = salaCheckBox.IsChecked;
         }
     }
 }
