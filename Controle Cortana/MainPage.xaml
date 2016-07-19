@@ -17,14 +17,14 @@
                     <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" HorizontalAlignment="Left" Margin="30,50,0,0" VerticalAlignment="Top" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" FontSize="16">
                         <FlyoutBase.AttachedFlyout>
                             <Flyout>
-                                <TextBlock TextWrapping="Wrap" Text="Luz do quarto ligada."  />
+                                <TextBlock TextWrapping="Wrap" Text="Não foi possivel conectar com servidor."  />
                             </Flyout>
                         </FlyoutBase.AttachedFlyout>
                     </ToggleSwitch>
                     <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" HorizontalAlignment="Left" Margin="30,152,0,0" VerticalAlignment="Top" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchSala_Toggled" FontSize="16" Canvas.ZIndex="1">
                         <FlyoutBase.AttachedFlyout>
                             <Flyout>
-                                <TextBlock TextWrapping="Wrap" Text="Luz do sala ligada."  />
+                                <TextBlock TextWrapping="Wrap" Text="Não foi possivel conectar com servidor."  />
                             </Flyout>
                         </FlyoutBase.AttachedFlyout>
                     </ToggleSwitch>
@@ -48,9 +48,15 @@
                     </FlyoutBase.AttachedFlyout>
                     <Grid x:Name="timerGrid">
                         <Rectangle Fill="#FFF4F4F5" Height="100" Margin="0,30" VerticalAlignment="Top"  Stroke="#19000000" Grid.Row="1" Grid.Column="1"/>
-                        <ToggleSwitch x:Name="timerToggle" Margin="20,49,0,0" VerticalAlignment="Top" OffContent="" OnContent="" Toggled="timerToggle_Toggled" FontSize="16" >
-                            <TextBlock x:Name="alarmeSalvoTextBlock" Text="Alarme Salvo" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        </ToggleSwitch>
+                        <ToggleSwitch x:Name="timerToggle" Margin="20,81,0,0" VerticalAlignment="Top" OffContent="Desligado" OnContent="Ligado" Toggled="timerToggle_Toggled" FontSize="16"/>
+                        <TextBlock x:Name="cabeçarioAlarmeTextBlock" Text="Timer" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,50,0,0" Foreground="Black" Tapped="cabeçarioAlarmeTextBlock_Tapped">
+                        <FlyoutBase.AttachedFlyout>
+                            <Flyout>
+                                <TextBox x:Name="cabeçarioAlarmeTextBox" Text="Nome do alarme." TextChanged="TextBox_TextChanged"/>
+                            </Flyout>
+                        </FlyoutBase.AttachedFlyout>
+                        </TextBlock>
+                        <TextBlock x:Name="alarmeSalvoTextBlock" Text="Alarme Salvo" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="179,90,0,0" />
                         <Rectangle x:Name="autoComodosRectangle" Fill="#FFF4F4F5" Height="100" Margin="0,132,0,0" VerticalAlignment="Top"  Stroke="#19000000"/>
                         <TextBlock Text="Escolha o horário:" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,148,0,0" Canvas.ZIndex="1" />
                         <TimePicker x:Name="relogioTimerPicker" HorizontalAlignment="Left" Margin="20,182,0,0" VerticalAlignment="Top" TimeChanged="relogioTimerPicker_TimeChanged" ClockIdentifier="24HourClock"/>
@@ -64,6 +70,7 @@
             <PivotItem x:Name="consumoPivotItem" Header="Consumo">
             </PivotItem>
         </Pivot>
-        <AppBarButton Icon="Back" Click="AppBarButton_Click_1" Width="48" VerticalAlignment="Bottom" FontSize="16" Height="48" />
+        <AppBarButton Icon="Back" Click="voltaAppBarButton" Width="48" VerticalAlignment="Bottom" FontSize="16" Height="48" />
+        <AppBarButton Icon="Forward" Click="frenteAppBarButton" Width="48" VerticalAlignment="Bottom" FontSize="16" Height="48" Margin="54,0,0,0" />
     </Grid>
 </Page>

@@ -1,9 +1,9 @@
 ﻿using System;
+using Windows.Foundation;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Devices.Sensors;
-using Windows.Foundation;
 using Windows.Storage;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -31,6 +31,7 @@ namespace Controle_Cortana
         const string timerToggleSetting = "timerToggleSetting";
         const string quartoCheckBoxSetting = "quartoCheckBoxSetting";
         const string salaCheckBoxSetting = "salaCheckBoxSetting";
+        const string cabeçarioAlarmeTextBlockSetting = "cabeçarioAlarmeTextBlock";
 
         int horaProgramada;
         int minutoProgramado;
@@ -97,30 +98,59 @@ namespace Controle_Cortana
             {
                 salaCheckBox.IsChecked = (bool)valueSalaCheckBox;
             }
+            object valueCabeçarioTextBlock = localSettings.Values[cabeçarioAlarmeTextBlockSetting];
+            if (valueCabeçarioTextBlock != null)
+            {
+                cabeçarioAlarmeTextBlock.Text = (string)valueCabeçarioTextBlock;
+            }
         }
-        public async void ligarQuarto(int delay)
+        public async void ligarQuarto()
         {
-            await Task.Delay(delay);
-            await client.GetStringAsync(liga_quarto);
-            localSettings.Values[settingQuarto] = true;          
+            localSettings.Values[settingQuarto] = true;
+            try
+            {
+              var result = await client.GetStringAsync(liga_quarto);
+            }
+            catch
+            {
+                FlyoutBase.ShowAttachedFlyout(toggleSwitchQuarto);
+            }                   
         }
-        public async void desligarQuarto(int delay)
+        public async void desligarQuarto()
         {
-            await Task.Delay(delay);
-            await client.GetStringAsync(desliga_quarto);
-            localSettings.Values[settingQuarto] = false;         
+            localSettings.Values[settingQuarto] = false;
+            try
+            {
+                var result = await client.GetStringAsync(desliga_quarto);
+            }
+            catch
+            {
+                FlyoutBase.ShowAttachedFlyout(toggleSwitchQuarto);
+            }
         }
-        public async void ligarSala(int delay)
-        {
-            await Task.Delay(delay);
-            await client.GetStringAsync(liga_sala);
+        public async void ligarSala()
+        { 
             localSettings.Values[settingSala] = true;
+            try
+            {
+                var result = await client.GetStringAsync(liga_sala);
+            }
+            catch
+            {
+                FlyoutBase.ShowAttachedFlyout(toggleSwitchSala);
+            }
         }
-        public async void desligarSala(int delay)
-        {
-            await Task.Delay(delay);
-            await client.GetStringAsync(desliga_sala);
-            localSettings.Values[settingSala] = false;            
+        public async void desligarSala()
+        { 
+            localSettings.Values[settingSala] = false;  
+            try
+            {
+                var result = await client.GetStringAsync(desliga_sala);
+            }
+            catch
+            {
+                FlyoutBase.ShowAttachedFlyout(toggleSwitchSala);
+            }
         }
         public void toggleSwitchQuarto_Toggled(object sender, RoutedEventArgs e)
         {
@@ -129,12 +159,11 @@ namespace Controle_Cortana
 
                 if (toggleSwitchQuarto.IsOn == false)
                 {
-                    desligarQuarto(0);
+                    desligarQuarto();
                 }
                 else
                 {
-                    ligarQuarto(0);
-                    FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
+                    ligarQuarto();
                 }
             }
         }
@@ -144,12 +173,12 @@ namespace Controle_Cortana
             {
                 if (toggleSwitchSala.IsOn == false)
                 {
-                    desligarSala(0);
+                    desligarSala();
                 }
                 else
                 {
-                    ligarSala(0);
-                    FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
+                    ligarSala();
+                    //FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
                 }
             }
         }
@@ -205,16 +234,16 @@ namespace Controle_Cortana
 
                     if ((i == 1 || j == 1) && toggleAutomaticoQuarto.IsOn == true && toggleAutomaticoSala.IsOn == false && reading.IlluminanceInLux < 2)
                     {
-                        ligarQuarto(0);
+                        ligarQuarto();
                     }
                     else if ((i == 1 || j == 1) && toggleAutomaticoSala.IsOn == true && toggleAutomaticoQuarto.IsOn == false && reading.IlluminanceInLux < 2)
                     {
-                        ligarSala(0);
+                        ligarSala();
                     }
                     else if ((i == 1 || j == 1) && toggleAutomaticoSala.IsOn == true && toggleAutomaticoQuarto.IsOn == true && reading.IlluminanceInLux < 2)
                     {
-                        ligarQuarto(0);
-                        ligarSala(1000);
+                        ligarQuarto();
+                        ligarSala();
                     }
                 }
             });
@@ -254,19 +283,6 @@ namespace Controle_Cortana
                 retangudoAutomaticoSala.Visibility = Visibility.Collapsed;
                 textoSensorLuz.Text = ":(";
                 sensorDeLuz.Text = "Dispositivo não possui sensor.";
-            }
-        }
-        private void AppBarButton_Click_1(object sender, RoutedEventArgs e)
-        {
-            if (rootPivot.SelectedIndex > 0)
-            {
-                // If not at the first item, go back to the previous one.
-                rootPivot.SelectedIndex -= 1;
-            }
-            else
-            {
-                // The first PivotItem is selected, so loop around to the last item.
-                rootPivot.SelectedIndex = rootPivot.Items.Count - 1;
             }
         }
         private void relogioTimerPicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
@@ -338,6 +354,41 @@ namespace Controle_Cortana
         private void salaCheckBox_Click(object sender, RoutedEventArgs e)
         {
             localSettings.Values[salaCheckBoxSetting] = salaCheckBox.IsChecked;
+        }
+        private void cabeçarioAlarmeTextBlock_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            FlyoutBase.ShowAttachedFlyout(cabeçarioAlarmeTextBlock);
+        }
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            cabeçarioAlarmeTextBlock.Text = cabeçarioAlarmeTextBox.Text;
+            localSettings.Values[cabeçarioAlarmeTextBlockSetting] = cabeçarioAlarmeTextBox.Text;
+        }
+        private void frenteAppBarButton(object sender, RoutedEventArgs e)
+        {
+            if (rootPivot.SelectedIndex < rootPivot.Items.Count -1)
+            {
+                // If not at the first item, go back to the previous one.
+                rootPivot.SelectedIndex += 1;
+            }
+            else
+            {
+                // The first PivotItem is selected, so loop around to the last item.
+                rootPivot.SelectedIndex = 0;
+            }
+        }
+        private void voltaAppBarButton(object sender, RoutedEventArgs e)
+        {
+            if (rootPivot.SelectedIndex > 0)
+            {
+                // If not at the first item, go back to the previous one.
+                rootPivot.SelectedIndex -= 1;
+            }
+            else
+            {
+                // The first PivotItem is selected, so loop around to the last item.
+                rootPivot.SelectedIndex = rootPivot.Items.Count - 1;
+            }
         }
     }
 }

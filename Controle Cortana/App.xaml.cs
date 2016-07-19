@@ -120,19 +120,19 @@ namespace Controle_Cortana
                 switch (voiceCommandName)
                 {                   
                     case "ligarQuarto":
-                        mainpage.ligarQuarto(1000);
+                        mainpage.ligarQuarto();
                         rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         break;
                     case "desligarQuarto":
-                        mainpage.desligarQuarto(1000);
+                        mainpage.desligarQuarto();
                         rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         break;
                     case "ligarSala":
-                        mainpage.ligarSala(1000);
+                        mainpage.ligarSala();
                         rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         break;
                     case "desligarSala":
-                        mainpage.desligarSala(1000);
+                        mainpage.desligarSala();
                         rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         break;
                 }
