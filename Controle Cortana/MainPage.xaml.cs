@@ -47,10 +47,11 @@ namespace Controle_Cortana
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             Sensor();
-            Setting();
+            Setting(500);
         }
-        void Setting()
+        public async void Setting(int delay)
         {
+            await Task.Delay(delay);
             object valueQuarto = localSettings.Values[settingQuarto];
             if (valueQuarto != null)
             {
@@ -97,26 +98,29 @@ namespace Controle_Cortana
                 salaCheckBox.IsChecked = (bool)valueSalaCheckBox;
             }
         }
-        public async void ligarQuarto()
+        public async void ligarQuarto(int delay)
         {
-            localSettings.Values[settingQuarto] = true;
+            await Task.Delay(delay);
             await client.GetStringAsync(liga_quarto);
+            localSettings.Values[settingQuarto] = true;          
         }
-        public async void desligarQuarto()
+        public async void desligarQuarto(int delay)
         {
-            localSettings.Values[settingQuarto] = false;
+            await Task.Delay(delay);
             await client.GetStringAsync(desliga_quarto);
+            localSettings.Values[settingQuarto] = false;         
         }
-        public async void ligarSala()
+        public async void ligarSala(int delay)
         {
-            localSettings.Values[settingSala] = true;
+            await Task.Delay(delay);
             await client.GetStringAsync(liga_sala);
-
+            localSettings.Values[settingSala] = true;
         }
-        public async void desligarSala()
+        public async void desligarSala(int delay)
         {
-            localSettings.Values[settingSala] = false;
+            await Task.Delay(delay);
             await client.GetStringAsync(desliga_sala);
+            localSettings.Values[settingSala] = false;            
         }
         public void toggleSwitchQuarto_Toggled(object sender, RoutedEventArgs e)
         {
@@ -125,11 +129,11 @@ namespace Controle_Cortana
 
                 if (toggleSwitchQuarto.IsOn == false)
                 {
-                    desligarQuarto();
+                    desligarQuarto(0);
                 }
                 else
                 {
-                    ligarQuarto();
+                    ligarQuarto(0);
                     FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
                 }
             }
@@ -140,11 +144,11 @@ namespace Controle_Cortana
             {
                 if (toggleSwitchSala.IsOn == false)
                 {
-                    desligarSala();
+                    desligarSala(0);
                 }
                 else
                 {
-                    ligarSala();
+                    ligarSala(0);
                     FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
                 }
             }
@@ -201,15 +205,16 @@ namespace Controle_Cortana
 
                     if ((i == 1 || j == 1) && toggleAutomaticoQuarto.IsOn == true && toggleAutomaticoSala.IsOn == false && reading.IlluminanceInLux < 2)
                     {
-                        ligarQuarto();
+                        ligarQuarto(0);
                     }
                     else if ((i == 1 || j == 1) && toggleAutomaticoSala.IsOn == true && toggleAutomaticoQuarto.IsOn == false && reading.IlluminanceInLux < 2)
                     {
-                        ligarSala();
+                        ligarSala(0);
                     }
                     else if ((i == 1 || j == 1) && toggleAutomaticoSala.IsOn == true && toggleAutomaticoQuarto.IsOn == true && reading.IlluminanceInLux < 2)
                     {
-                        ligarAmbos(250);
+                        ligarQuarto(0);
+                        ligarSala(1000);
                     }
                 }
             });
@@ -333,12 +338,6 @@ namespace Controle_Cortana
         private void salaCheckBox_Click(object sender, RoutedEventArgs e)
         {
             localSettings.Values[salaCheckBoxSetting] = salaCheckBox.IsChecked;
-        }
-        public async void ligarAmbos(int delay)
-        {
-            ligarQuarto();
-            await Task.Delay(delay);
-            ligarSala();
         }
     }
 }

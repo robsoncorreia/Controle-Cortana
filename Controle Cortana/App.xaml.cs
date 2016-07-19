@@ -118,21 +118,21 @@ namespace Controle_Cortana
                 MainPage mainpage = new MainPage();
       
                 switch (voiceCommandName)
-                {
-                    case "ligarSala":
-                        mainpage.ligarSala();
-                        rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
-                        break;
-                    case "desligarSala":
-                        mainpage.desligarSala();
-                        rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
-                        break;
+                {                   
                     case "ligarQuarto":
-                        mainpage.ligarQuarto();
+                        mainpage.ligarQuarto(1000);
                         rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         break;
                     case "desligarQuarto":
-                        mainpage.desligarQuarto();
+                        mainpage.desligarQuarto(1000);
+                        rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
+                        break;
+                    case "ligarSala":
+                        mainpage.ligarSala(1000);
+                        rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
+                        break;
+                    case "desligarSala":
+                        mainpage.desligarSala(1000);
                         rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         break;
                 }
