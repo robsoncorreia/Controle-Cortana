@@ -33,13 +33,10 @@ namespace Controle_Cortana
         const string quartoCheckBoxSetting = "quartoCheckBoxSetting";
         const string salaCheckBoxSetting = "salaCheckBoxSetting";
         const string cabeçarioAlarmeTextBlockSetting = "cabeçarioAlarmeTextBlock";
-
+        bool travaInicial = false;
         int horaProgramada;
         int minutoProgramado;
-        int i;
-        bool x;
-        int j;
-
+        int x;
         public MainPage()
         {
             this.InitializeComponent();
@@ -104,53 +101,68 @@ namespace Controle_Cortana
             {
                 cabeçarioAlarmeTextBlock.Text = (string)valueCabeçarioTextBlock;
             }
+            await Task.Delay(delay);
+            travaInicial = true;
         }
-        public async void ligarQuarto()
+        public async void ligarQuarto(bool enviarSinalServidor)
         {
             localSettings.Values[settingQuarto] = true;
-            try
+            if (enviarSinalServidor)
             {
-              var result = await client.GetStringAsync(liga_quarto);
+                try
+                {
+                    var result = await client.GetStringAsync(liga_quarto);
+                }
+                catch
+                {
+                    FlyoutBase.ShowAttachedFlyout(rootPivot);
+                }
             }
-            catch
-            {
-                FlyoutBase.ShowAttachedFlyout(toggleSwitchQuarto);
-            }                   
+
         }
-        public async void desligarQuarto()
+        public async void desligarQuarto(bool enviarSinalServidor)
         {
             localSettings.Values[settingQuarto] = false;
-            try
+            if (enviarSinalServidor)
             {
-                var result = await client.GetStringAsync(desliga_quarto);
-            }
-            catch
-            {
-                FlyoutBase.ShowAttachedFlyout(toggleSwitchQuarto);
+                try
+                {
+                    var result = await client.GetStringAsync(desliga_quarto);
+                }
+                catch
+                {
+                    FlyoutBase.ShowAttachedFlyout(rootPivot);
+                }
             }
         }
-        public async void ligarSala()
-        { 
+        public async void ligarSala(bool enviarSinalServidor)
+        {
             localSettings.Values[settingSala] = true;
-            try
+            if (enviarSinalServidor)
             {
-                var result = await client.GetStringAsync(liga_sala);
-            }
-            catch
-            {
-                FlyoutBase.ShowAttachedFlyout(toggleSwitchSala);
+                try
+                {
+                    var result = await client.GetStringAsync(liga_sala);
+                }
+                catch
+                {
+                    FlyoutBase.ShowAttachedFlyout(rootPivot);
+                }
             }
         }
-        public async void desligarSala()
-        { 
-            localSettings.Values[settingSala] = false;  
-            try
+        public async void desligarSala(bool enviarSinalServidor)
+        {
+            localSettings.Values[settingSala] = false;
+            if (enviarSinalServidor)
             {
-                var result = await client.GetStringAsync(desliga_sala);
-            }
-            catch
-            {
-                FlyoutBase.ShowAttachedFlyout(toggleSwitchSala);
+                try
+                {
+                    var result = await client.GetStringAsync(desliga_sala);
+                }
+                catch
+                {
+                    FlyoutBase.ShowAttachedFlyout(rootPivot);
+                }
             }
         }
         public void toggleSwitchQuarto_Toggled(object sender, RoutedEventArgs e)
@@ -160,11 +172,11 @@ namespace Controle_Cortana
 
                 if (toggleSwitchQuarto.IsOn == false)
                 {
-                    desligarQuarto();
+                    desligarQuarto(travaInicial);
                 }
                 else
                 {
-                    ligarQuarto();
+                    ligarQuarto(travaInicial);
                 }
             }
         }
@@ -174,12 +186,11 @@ namespace Controle_Cortana
             {
                 if (toggleSwitchSala.IsOn == false)
                 {
-                    desligarSala();
+                    desligarSala(travaInicial);
                 }
                 else
                 {
-                    ligarSala();
-                    //FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
+                    ligarSala(travaInicial);
                 }
             }
         }
@@ -210,7 +221,7 @@ namespace Controle_Cortana
                     localSettings.Values[settingAutoSala] = false;
                 }
             }
-        }
+        }      
         async private void ReadingChanged(object sender, LightSensorReadingChangedEventArgs e)
         {
 
@@ -219,33 +230,38 @@ namespace Controle_Cortana
                 LightSensorReading reading = e.Reading;
                 sensorDeLuz.Text = "Lux: " + string.Format("{0,5:0.00}", reading.IlluminanceInLux);
                 comparaTempo(horaProgramada, minutoProgramado, 0, 250);
-                if (rootPivot.SelectedIndex == 1 && x == true)
+                bool i = true;
+                if (travaInicial)
                 {
-                    x = false;
-                    i = 0;
-                }
-                if (rootPivot.SelectedIndex != 1)
-                {
-                    x = true;
-                }
-                if (i < 2 || j < 2)
-                {
-                    i++;
-                    j++;
+                    if (rootPivot.SelectedIndex == 1)
+                    {
+                        if (x < 1)
+                        {
+                            x++;
+                            i = false;
+                        }
+                        else
+                        {
 
-                    if ((i == 1 || j == 1) && toggleAutomaticoQuarto.IsOn == true && toggleAutomaticoSala.IsOn == false && reading.IlluminanceInLux < 2)
-                    {
-                        ligarQuarto();
+                            i = true;
+                        }
                     }
-                    else if ((i == 1 || j == 1) && toggleAutomaticoSala.IsOn == true && toggleAutomaticoQuarto.IsOn == false && reading.IlluminanceInLux < 2)
+                    else
                     {
-                        ligarSala();
+                        x = 0;
                     }
-                    else if ((i == 1 || j == 1) && toggleAutomaticoSala.IsOn == true && toggleAutomaticoQuarto.IsOn == true && reading.IlluminanceInLux < 2)
-                    {
-                        ligarQuarto();
-                        ligarSala();
-                    }
+                }
+                else
+                {
+                    i = false;
+                }
+                if (i == false && toggleAutomaticoQuarto.IsOn && reading.IlluminanceInLux < 2)
+                {
+                    toggleSwitchQuarto.IsOn = true;
+                }
+                if (i == false && toggleAutomaticoSala.IsOn && reading.IlluminanceInLux < 2)
+                {
+                    toggleSwitchSala.IsOn = true;
                 }
             });
         }
@@ -367,7 +383,7 @@ namespace Controle_Cortana
         }
         private void frenteAppBarButton(object sender, RoutedEventArgs e)
         {
-            if (rootPivot.SelectedIndex < rootPivot.Items.Count -1)
+            if (rootPivot.SelectedIndex < rootPivot.Items.Count - 1)
             {
                 // If not at the first item, go back to the previous one.
                 rootPivot.SelectedIndex += 1;
@@ -391,7 +407,7 @@ namespace Controle_Cortana
                 rootPivot.SelectedIndex = rootPivot.Items.Count - 1;
             }
         }
-   }
-} 
+    }
+}
 
 

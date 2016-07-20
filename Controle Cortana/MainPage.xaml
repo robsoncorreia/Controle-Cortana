@@ -10,24 +10,17 @@
         <Pivot x:Name="rootPivot" Background="#FFE6E6E6">
             <!--<Pivot.LeftHeader>
             </Pivot.LeftHeader>-->
+            <FlyoutBase.AttachedFlyout>
+                <Flyout>
+                    <TextBlock TextWrapping="Wrap" Text="Não foi possivel conectar com o servidor."  />
+                </Flyout>
+            </FlyoutBase.AttachedFlyout>
             <PivotItem x:Name="pivotItemIluminação" Header="Iluminação">
                 <Grid>
                     <Rectangle x:Name="retanguloQuarto" Height="100" Margin="0,30,0,0" VerticalAlignment="Top" Fill="#FFF4F4F5" Stroke="#19000000"/>
                     <Rectangle x:Name="retanguloSala" Fill="#FFF4F4F5" Height="100" Margin="0,132,0,0" VerticalAlignment="Top" Stroke="#19000000" Canvas.ZIndex="1"/>
-                    <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" HorizontalAlignment="Left" Margin="30,50,0,0" VerticalAlignment="Top" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" FontSize="16">
-                        <FlyoutBase.AttachedFlyout>
-                            <Flyout>
-                                <TextBlock TextWrapping="Wrap" Text="Não foi possivel conectar com servidor."  />
-                            </Flyout>
-                        </FlyoutBase.AttachedFlyout>
-                    </ToggleSwitch>
-                    <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" HorizontalAlignment="Left" Margin="30,152,0,0" VerticalAlignment="Top" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchSala_Toggled" FontSize="16" Canvas.ZIndex="1">
-                        <FlyoutBase.AttachedFlyout>
-                            <Flyout>
-                                <TextBlock TextWrapping="Wrap" Text="Não foi possivel conectar com servidor."  />
-                            </Flyout>
-                        </FlyoutBase.AttachedFlyout>
-                    </ToggleSwitch>
+                    <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" HorizontalAlignment="Left" Margin="30,50,0,0" VerticalAlignment="Top" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" FontSize="16"/>
+                    <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" HorizontalAlignment="Left" Margin="30,152,0,0" VerticalAlignment="Top" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchSala_Toggled" FontSize="16" Canvas.ZIndex="1"/>
                 </Grid>
             </PivotItem>
             <PivotItem x:Name="pivotItemSensor" Header="Sensor de Luz">
