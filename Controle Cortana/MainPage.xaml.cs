@@ -9,6 +9,7 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.ApplicationModel.Background;
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace Controle_Cortana
@@ -390,7 +391,7 @@ namespace Controle_Cortana
                 rootPivot.SelectedIndex = rootPivot.Items.Count - 1;
             }
         }
-    }
-}
+   }
+} 
 
 
