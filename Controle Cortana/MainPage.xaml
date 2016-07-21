@@ -27,18 +27,18 @@
             <PivotItem x:Name="pivotItemIluminação" Header="Iluminação">
                 <Grid>
                     <Rectangle x:Name="retanguloQuarto" Height="100" Margin="0" VerticalAlignment="Top" Fill="#FFF4F4F5" Stroke="#19000000"/>
-                    <Rectangle x:Name="retanguloSala" Fill="#FFF4F4F5" Height="100" Margin="0,100,0,0" VerticalAlignment="Top" Stroke="#19000000" Canvas.ZIndex="1"/>
-                    <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" HorizontalAlignment="Left" Margin="24,18,0,0" VerticalAlignment="Top" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" FontSize="16"/>
-                    <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" HorizontalAlignment="Left" Margin="24,119,0,0" VerticalAlignment="Top" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchSala_Toggled" FontSize="16" Canvas.ZIndex="1"/>
+                    <Rectangle x:Name="retanguloSala" Fill="#FFF4F4F5" Height="100" Margin="0,100,0,0" VerticalAlignment="Top" Stroke="#19000000"/>
+                    <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" HorizontalAlignment="Left" Margin="24,26,0,0" VerticalAlignment="Top" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" FontSize="16"/>
+                    <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" HorizontalAlignment="Left" Margin="179,26,0,0" VerticalAlignment="Top" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchSala_Toggled" FontSize="16" Canvas.ZIndex="1"/>
                     <Rectangle x:Name="timePickerRectangle" Fill="#FFF4F4F5" Height="100" Margin="0,200,0,0" VerticalAlignment="Top"  Stroke="#19000000">
                         <FlyoutBase.AttachedFlyout>
                             <TimePickerFlyout x:Name="relogioTimerPicker" Placement="Full" ClockIdentifier="24HourClock"/>
                         </FlyoutBase.AttachedFlyout>
                     </Rectangle>
-                    <ToggleSwitch x:Name="timerToggle" Margin="24,218,0,0" VerticalAlignment="Top" OffContent="Desl" OnContent="Liga" Toggled="timerToggle_Toggled" FontSize="16" Header="Timer"/>
-                    <TextBlock x:Name="alarmeSalvoTextBlock" Text="Alarme Salvo" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,48,0,0" FontWeight="Bold" Tapped="alarmeSalvoTextBlock_Tapped" />
+                    <ToggleSwitch x:Name="timerToggle" Margin="28,121,0,0" VerticalAlignment="Top" OffContent="Desl" OnContent="Liga" Toggled="timerToggle_Toggled" FontSize="16" Header="Timer"/>
+                    <TextBlock x:Name="alarmeSalvoTextBlock" Text="Alarme Salvo" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="28,258,0,0" FontWeight="Bold" Tapped="alarmeSalvoTextBlock_Tapped" />
                     <Rectangle x:Name="autoComodosRectangle" Fill="#FFF4F4F5" Height="114" Margin="0,300,0,0" VerticalAlignment="Top"  Stroke="#19000000"/>
-                    <TextBlock Text="Escolha o horário:" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="143,18,0,0" Canvas.ZIndex="1" Tapped="TextBlock_Tapped" />
+                    <TextBlock Text="Escolha o horário:" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,221,0,0" Canvas.ZIndex="1" Tapped="TextBlock_Tapped" />
                     <CheckBox x:Name="quartoCheckBox" VerticalAlignment="Top" Margin="24,339,0,0" Canvas.ZIndex="1" Content="Quarto" FontSize="16" HorizontalAlignment="Left" Click="quartoCheckBox_Click"/>
                     <CheckBox x:Name="salaCheckBox" Margin="24,374,0,0" VerticalAlignment="Top" Content="Sala" FontSize="16" HorizontalAlignment="Left" Click="salaCheckBox_Click"/>
                     <TextBlock Text="Quais luzes seram automatizados:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,315,0,0"/>
