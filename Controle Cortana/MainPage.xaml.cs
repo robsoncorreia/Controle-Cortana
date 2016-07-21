@@ -10,6 +10,9 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.ApplicationModel.Background;
+using Windows.UI.Xaml.Media.Animation;
+using Windows.UI.Xaml.Input;
+using Windows.System.Threading;
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace Controle_Cortana
@@ -42,9 +45,6 @@ namespace Controle_Cortana
             this.InitializeComponent();
             localSettings = ApplicationData.Current.LocalSettings;
             mostrarTimer();
-        }
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
             Sensor();
             Setting(500);
         }
@@ -95,11 +95,6 @@ namespace Controle_Cortana
             if (valueSalaCheckBox != null)
             {
                 salaCheckBox.IsChecked = (bool)valueSalaCheckBox;
-            }
-            object valueCabeçarioTextBlock = localSettings.Values[cabeçarioAlarmeTextBlockSetting];
-            if (valueCabeçarioTextBlock != null)
-            {
-                cabeçarioAlarmeTextBlock.Text = (string)valueCabeçarioTextBlock;
             }
             await Task.Delay(delay);
             travaInicial = true;
@@ -372,29 +367,15 @@ namespace Controle_Cortana
         {
             localSettings.Values[salaCheckBoxSetting] = salaCheckBox.IsChecked;
         }
-        private void cabeçarioAlarmeTextBlock_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private void alarmeSalvoTextBlock_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
-            FlyoutBase.ShowAttachedFlyout(cabeçarioAlarmeTextBlock);
+            FlyoutBase.ShowAttachedFlyout(timePickerRectangle);
         }
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void TextBlock_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
-            cabeçarioAlarmeTextBlock.Text = cabeçarioAlarmeTextBox.Text;
-            localSettings.Values[cabeçarioAlarmeTextBlockSetting] = cabeçarioAlarmeTextBox.Text;
+            FlyoutBase.ShowAttachedFlyout(timePickerRectangle);
         }
-        private void frenteAppBarButton(object sender, RoutedEventArgs e)
-        {
-            if (rootPivot.SelectedIndex < rootPivot.Items.Count - 1)
-            {
-                // If not at the first item, go back to the previous one.
-                rootPivot.SelectedIndex += 1;
-            }
-            else
-            {
-                // The first PivotItem is selected, so loop around to the last item.
-                rootPivot.SelectedIndex = 0;
-            }
-        }
-        private void voltaAppBarButton(object sender, RoutedEventArgs e)
+        private void voltaAppBarButton_Click(object sender, RoutedEventArgs e)
         {
             if (rootPivot.SelectedIndex > 0)
             {
@@ -406,6 +387,31 @@ namespace Controle_Cortana
                 // The first PivotItem is selected, so loop around to the last item.
                 rootPivot.SelectedIndex = rootPivot.Items.Count - 1;
             }
+        }
+        private void frenteAppBarButton_Click(object sender, RoutedEventArgs e)
+        {         
+            if (rootPivot.SelectedIndex < rootPivot.Items.Count - 1)
+            {
+                // If not at the first item, go back to the previous one.
+                rootPivot.SelectedIndex += 1;
+            }
+            else
+            {
+                // The first PivotItem is selected, so loop around to the last item.
+                rootPivot.SelectedIndex = 0;
+            }
+        }
+        private void AppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            FlyoutBase.ShowAttachedFlyout(timePickerRectangle);
+        }
+        const int period = 1;
+
+        ThreadPoolTimer PeriodicTimer = ThreadPoolTimer.CreatePeriodicTimer(ExampleTimerElapsedHandler, TimeSpan.FromMinutes(period));
+
+        public static void ExampleTimerElapsedHandler(ThreadPoolTimer timer)
+        {
+            
         }
     }
 }
