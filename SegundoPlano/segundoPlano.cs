@@ -12,10 +12,11 @@ namespace SegundoPlano
     {
         Uri liga_quarto = new Uri("http://192.168.1.2/?pin=LIGA1");
         HttpClient client = new HttpClient();
-
-        public void Run(IBackgroundTaskInstance taskInstance)
+ 
+        public async void Run(IBackgroundTaskInstance taskInstance)
         {
-             client.GetStringAsync(liga_quarto);
+             await client.GetStringAsync(liga_quarto);
         }
     }
+  
 }

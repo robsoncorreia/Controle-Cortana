@@ -47,6 +47,7 @@ namespace Controle_Cortana
             mostrarTimer();
             Sensor();
             Setting(500);
+            gatilhoTimer(1);
         }
         public async void Setting(int delay)
         {
@@ -224,7 +225,6 @@ namespace Controle_Cortana
             {
                 LightSensorReading reading = e.Reading;
                 sensorDeLuz.Text = "Lux: " + string.Format("{0,5:0.00}", reading.IlluminanceInLux);
-                comparaTempo(horaProgramada, minutoProgramado, 0, 250);
                 bool i = true;
                 if (travaInicial)
                 {
@@ -332,28 +332,27 @@ namespace Controle_Cortana
             }
 
         }
-        public async void comparaTempo(int hora, int minuto, int segundo, int delay)
+        public  void comparaTempo(int hora, int minuto, int segundo, int delay)
         {
             DateTime dataTempo = DateTime.Now;
             int horaNow = dataTempo.Hour;
             int minutoNow = dataTempo.Minute;
             int segundoNow = dataTempo.Second;
 
-            if (timerToggle.IsOn == true)
-            {
+            //if (timerToggle.IsOn)
+            //{
                 if ((horaNow == hora) && (minutoNow == minuto) && (segundoNow == segundo))
                 {
                     if (quartoCheckBox.IsChecked == true)
                     {
                         toggleSwitchQuarto.IsOn = true;
                     }
-                    await Task.Delay(delay);
                     if (salaCheckBox.IsChecked == true)
                     {
                         toggleSwitchSala.IsOn = true;
                     }
                 }
-            }
+            //}
         }
         private void timerToggle_Toggled(object sender, RoutedEventArgs e)
         {
@@ -405,13 +404,15 @@ namespace Controle_Cortana
         {
             FlyoutBase.ShowAttachedFlyout(timePickerRectangle);
         }
-        const int period = 1;
 
-        ThreadPoolTimer PeriodicTimer = ThreadPoolTimer.CreatePeriodicTimer(ExampleTimerElapsedHandler, TimeSpan.FromMinutes(period));
-
-        public static void ExampleTimerElapsedHandler(ThreadPoolTimer timer)
+        ThreadPoolTimer _periodicTimer = null;
+        public void gatilhoTimer(int intervaloEmsegundos)
         {
-            
+            _periodicTimer = ThreadPoolTimer.CreatePeriodicTimer(new TimerElapsedHandler(PeriodicTimerCallback), TimeSpan.FromSeconds(intervaloEmsegundos));
+        }
+        public void PeriodicTimerCallback(ThreadPoolTimer timer)
+        {
+            comparaTempo(horaProgramada, minutoProgramado, 0, 250);
         }
     }
 }
