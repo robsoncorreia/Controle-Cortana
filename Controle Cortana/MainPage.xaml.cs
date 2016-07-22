@@ -25,7 +25,7 @@ namespace Controle_Cortana
         Uri desliga_sala = new Uri("http://192.168.1.2/?pin=DESLIGA2");
         ApplicationDataContainer localSettings = null;
         HttpClient client = new HttpClient();
-        private LightSensor _lightsensor;
+        public LightSensor _lightsensor;
         const string settingQuarto = "quartoSetting";
         const string settingSala = "salaSetting";
         const string settingAutoQuarto = "AutoQuartoSetting";
@@ -36,6 +36,9 @@ namespace Controle_Cortana
         const string quartoCheckBoxSetting = "quartoCheckBoxSetting";
         const string salaCheckBoxSetting = "salaCheckBoxSetting";
         const string cabeçarioAlarmeTextBlockSetting = "cabeçarioAlarmeTextBlock";
+        bool boolTimerToggle = false;
+        bool boolQuartoCheckBox = false;
+        bool boolSalaCheckBox = false;
         bool travaInicial = false;
         int horaProgramada;
         int minutoProgramado;
@@ -86,16 +89,19 @@ namespace Controle_Cortana
             if (valuetimerToggle != null)
             {
                 timerToggle.IsOn = (bool)valuetimerToggle;
+                boolTimerToggle = (bool)valuetimerToggle;
             }
             object valueQuartoCheckBox = localSettings.Values[quartoCheckBoxSetting];
             if (valueQuartoCheckBox != null)
             {
                 quartoCheckBox.IsChecked = (bool)valueQuartoCheckBox;
+                boolQuartoCheckBox = (bool)valueQuartoCheckBox;
             }
             object valueSalaCheckBox = localSettings.Values[salaCheckBoxSetting];
             if (valueSalaCheckBox != null)
             {
                 salaCheckBox.IsChecked = (bool)valueSalaCheckBox;
+                boolSalaCheckBox = (bool)valueSalaCheckBox;
             }
             await Task.Delay(delay);
             travaInicial = true;
@@ -217,8 +223,8 @@ namespace Controle_Cortana
                     localSettings.Values[settingAutoSala] = false;
                 }
             }
-        }      
-        async private void ReadingChanged(object sender, LightSensorReadingChangedEventArgs e)
+        }
+        async public void ReadingChanged(object sender, LightSensorReadingChangedEventArgs e)
         {
 
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
@@ -289,30 +295,13 @@ namespace Controle_Cortana
             }
             else
             {
+                //pivotItemSensor.Visibility = Visibility.Collapsed;
                 toggleAutomaticoQuarto.Visibility = Visibility.Collapsed;
                 retangudoAutomaticoQuarto.Visibility = Visibility.Collapsed;
                 toggleAutomaticoSala.Visibility = Visibility.Collapsed;
                 retangudoAutomaticoSala.Visibility = Visibility.Collapsed;
-                textoSensorLuz.Text = ":(";
+                textoSensorLuz.Text = "😁";
                 sensorDeLuz.Text = "Dispositivo não possui sensor.";
-            }
-        }
-        private void relogioTimerPicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
-        {
-            horaProgramada = relogioTimerPicker.Time.Hours;
-            minutoProgramado = relogioTimerPicker.Time.Minutes;
-
-            localSettings.Values[horaTimerSetting] = horaProgramada;
-            localSettings.Values[minutoTimerSetting] = minutoProgramado;
-
-
-            if (minutoProgramado < 10)
-            {
-                alarmeSalvoTextBlock.Text = horaProgramada + ":0" + minutoProgramado;
-            }
-            else
-            {
-                alarmeSalvoTextBlock.Text = horaProgramada + ":" + minutoProgramado;
             }
         }
         public void mostrarTimer()
@@ -332,63 +321,64 @@ namespace Controle_Cortana
             }
 
         }
-        public  void comparaTempo(int hora, int minuto, int segundo, int delay)
+        public void comparaTempo(int hora, int minuto, int segundo, int delay)
         {
             DateTime dataTempo = DateTime.Now;
             int horaNow = dataTempo.Hour;
             int minutoNow = dataTempo.Minute;
             int segundoNow = dataTempo.Second;
 
-            //if (timerToggle.IsOn)
-            //{
+            if (boolTimerToggle)
+            {
                 if ((horaNow == hora) && (minutoNow == minuto) && (segundoNow == segundo))
                 {
-                    if (quartoCheckBox.IsChecked == true)
+                    if (boolQuartoCheckBox)
                     {
-                        toggleSwitchQuarto.IsOn = true;
+                        ligarQuarto(true);
                     }
-                    if (salaCheckBox.IsChecked == true)
+                    if (boolSalaCheckBox)
                     {
-                        toggleSwitchSala.IsOn = true;
+                        ligarSala(true);
                     }
                 }
-            //}
+            }
         }
-        private void timerToggle_Toggled(object sender, RoutedEventArgs e)
+        public void timerToggle_Toggled(object sender, RoutedEventArgs e)
         {
             localSettings.Values[timerToggleSetting] = timerToggle.IsOn;
+            boolTimerToggle = timerToggle.IsOn;
         }
-        private void quartoCheckBox_Click(object sender, RoutedEventArgs e)
+        public void quartoCheckBox_Click(object sender, RoutedEventArgs e)
         {
             localSettings.Values[quartoCheckBoxSetting] = quartoCheckBox.IsChecked;
+            boolQuartoCheckBox = (bool)quartoCheckBox.IsChecked;
         }
-        private void salaCheckBox_Click(object sender, RoutedEventArgs e)
+        public void salaCheckBox_Click(object sender, RoutedEventArgs e)
         {
             localSettings.Values[salaCheckBoxSetting] = salaCheckBox.IsChecked;
+            boolSalaCheckBox = (bool)salaCheckBox.IsChecked;
         }
-        private void alarmeSalvoTextBlock_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        public void alarmeSalvoTextBlock_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             FlyoutBase.ShowAttachedFlyout(timePickerRectangle);
         }
-        private void TextBlock_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        public void TextBlock_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             FlyoutBase.ShowAttachedFlyout(timePickerRectangle);
         }
-        private void voltaAppBarButton_Click(object sender, RoutedEventArgs e)
+        public void voltaAppBarButton_Click(object sender, RoutedEventArgs e)
         {
             if (rootPivot.SelectedIndex > 0)
             {
-                // If not at the first item, go back to the previous one.
                 rootPivot.SelectedIndex -= 1;
             }
             else
             {
-                // The first PivotItem is selected, so loop around to the last item.
                 rootPivot.SelectedIndex = rootPivot.Items.Count - 1;
             }
         }
-        private void frenteAppBarButton_Click(object sender, RoutedEventArgs e)
-        {         
+        public void frenteAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
             if (rootPivot.SelectedIndex < rootPivot.Items.Count - 1)
             {
                 // If not at the first item, go back to the previous one.
@@ -400,11 +390,10 @@ namespace Controle_Cortana
                 rootPivot.SelectedIndex = 0;
             }
         }
-        private void AppBarButton_Click(object sender, RoutedEventArgs e)
+        public void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
             FlyoutBase.ShowAttachedFlyout(timePickerRectangle);
         }
-
         ThreadPoolTimer _periodicTimer = null;
         public void gatilhoTimer(int intervaloEmsegundos)
         {
@@ -412,7 +401,25 @@ namespace Controle_Cortana
         }
         public void PeriodicTimerCallback(ThreadPoolTimer timer)
         {
-            comparaTempo(horaProgramada, minutoProgramado, 0, 250);
+            comparaTempo(horaProgramada, minutoProgramado, 1, 0);
+        }
+        public void relogioTimerPicker_TimePicked(TimePickerFlyout sender, TimePickedEventArgs args)
+        {
+            horaProgramada = relogioTimerPicker.Time.Hours;
+            minutoProgramado = relogioTimerPicker.Time.Minutes;
+
+            localSettings.Values[horaTimerSetting] = horaProgramada;
+            localSettings.Values[minutoTimerSetting] = minutoProgramado;
+
+
+            if (minutoProgramado < 10)
+            {
+                alarmeSalvoTextBlock.Text = horaProgramada + ":0" + minutoProgramado;
+            }
+            else
+            {
+                alarmeSalvoTextBlock.Text = horaProgramada + ":" + minutoProgramado;
+            }
         }
     }
 }
