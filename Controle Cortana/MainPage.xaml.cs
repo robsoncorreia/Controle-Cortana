@@ -36,6 +36,10 @@ namespace Controle_Cortana
         const string quartoCheckBoxSetting = "quartoCheckBoxSetting";
         const string salaCheckBoxSetting = "salaCheckBoxSetting";
         const string cabeçarioAlarmeTextBlockSetting = "cabeçarioAlarmeTextBlock";
+        const string ligarQuarto = "ligarQuarto";
+        const string desligarQuarto = "desligarQuarto";
+        const string ligarSala = "ligarSala";
+        const string desligarSala = "desligarSala";
         bool boolTimerToggle = false;
         bool boolQuartoCheckBox = false;
         bool boolSalaCheckBox = false;
@@ -106,79 +110,95 @@ namespace Controle_Cortana
             await Task.Delay(delay);
             travaInicial = true;
         }
-        public async void ligarQuarto(bool enviarSinalServidor)
-        {
-            localSettings.Values[settingQuarto] = true;
-            if (enviarSinalServidor)
-            {
-                try
-                {
-                    var result = await client.GetStringAsync(liga_quarto);
-                }
-                catch
-                {
-                    FlyoutBase.ShowAttachedFlyout(rootPivot);
-                }
-            }
 
-        }
-        public async void desligarQuarto(bool enviarSinalServidor)
+        public async void ligarDesligar(bool enviarSinalServidor, string comodo, bool flyout)
         {
-            localSettings.Values[settingQuarto] = false;
-            if (enviarSinalServidor)
+            switch (comodo)
             {
-                try
-                {
-                    var result = await client.GetStringAsync(desliga_quarto);
-                }
-                catch
-                {
-                    FlyoutBase.ShowAttachedFlyout(rootPivot);
-                }
-            }
-        }
-        public async void ligarSala(bool enviarSinalServidor)
-        {
-            localSettings.Values[settingSala] = true;
-            if (enviarSinalServidor)
-            {
-                try
-                {
-                    var result = await client.GetStringAsync(liga_sala);
-                }
-                catch
-                {
-                    FlyoutBase.ShowAttachedFlyout(rootPivot);
-                }
-            }
-        }
-        public async void desligarSala(bool enviarSinalServidor)
-        {
-            localSettings.Values[settingSala] = false;
-            if (enviarSinalServidor)
-            {
-                try
-                {
-                    var result = await client.GetStringAsync(desliga_sala);
-                }
-                catch
-                {
-                    FlyoutBase.ShowAttachedFlyout(rootPivot);
-                }
+                case ligarQuarto:
+                    localSettings.Values[settingQuarto] = true;
+                    if (enviarSinalServidor)
+                    {
+                        try
+                        {
+                            var result = await client.GetStringAsync(liga_quarto);
+                        }
+                        catch
+                        {
+                            if (flyout)
+                            {
+                                //await Task.Delay(1000);
+                                FlyoutBase.ShowAttachedFlyout(commandBar);
+                            }
+                        }
+                    }
+                    break;
+
+                case desligarQuarto:
+                    localSettings.Values[settingQuarto] = false;
+                    if (enviarSinalServidor)
+                    {
+                        try
+                        {
+                            var result = await client.GetStringAsync(desliga_quarto);
+                        }
+                        catch
+                        {
+
+                            if (flyout)
+                            {
+                                FlyoutBase.ShowAttachedFlyout(commandBar);
+                            }
+                        }
+                    }
+                    break;
+                case ligarSala:
+                    localSettings.Values[settingSala] = true;
+                    if (enviarSinalServidor)
+                    {
+                        try
+                        {
+                            var result = await client.GetStringAsync(liga_sala);
+                        }
+                        catch
+                        {
+                            if (flyout)
+                            {
+                                FlyoutBase.ShowAttachedFlyout(commandBar);
+                            }
+                        }
+                    }
+                    break;
+                case desligarSala:
+                    localSettings.Values[settingSala] = false;
+                    if (enviarSinalServidor)
+                    {
+                        try
+                        {
+                            var result = await client.GetStringAsync(desliga_sala);
+                        }
+                        catch
+                        {
+                            if (flyout)
+                            {
+                                FlyoutBase.ShowAttachedFlyout(commandBar);
+                            }
+                        }
+                    }
+                    break;
             }
         }
         public void toggleSwitchQuarto_Toggled(object sender, RoutedEventArgs e)
         {
             if (toggleSwitchQuarto != null)
             {
-
                 if (toggleSwitchQuarto.IsOn == false)
                 {
-                    desligarQuarto(travaInicial);
+                    ligarDesligar(travaInicial, desligarQuarto, true);
                 }
                 else
                 {
-                    ligarQuarto(travaInicial);
+                    ligarDesligar(travaInicial, ligarQuarto, true);
                 }
             }
         }
@@ -188,11 +208,11 @@ namespace Controle_Cortana
             {
                 if (toggleSwitchSala.IsOn == false)
                 {
-                    desligarSala(travaInicial);
+                    ligarDesligar(travaInicial, desligarSala, true);
                 }
                 else
                 {
-                    ligarSala(travaInicial);
+                    ligarDesligar(travaInicial, ligarSala, true);
                 }
             }
         }
@@ -319,7 +339,6 @@ namespace Controle_Cortana
                     alarmeSalvoTextBlock.Text = (int)valueHoraProgramada + ":" + (int)valueMinutoProgramada;
                 }
             }
-
         }
         public void comparaTempo(int hora, int minuto, int segundo, int delay)
         {
@@ -334,11 +353,11 @@ namespace Controle_Cortana
                 {
                     if (boolQuartoCheckBox)
                     {
-                        ligarQuarto(true);
+                        ligarDesligar(true, ligarQuarto, false);
                     }
                     if (boolSalaCheckBox)
                     {
-                        ligarSala(true);
+                        ligarDesligar(true, ligarSala, false);
                     }
                 }
             }
@@ -381,12 +400,10 @@ namespace Controle_Cortana
         {
             if (rootPivot.SelectedIndex < rootPivot.Items.Count - 1)
             {
-                // If not at the first item, go back to the previous one.
                 rootPivot.SelectedIndex += 1;
             }
             else
             {
-                // The first PivotItem is selected, so loop around to the last item.
                 rootPivot.SelectedIndex = 0;
             }
         }
@@ -405,8 +422,13 @@ namespace Controle_Cortana
         }
         public void relogioTimerPicker_TimePicked(TimePickerFlyout sender, TimePickedEventArgs args)
         {
-            horaProgramada = relogioTimerPicker.Time.Hours;
-            minutoProgramado = relogioTimerPicker.Time.Minutes;
+
+        }
+
+        private void relogioTimerPicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
+        {
+            horaProgramada = timerPicker.Time.Hours;
+            minutoProgramado = timerPicker.Time.Minutes;
 
             localSettings.Values[horaTimerSetting] = horaProgramada;
             localSettings.Values[minutoTimerSetting] = minutoProgramado;
@@ -423,5 +445,6 @@ namespace Controle_Cortana
         }
     }
 }
+
 
 
