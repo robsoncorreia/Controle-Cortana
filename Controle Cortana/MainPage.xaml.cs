@@ -23,9 +23,11 @@ namespace Controle_Cortana
         Uri desliga_quarto = new Uri("http://192.168.1.2/?pin=DESLIGA1");
         Uri liga_sala = new Uri("http://192.168.1.2/?pin=LIGA2");
         Uri desliga_sala = new Uri("http://192.168.1.2/?pin=DESLIGA2");
+
         ApplicationDataContainer localSettings = null;
         HttpClient client = new HttpClient();
         public LightSensor _lightsensor;
+
         const string settingQuarto = "quartoSetting";
         const string settingSala = "salaSetting";
         const string settingAutoQuarto = "AutoQuartoSetting";
@@ -36,17 +38,21 @@ namespace Controle_Cortana
         const string quartoCheckBoxSetting = "quartoCheckBoxSetting";
         const string salaCheckBoxSetting = "salaCheckBoxSetting";
         const string cabeçarioAlarmeTextBlockSetting = "cabeçarioAlarmeTextBlock";
+        const string diasSemanaAtivosTextBlockSetting = "diasSemanaAtivosTextBlockSetting";
         const string ligarQuarto = "ligarQuarto";
         const string desligarQuarto = "desligarQuarto";
         const string ligarSala = "ligarSala";
         const string desligarSala = "desligarSala";
+
         bool boolTimerToggle = false;
         bool boolQuartoCheckBox = false;
         bool boolSalaCheckBox = false;
         bool travaInicial = false;
+
         int horaProgramada;
         int minutoProgramado;
         int x;
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -54,8 +60,9 @@ namespace Controle_Cortana
             mostrarTimer();
             Sensor();
             Setting(500);
-            gatilhoTimer(1);
+            //gatilhoTimer(1);
         }
+
         public async void Setting(int delay)
         {
             await Task.Delay(delay);
@@ -107,6 +114,46 @@ namespace Controle_Cortana
                 salaCheckBox.IsChecked = (bool)valueSalaCheckBox;
                 boolSalaCheckBox = (bool)valueSalaCheckBox;
             }
+            object segundaCheckBoxValue = localSettings.Values[Monday];
+            if (segundaCheckBoxValue != null)
+            {
+                segundaCheckBox.IsChecked = (bool)segundaCheckBoxValue;
+            }
+            object tercaCheckBoxValue = localSettings.Values[Tuesday];
+            if (tercaCheckBoxValue != null)
+            {
+                tercaCheckBox.IsChecked = (bool)tercaCheckBoxValue;
+            }
+            object quartaCheckBoxValue = localSettings.Values[Wednesday];
+            if (quartaCheckBoxValue != null)
+            {
+                quartaCheckBox.IsChecked = (bool)localSettings.Values[Wednesday];
+            }
+            object quintaCheckBoxValue = localSettings.Values[Thursday];
+            if (quintaCheckBoxValue != null)
+            {
+                quintaCheckBox.IsChecked = (bool)localSettings.Values[Thursday];
+            }
+            object sextaCheckBoxValue = localSettings.Values[Friday];
+            if (sextaCheckBoxValue != null)
+            {
+                sextaCheckBox.IsChecked = (bool)localSettings.Values[Friday];
+            }
+            object sabadoCheckBoxValue = localSettings.Values[Saturday];
+            if (sabadoCheckBoxValue != null)
+            {
+                sabadoCheckBox.IsChecked = (bool)localSettings.Values[Saturday];
+            }
+            object domindoCheckBoxValue = localSettings.Values[Sunday];
+            if (domindoCheckBoxValue != null)
+            {
+                domingoCheckBox.IsChecked = (bool)localSettings.Values[Sunday];
+            }
+            object diasSemanaAtivosTextBlockValue = localSettings.Values[diasSemanaAtivosTextBlockSetting];
+            if(diasSemanaAtivosTextBlockValue != null)
+            {
+                diasSemanaAtivosTextBlock.Text = (string)localSettings.Values[diasSemanaAtivosTextBlockSetting];
+            }
             await Task.Delay(delay);
             travaInicial = true;
         }
@@ -133,7 +180,6 @@ namespace Controle_Cortana
                         }
                     }
                     break;
-
                 case desligarQuarto:
                     localSettings.Values[settingQuarto] = false;
                     if (enviarSinalServidor)
@@ -144,7 +190,6 @@ namespace Controle_Cortana
                         }
                         catch
                         {
-
                             if (flyout)
                             {
                                 FlyoutBase.ShowAttachedFlyout(commandBar);
@@ -188,39 +233,42 @@ namespace Controle_Cortana
                     break;
             }
         }
+
         public void toggleSwitchQuarto_Toggled(object sender, RoutedEventArgs e)
         {
             if (toggleSwitchQuarto != null)
             {
-                if (toggleSwitchQuarto.IsOn == false)
-                {
-                    ligarDesligar(travaInicial, desligarQuarto, true);
-                }
-                else
+                if (toggleSwitchQuarto.IsOn)
                 {
                     ligarDesligar(travaInicial, ligarQuarto, true);
                 }
+                else
+                {
+                    ligarDesligar(travaInicial, desligarQuarto, true);
+                }
             }
         }
+
         public void toggleSwitchSala_Toggled(object sender, RoutedEventArgs e)
         {
             if (toggleSwitchSala != null)
             {
-                if (toggleSwitchSala.IsOn == false)
-                {
-                    ligarDesligar(travaInicial, desligarSala, true);
-                }
-                else
+                if (toggleSwitchSala.IsOn)
                 {
                     ligarDesligar(travaInicial, ligarSala, true);
                 }
+                else
+                {
+                    ligarDesligar(travaInicial, desligarSala, true);
+                }
             }
         }
+
         public void toggleAutomaticoQuarto_Toggled(object sender, RoutedEventArgs e)
         {
             if (toggleAutomaticoQuarto != null)
             {
-                if (toggleAutomaticoQuarto.IsOn == true)
+                if (toggleAutomaticoQuarto.IsOn)
                 {
                     localSettings.Values[settingAutoQuarto] = true;
                 }
@@ -230,11 +278,12 @@ namespace Controle_Cortana
                 }
             }
         }
+
         public void toggleAutomaticoSala_Toggled(object sender, RoutedEventArgs e)
         {
             if (toggleAutomaticoSala != null)
             {
-                if (toggleAutomaticoSala.IsOn == true)
+                if (toggleAutomaticoSala.IsOn)
                 {
                     localSettings.Values[settingAutoSala] = true;
                 }
@@ -244,11 +293,13 @@ namespace Controle_Cortana
                 }
             }
         }
+
         async public void ReadingChanged(object sender, LightSensorReadingChangedEventArgs e)
         {
 
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
+                verificarDiasSemana(horaProgramada, minutoProgramado, 0, 0);
                 LightSensorReading reading = e.Reading;
                 sensorDeLuz.Text = "Lux: " + string.Format("{0,5:0.00}", reading.IlluminanceInLux);
                 bool i = true;
@@ -286,18 +337,8 @@ namespace Controle_Cortana
                 }
             });
         }
-        //public async void aviso()
-        //{
-        //    ContentDialog noWifiDialog = new ContentDialog()
-        //    {
-        //        Title = "Não é permitido.",
-        //        Content = "Por motivos lógicos não é permitido ligar os dois botões ao mesmo tempo.",
-        //        PrimaryButtonText = ":)"
-        //    };
 
-        //    ContentDialogResult result = await noWifiDialog.ShowAsync();
-        //}
-        void Sensor()
+        public void Sensor()
         {
             InitializeComponent();
             _lightsensor = LightSensor.GetDefault(); // Get the default light sensor object
@@ -324,6 +365,7 @@ namespace Controle_Cortana
                 sensorDeLuz.Text = "Dispositivo não possui sensor.";
             }
         }
+
         public void mostrarTimer()
         {
             object valueHoraProgramada = localSettings.Values[horaTimerSetting];
@@ -340,51 +382,118 @@ namespace Controle_Cortana
                 }
             }
         }
-        public void comparaTempo(int hora, int minuto, int segundo, int delay)
+
+        bool segunda = false;
+        bool terca = false;
+        bool quarta = false;
+        bool quinta = false;
+        bool sexta = false;
+        bool sabado = false;
+        bool domingo = false;
+
+        const string Monday = "Monday";
+        const string Tuesday = "Tuesday";
+        const string Wednesday = "Wednesday";
+        const string Thursday = "Thursday";
+        const string Friday = "Friday";
+        const string Saturday = "Saturday";
+        const string Sunday = "Sunday ";
+
+        const string segundaVigula = "segunda";
+        const string tercaVirgula = "terça";
+        const string quartaVirgula = "quarto";
+        const string quintaVirgual = "quinta";
+        const string sextaVirgula = "sexta";
+        const string sabadoVirgula = "sabado";
+        const string domingoaPonto = "domingo";
+
+        string semanasTextBlock;
+
+        public void diasSemanaTextBlock()
+        {
+            bool[] semana = {segunda,terca,quarta,quinta,sexta,sabado,domingo};
+            bool[] diasCheckBox = {(bool)segundaCheckBox.IsChecked,(bool)tercaCheckBox.IsChecked,(bool)quartaCheckBox.IsChecked,
+                                   (bool)quintaCheckBox.IsChecked,(bool)sextaCheckBox.IsChecked,(bool)sabadoCheckBox.IsChecked,(bool)domingoCheckBox.IsChecked
+            };
+            string[] diasSemanaTextBox = {segundaVigula,tercaVirgula,quartaVirgula,quintaVirgual,sextaVirgula,sabadoVirgula,domingoaPonto};
+            semanasTextBlock = "";
+            for (int i = 0; i < 7; i++)
+            {
+                semana[i] = diasCheckBox[i];
+                if (semana[i])
+                {
+                    if (i > 0)
+                    {
+                        semanasTextBlock += " " + diasSemanaTextBox[i];
+                    }
+                    else
+                    {
+                        semanasTextBlock += diasSemanaTextBox[i];
+                    }
+                    diasSemanaAtivosTextBlock.Text = semanasTextBlock;
+                    localSettings.Values[diasSemanaAtivosTextBlockSetting] = diasSemanaAtivosTextBlock.Text;
+                }
+            }
+        }
+
+        public void verificarDiasSemana(int hora, int minuto, int segundo, int delay)
         {
             DateTime dataTempo = DateTime.Now;
             int horaNow = dataTempo.Hour;
             int minutoNow = dataTempo.Minute;
             int segundoNow = dataTempo.Second;
 
-            if (boolTimerToggle)
+            string[] diasSemana = { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday };
+            bool[] semana = { segunda, terca, quarta, quinta, sexta, sabado, domingo };
+            bool[] diasCheckBox = {(bool)segundaCheckBox.IsChecked,(bool)tercaCheckBox.IsChecked,(bool)quartaCheckBox.IsChecked,
+                                   (bool)quintaCheckBox.IsChecked,(bool)sextaCheckBox.IsChecked,(bool)sabadoCheckBox.IsChecked,(bool)domingoCheckBox.IsChecked
+            };
+            for (int i = 0; i < 7; i++)
             {
-                if ((horaNow == hora) && (minutoNow == minuto) && (segundoNow == segundo))
+                semana[i] = diasCheckBox[i];
+                if (boolTimerToggle)
                 {
-                    if (boolQuartoCheckBox)
+                    if (semana[i])
                     {
-                        ligarDesligar(true, ligarQuarto, false);
-                    }
-                    if (boolSalaCheckBox)
-                    {
-                        ligarDesligar(true, ligarSala, false);
+                        if (diasSemana[i] == dataTempo.DayOfWeek.ToString())
+                        {
+                            if ((horaNow == hora) && (minutoNow == minuto) && (segundoNow == segundo))
+                            {
+                                if (boolQuartoCheckBox)
+                                {
+                                    //ligarDesligar(true, ligarQuarto, false);
+                                    toggleSwitchQuarto.IsOn = true; 
+                                }
+                                if (boolSalaCheckBox)
+                                {
+                                    //ligarDesligar(true, ligarSala, false);
+                                    toggleSwitchSala.IsOn = true;
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
+
         public void timerToggle_Toggled(object sender, RoutedEventArgs e)
         {
             localSettings.Values[timerToggleSetting] = timerToggle.IsOn;
             boolTimerToggle = timerToggle.IsOn;
         }
+
         public void quartoCheckBox_Click(object sender, RoutedEventArgs e)
         {
             localSettings.Values[quartoCheckBoxSetting] = quartoCheckBox.IsChecked;
             boolQuartoCheckBox = (bool)quartoCheckBox.IsChecked;
         }
+
         public void salaCheckBox_Click(object sender, RoutedEventArgs e)
         {
             localSettings.Values[salaCheckBoxSetting] = salaCheckBox.IsChecked;
             boolSalaCheckBox = (bool)salaCheckBox.IsChecked;
         }
-        public void alarmeSalvoTextBlock_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
-        {
-            FlyoutBase.ShowAttachedFlyout(timePickerRectangle);
-        }
-        public void TextBlock_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
-        {
-            FlyoutBase.ShowAttachedFlyout(timePickerRectangle);
-        }
+
         public void voltaAppBarButton_Click(object sender, RoutedEventArgs e)
         {
             if (rootPivot.SelectedIndex > 0)
@@ -396,6 +505,7 @@ namespace Controle_Cortana
                 rootPivot.SelectedIndex = rootPivot.Items.Count - 1;
             }
         }
+
         public void frenteAppBarButton_Click(object sender, RoutedEventArgs e)
         {
             if (rootPivot.SelectedIndex < rootPivot.Items.Count - 1)
@@ -407,25 +517,55 @@ namespace Controle_Cortana
                 rootPivot.SelectedIndex = 0;
             }
         }
+
         public void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            FlyoutBase.ShowAttachedFlyout(timePickerRectangle);
-        }
-        ThreadPoolTimer _periodicTimer = null;
-        public void gatilhoTimer(int intervaloEmsegundos)
-        {
-            _periodicTimer = ThreadPoolTimer.CreatePeriodicTimer(new TimerElapsedHandler(PeriodicTimerCallback), TimeSpan.FromSeconds(intervaloEmsegundos));
-        }
-        public void PeriodicTimerCallback(ThreadPoolTimer timer)
-        {
-            comparaTempo(horaProgramada, minutoProgramado, 1, 0);
-        }
-        public void relogioTimerPicker_TimePicked(TimePickerFlyout sender, TimePickedEventArgs args)
-        {
-
+            FlyoutBase.ShowAttachedFlyout(retanguloQuarto);
         }
 
-        private void relogioTimerPicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
+        private void segundaCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            localSettings.Values[Monday] = segundaCheckBox.IsChecked;
+            diasSemanaTextBlock();
+        }
+
+        private void tercaCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            localSettings.Values[Tuesday] = tercaCheckBox.IsChecked;
+            diasSemanaTextBlock();
+        }
+
+        private void quartaCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            localSettings.Values[Wednesday] = quartaCheckBox.IsChecked;
+            diasSemanaTextBlock();
+        }
+
+        private void quintaCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            localSettings.Values[Thursday] = quintaCheckBox.IsChecked;
+            diasSemanaTextBlock();
+        }
+
+        private void sextaCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            localSettings.Values[Friday] = sextaCheckBox.IsChecked;
+            diasSemanaTextBlock();
+        }
+
+        private void sabadoCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            localSettings.Values[Saturday] = sabadoCheckBox.IsChecked;
+            diasSemanaTextBlock();
+        }
+
+        private void domingoCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            localSettings.Values[Sunday] = domingoCheckBox.IsChecked;
+            diasSemanaTextBlock();
+        }
+
+        private void TimePickerFlyout_TimePicked(TimePickerFlyout sender, TimePickedEventArgs args)
         {
             horaProgramada = timerPicker.Time.Hours;
             minutoProgramado = timerPicker.Time.Minutes;
@@ -442,9 +582,74 @@ namespace Controle_Cortana
             {
                 alarmeSalvoTextBlock.Text = horaProgramada + ":" + minutoProgramado;
             }
+            timerToggle.IsOn = true;
+        }
+
+        private void escolhaDiasSemana_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            FlyoutBase.ShowAttachedFlyout(retanguloQuarto);
+        }
+
+        private void retanguloSala_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            FlyoutBase.ShowAttachedFlyout(retanguloQuarto);
+        }
+
+        private void diasSemanaAtivosTextBlock_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            FlyoutBase.ShowAttachedFlyout(retanguloQuarto);
+        }
+
+        private void TextBlock_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            FlyoutBase.ShowAttachedFlyout(retanguloSala);
+        }
+
+        private void timePickerRectangle_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            FlyoutBase.ShowAttachedFlyout(retanguloSala);
+        }
+
+        public void alarmeSalvoTextBlock_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            FlyoutBase.ShowAttachedFlyout(retanguloSala);
         }
     }
 }
+//public async void aviso()
+//{
+//    ContentDialog noWifiDialog = new ContentDialog()
+//    {
+//        Title = "Não é permitido.",
+//        Content = "Por motivos lógicos não é permitido ligar os dois botões ao mesmo tempo.",
+//        PrimaryButtonText = ":)"
+//    };
 
+//    ContentDialogResult result = await noWifiDialog.ShowAsync();
+//}
+//ThreadPoolTimer _periodicTimer = null;
+//public void gatilhoTimer(int intervaloEmsegundos)
+//{
+//    //_periodicTimer = ThreadPoolTimer.CreatePeriodicTimer(new TimerElapsedHandler(PeriodicTimerCallback), TimeSpan.FromSeconds(intervaloEmsegundos));
+//}
+//private void relogioTimerPicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
+//{
+//    horaProgramada = timerPicker.Time.Hours;
+//    minutoProgramado = timerPicker.Time.Minutes;
+
+//    localSettings.Values[horaTimerSetting] = horaProgramada;
+//    localSettings.Values[minutoTimerSetting] = minutoProgramado;
+
+
+//    if (minutoProgramado < 10)
+//    {
+//        alarmeSalvoTextBlock.Text = horaProgramada + ":0" + minutoProgramado;
+//    }
+//    else
+//    {
+//        alarmeSalvoTextBlock.Text = horaProgramada + ":" + minutoProgramado;
+//    }
+//    timerToggle.IsOn = true;
+//}
 
 
