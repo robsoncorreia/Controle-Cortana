@@ -150,7 +150,7 @@ namespace Controle_Cortana
                 domingoCheckBox.IsChecked = (bool)localSettings.Values[Sunday];
             }
             object diasSemanaAtivosTextBlockValue = localSettings.Values[diasSemanaAtivosTextBlockSetting];
-            if(diasSemanaAtivosTextBlockValue != null)
+            if (diasSemanaAtivosTextBlockValue != null)
             {
                 diasSemanaAtivosTextBlock.Text = (string)localSettings.Values[diasSemanaAtivosTextBlockSetting];
             }
@@ -174,8 +174,10 @@ namespace Controle_Cortana
                         {
                             if (flyout)
                             {
+                                toggleSwitchQuartoTextBlockFlyout.Text = "Não foi possível \rconectar com o servidor.";
+                                FlyoutBase.ShowAttachedFlyout(toggleSwitchQuarto);
                                 //await Task.Delay(1000);
-                                FlyoutBase.ShowAttachedFlyout(commandBar);
+                                //FlyoutBase.ShowAttachedFlyout(commandBar);
                             }
                         }
                     }
@@ -192,7 +194,9 @@ namespace Controle_Cortana
                         {
                             if (flyout)
                             {
-                                FlyoutBase.ShowAttachedFlyout(commandBar);
+                                toggleSwitchQuartoTextBlockFlyout.Text = "Não foi possível \rconectar com o servidor.";
+                                FlyoutBase.ShowAttachedFlyout(toggleSwitchQuarto);
+                                //FlyoutBase.ShowAttachedFlyout(commandBar);
                             }
                         }
                     }
@@ -209,7 +213,9 @@ namespace Controle_Cortana
                         {
                             if (flyout)
                             {
-                                FlyoutBase.ShowAttachedFlyout(commandBar);
+                                toggleSwitchSalaTextBlockFlyout.Text = "Não foi possível \rconectar com o servidor.";
+                                FlyoutBase.ShowAttachedFlyout(toggleSwitchSala);
+                                //FlyoutBase.ShowAttachedFlyout(commandBar);
                             }
                         }
                     }
@@ -226,7 +232,9 @@ namespace Controle_Cortana
                         {
                             if (flyout)
                             {
-                                FlyoutBase.ShowAttachedFlyout(commandBar);
+                                toggleSwitchSalaTextBlockFlyout.Text = "Não foi possível \rconectar com o servidor.";
+                                FlyoutBase.ShowAttachedFlyout(toggleSwitchSala);
+                                //FlyoutBase.ShowAttachedFlyout(commandBar);
                             }
                         }
                     }
@@ -399,40 +407,37 @@ namespace Controle_Cortana
         const string Saturday = "Saturday";
         const string Sunday = "Sunday ";
 
-        const string segundaVigula = "segunda";
-        const string tercaVirgula = "terça";
-        const string quartaVirgula = "quarto";
-        const string quintaVirgual = "quinta";
-        const string sextaVirgula = "sexta";
-        const string sabadoVirgula = "sabado";
-        const string domingoaPonto = "domingo";
+        const string segundaVigula = "Segunda";
+        const string tercaVirgula = "Terça";
+        const string quartaVirgula = "Quarto";
+        const string quintaVirgual = "Quinta";
+        const string sextaVirgula = "Sexta";
+        const string sabadoVirgula = "Sabado";
+        const string domingoaPonto = "Domingo";
 
         string semanasTextBlock;
 
         public void diasSemanaTextBlock()
         {
-            bool[] semana = {segunda,terca,quarta,quinta,sexta,sabado,domingo};
+            bool[] semana = { segunda, terca, quarta, quinta, sexta, sabado, domingo };
             bool[] diasCheckBox = {(bool)segundaCheckBox.IsChecked,(bool)tercaCheckBox.IsChecked,(bool)quartaCheckBox.IsChecked,
                                    (bool)quintaCheckBox.IsChecked,(bool)sextaCheckBox.IsChecked,(bool)sabadoCheckBox.IsChecked,(bool)domingoCheckBox.IsChecked
             };
-            string[] diasSemanaTextBox = {segundaVigula,tercaVirgula,quartaVirgula,quintaVirgual,sextaVirgula,sabadoVirgula,domingoaPonto};
+            string[] diasSemanaTextBox = { segundaVigula, tercaVirgula, quartaVirgula, quintaVirgual, sextaVirgula, sabadoVirgula, domingoaPonto };
             semanasTextBlock = "";
             for (int i = 0; i < 7; i++)
             {
                 semana[i] = diasCheckBox[i];
                 if (semana[i])
                 {
-                    if (i > 0)
-                    {
-                        semanasTextBlock += " " + diasSemanaTextBox[i];
-                    }
-                    else
-                    {
-                        semanasTextBlock += diasSemanaTextBox[i];
-                    }
-                    diasSemanaAtivosTextBlock.Text = semanasTextBlock;
-                    localSettings.Values[diasSemanaAtivosTextBlockSetting] = diasSemanaAtivosTextBlock.Text;
+                    semanasTextBlock += " " + diasSemanaTextBox[i];
                 }
+                else
+                {
+                    semanasTextBlock += "";
+                }
+                diasSemanaAtivosTextBlock.Text = semanasTextBlock;
+                localSettings.Values[diasSemanaAtivosTextBlockSetting] = diasSemanaAtivosTextBlock.Text;
             }
         }
 
@@ -461,8 +466,9 @@ namespace Controle_Cortana
                             {
                                 if (boolQuartoCheckBox)
                                 {
-                                    //ligarDesligar(true, ligarQuarto, false);
-                                    toggleSwitchQuarto.IsOn = true; 
+                                    alarmeTextBlockFlyout.Text = "Luz do quarto ligada \rno horário programado.";
+                                    Flyout.ShowAttachedFlyout(escolhaHorarioTextBlock);
+                                    toggleSwitchQuarto.IsOn = true;
                                 }
                                 if (boolSalaCheckBox)
                                 {
