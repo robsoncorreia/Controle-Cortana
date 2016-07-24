@@ -13,6 +13,7 @@ using Windows.ApplicationModel.Background;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Input;
 using Windows.System.Threading;
+using Windows.UI.Xaml.Navigation;
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace Controle_Cortana
@@ -60,7 +61,7 @@ namespace Controle_Cortana
             mostrarTimer();
             Sensor();
             Setting(500);
-            //gatilhoTimer(1);
+            gatilhoTimer(1);
         }
 
         public async void Setting(int delay)
@@ -307,7 +308,7 @@ namespace Controle_Cortana
 
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                verificarDiasSemana(horaProgramada, minutoProgramado, 0, 0);
+
                 LightSensorReading reading = e.Reading;
                 sensorDeLuz.Text = "Lux: " + string.Format("{0,5:0.00}", reading.IlluminanceInLux);
                 bool i = true;
@@ -405,7 +406,7 @@ namespace Controle_Cortana
         const string Thursday = "Thursday";
         const string Friday = "Friday";
         const string Saturday = "Saturday";
-        const string Sunday = "Sunday ";
+        const string Sunday = "Sunday";
 
         const string segundaVigula = "Segunda";
         const string tercaVirgula = "Terça";
@@ -441,46 +442,7 @@ namespace Controle_Cortana
             }
         }
 
-        public void verificarDiasSemana(int hora, int minuto, int segundo, int delay)
-        {
-            DateTime dataTempo = DateTime.Now;
-            int horaNow = dataTempo.Hour;
-            int minutoNow = dataTempo.Minute;
-            int segundoNow = dataTempo.Second;
 
-            string[] diasSemana = { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday };
-            bool[] semana = { segunda, terca, quarta, quinta, sexta, sabado, domingo };
-            bool[] diasCheckBox = {(bool)segundaCheckBox.IsChecked,(bool)tercaCheckBox.IsChecked,(bool)quartaCheckBox.IsChecked,
-                                   (bool)quintaCheckBox.IsChecked,(bool)sextaCheckBox.IsChecked,(bool)sabadoCheckBox.IsChecked,(bool)domingoCheckBox.IsChecked
-            };
-            for (int i = 0; i < 7; i++)
-            {
-                semana[i] = diasCheckBox[i];
-                if (boolTimerToggle)
-                {
-                    if (semana[i])
-                    {
-                        if (diasSemana[i] == dataTempo.DayOfWeek.ToString())
-                        {
-                            if ((horaNow == hora) && (minutoNow == minuto) && (segundoNow == segundo))
-                            {
-                                if (boolQuartoCheckBox)
-                                {
-                                    alarmeTextBlockFlyout.Text = "Luz do quarto ligada \rno horário programado.";
-                                    Flyout.ShowAttachedFlyout(escolhaHorarioTextBlock);
-                                    toggleSwitchQuarto.IsOn = true;
-                                }
-                                if (boolSalaCheckBox)
-                                {
-                                    //ligarDesligar(true, ligarSala, false);
-                                    toggleSwitchSala.IsOn = true;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
         public void timerToggle_Toggled(object sender, RoutedEventArgs e)
         {
@@ -620,42 +582,64 @@ namespace Controle_Cortana
         {
             FlyoutBase.ShowAttachedFlyout(retanguloSala);
         }
+
+
+        ThreadPoolTimer _periodicTimer = null;
+
+        public void gatilhoTimer(int intervaloEmsegundos)
+        {
+            _periodicTimer = ThreadPoolTimer.CreatePeriodicTimer(new TimerElapsedHandler(verificarDiasSemana), TimeSpan.FromSeconds(intervaloEmsegundos));
+        }
+
+        public async void verificarDiasSemana(ThreadPoolTimer timer)
+        {
+            await Dispatcher.RunAsync(CoreDispatcherPriority.High,
+            () =>
+            {
+                DateTime dataTempo = DateTime.Now;
+                int horaNow = dataTempo.Hour;
+                int minutoNow = dataTempo.Minute;
+                int segundoNow = dataTempo.Second;
+
+                string[] diasSemana = { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday };
+                bool[] semana = { segunda, terca, quarta, quinta, sexta, sabado, domingo };
+                bool[] diasCheckBox = {(bool)segundaCheckBox.IsChecked,(bool)tercaCheckBox.IsChecked,(bool)quartaCheckBox.IsChecked,
+                                       (bool)quintaCheckBox.IsChecked,(bool)sextaCheckBox.IsChecked,(bool)sabadoCheckBox.IsChecked,(bool)domingoCheckBox.IsChecked
+            };
+                for (int i = 0; i < 7; i++)
+                {
+                    semana[i] = diasCheckBox[i];
+                    if (boolTimerToggle)
+                    {
+                        if (semana[i])
+                        {
+                            if (diasSemana[i] == dataTempo.DayOfWeek.ToString())
+                            {
+                                if ((horaNow == horaProgramada) && (minutoNow == minutoProgramado) && (segundoNow == 0))
+                                {
+                                    if (boolQuartoCheckBox)
+                                    {
+                                        alarmeTextBlockFlyout.Text = "Luz do quarto ligada \rno horário programado.";
+                                        Flyout.ShowAttachedFlyout(escolhaHorarioTextBlock);
+                                        toggleSwitchQuarto.IsOn = true;
+                                    }
+                                    if (boolSalaCheckBox)
+                                    {
+                                        alarmeTextBlockFlyout.Text = "Luz da sala ligada \rno horário programado.";
+                                        Flyout.ShowAttachedFlyout(escolhaHorarioTextBlock);
+                                        toggleSwitchSala.IsOn = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
     }
 }
-//public async void aviso()
-//{
-//    ContentDialog noWifiDialog = new ContentDialog()
-//    {
-//        Title = "Não é permitido.",
-//        Content = "Por motivos lógicos não é permitido ligar os dois botões ao mesmo tempo.",
-//        PrimaryButtonText = ":)"
-//    };
-
-//    ContentDialogResult result = await noWifiDialog.ShowAsync();
-//}
-//ThreadPoolTimer _periodicTimer = null;
-//public void gatilhoTimer(int intervaloEmsegundos)
-//{
-//    //_periodicTimer = ThreadPoolTimer.CreatePeriodicTimer(new TimerElapsedHandler(PeriodicTimerCallback), TimeSpan.FromSeconds(intervaloEmsegundos));
-//}
-//private void relogioTimerPicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
-//{
-//    horaProgramada = timerPicker.Time.Hours;
-//    minutoProgramado = timerPicker.Time.Minutes;
-
-//    localSettings.Values[horaTimerSetting] = horaProgramada;
-//    localSettings.Values[minutoTimerSetting] = minutoProgramado;
 
 
-//    if (minutoProgramado < 10)
-//    {
-//        alarmeSalvoTextBlock.Text = horaProgramada + ":0" + minutoProgramado;
-//    }
-//    else
-//    {
-//        alarmeSalvoTextBlock.Text = horaProgramada + ":" + minutoProgramado;
-//    }
-//    timerToggle.IsOn = true;
-//}
+
 
 
