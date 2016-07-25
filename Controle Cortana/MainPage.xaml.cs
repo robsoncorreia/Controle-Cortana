@@ -392,14 +392,6 @@ namespace Controle_Cortana
             }
         }
 
-        bool segunda = false;
-        bool terca = false;
-        bool quarta = false;
-        bool quinta = false;
-        bool sexta = false;
-        bool sabado = false;
-        bool domingo = false;
-
         const string Monday = "Monday";
         const string Tuesday = "Tuesday";
         const string Wednesday = "Wednesday";
@@ -408,28 +400,18 @@ namespace Controle_Cortana
         const string Saturday = "Saturday";
         const string Sunday = "Sunday";
 
-        const string segundaVigula = "Segunda";
-        const string tercaVirgula = "Terça";
-        const string quartaVirgula = "Quarto";
-        const string quintaVirgual = "Quinta";
-        const string sextaVirgula = "Sexta";
-        const string sabadoVirgula = "Sabado";
-        const string domingoaPonto = "Domingo";
-
         string semanasTextBlock;
 
-        public void diasSemanaTextBlock()
+        public void diasSemanaTextBlock(string segunda, string terca, string quarta, string quinta, string sexta, string sabado, string domingo)
         {
-            bool[] semana = { segunda, terca, quarta, quinta, sexta, sabado, domingo };
             bool[] diasCheckBox = {(bool)segundaCheckBox.IsChecked,(bool)tercaCheckBox.IsChecked,(bool)quartaCheckBox.IsChecked,
                                    (bool)quintaCheckBox.IsChecked,(bool)sextaCheckBox.IsChecked,(bool)sabadoCheckBox.IsChecked,(bool)domingoCheckBox.IsChecked
             };
-            string[] diasSemanaTextBox = { segundaVigula, tercaVirgula, quartaVirgula, quintaVirgual, sextaVirgula, sabadoVirgula, domingoaPonto };
+            string[] diasSemanaTextBox = { segunda, terca, quarta, quinta, sexta, sabado, domingo};
             semanasTextBlock = "";
             for (int i = 0; i < 7; i++)
             {
-                semana[i] = diasCheckBox[i];
-                if (semana[i])
+                if (diasCheckBox[i])
                 {
                     semanasTextBlock += " " + diasSemanaTextBox[i];
                 }
@@ -441,8 +423,6 @@ namespace Controle_Cortana
                 localSettings.Values[diasSemanaAtivosTextBlockSetting] = diasSemanaAtivosTextBlock.Text;
             }
         }
-
-
 
         public void timerToggle_Toggled(object sender, RoutedEventArgs e)
         {
@@ -494,43 +474,43 @@ namespace Controle_Cortana
         private void segundaCheckBox_Click(object sender, RoutedEventArgs e)
         {
             localSettings.Values[Monday] = segundaCheckBox.IsChecked;
-            diasSemanaTextBlock();
+            diasSemanaTextBlock("seg","ter","qua","qui","sex","sab","dom");
         }
 
         private void tercaCheckBox_Click(object sender, RoutedEventArgs e)
         {
             localSettings.Values[Tuesday] = tercaCheckBox.IsChecked;
-            diasSemanaTextBlock();
+            diasSemanaTextBlock("seg", "ter", "qua", "qui", "sex", "sab", "dom");
         }
 
         private void quartaCheckBox_Click(object sender, RoutedEventArgs e)
         {
             localSettings.Values[Wednesday] = quartaCheckBox.IsChecked;
-            diasSemanaTextBlock();
+            diasSemanaTextBlock("seg", "ter", "qua", "qui", "sex", "sab", "dom");
         }
 
         private void quintaCheckBox_Click(object sender, RoutedEventArgs e)
         {
             localSettings.Values[Thursday] = quintaCheckBox.IsChecked;
-            diasSemanaTextBlock();
+            diasSemanaTextBlock("seg", "ter", "qua", "qui", "sex", "sab", "dom");
         }
 
         private void sextaCheckBox_Click(object sender, RoutedEventArgs e)
         {
             localSettings.Values[Friday] = sextaCheckBox.IsChecked;
-            diasSemanaTextBlock();
+            diasSemanaTextBlock("seg", "ter", "qua", "qui", "sex", "sab", "dom");
         }
 
         private void sabadoCheckBox_Click(object sender, RoutedEventArgs e)
         {
             localSettings.Values[Saturday] = sabadoCheckBox.IsChecked;
-            diasSemanaTextBlock();
+            diasSemanaTextBlock("seg", "ter", "qua", "qui", "sex", "sab", "dom");
         }
 
         private void domingoCheckBox_Click(object sender, RoutedEventArgs e)
         {
             localSettings.Values[Sunday] = domingoCheckBox.IsChecked;
-            diasSemanaTextBlock();
+            diasSemanaTextBlock("seg", "ter", "qua", "qui", "sex", "sab", "dom");
         }
 
         private void TimePickerFlyout_TimePicked(TimePickerFlyout sender, TimePickedEventArgs args)
@@ -602,16 +582,14 @@ namespace Controle_Cortana
                 int segundoNow = dataTempo.Second;
 
                 string[] diasSemana = { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday };
-                bool[] semana = { segunda, terca, quarta, quinta, sexta, sabado, domingo };
                 bool[] diasCheckBox = {(bool)segundaCheckBox.IsChecked,(bool)tercaCheckBox.IsChecked,(bool)quartaCheckBox.IsChecked,
                                        (bool)quintaCheckBox.IsChecked,(bool)sextaCheckBox.IsChecked,(bool)sabadoCheckBox.IsChecked,(bool)domingoCheckBox.IsChecked
             };
                 for (int i = 0; i < 7; i++)
                 {
-                    semana[i] = diasCheckBox[i];
                     if (boolTimerToggle)
                     {
-                        if (semana[i])
+                        if (diasCheckBox[i])
                         {
                             if (diasSemana[i] == dataTempo.DayOfWeek.ToString())
                             {
