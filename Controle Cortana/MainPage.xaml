@@ -23,7 +23,7 @@
     <Grid>
         <Pivot x:Name="rootPivot" Background="#FFDADADA">
 
-            <PivotItem x:Name="pivotItemIluminação" Header="Iluminação" Background="{x:Null}">
+            <PivotItem x:Name="pivotItemIluminação" Header="Timer" Background="{x:Null}">
                 <Grid>
                     <Rectangle x:Name="retanguloQuarto" Height="100" Margin="0" VerticalAlignment="Top" Fill="#FFF4F4F5" Stroke="#19000000">
                         <FlyoutBase.AttachedFlyout>

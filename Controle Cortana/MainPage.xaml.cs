@@ -20,14 +20,16 @@ namespace Controle_Cortana
 {
     public sealed partial class MainPage : Page
     {
+        public static MainPage Current;
+
+        ApplicationDataContainer localSettings = null;
+
+        public LightSensor _lightsensor;
+
         Uri liga_quarto = new Uri("http://192.168.1.2/?pin=LIGA1");
         Uri desliga_quarto = new Uri("http://192.168.1.2/?pin=DESLIGA1");
         Uri liga_sala = new Uri("http://192.168.1.2/?pin=LIGA2");
         Uri desliga_sala = new Uri("http://192.168.1.2/?pin=DESLIGA2");
-
-        ApplicationDataContainer localSettings = null;
-        HttpClient client = new HttpClient();
-        public LightSensor _lightsensor;
 
         const string settingQuarto = "quartoSetting";
         const string settingSala = "salaSetting";
@@ -52,16 +54,16 @@ namespace Controle_Cortana
 
         int horaProgramada;
         int minutoProgramado;
-        int x;
 
         public MainPage()
         {
             this.InitializeComponent();
+            Current = this;
+
             localSettings = ApplicationData.Current.LocalSettings;
             mostrarTimer();
             Sensor();
             Setting(500);
-            gatilhoTimer(1);
         }
 
         public async void Setting(int delay)
@@ -161,6 +163,8 @@ namespace Controle_Cortana
 
         public async void ligarDesligar(bool enviarSinalServidor, string comodo, bool flyout)
         {
+            HttpClient client = new HttpClient();
+
             switch (comodo)
             {
                 case ligarQuarto:
@@ -177,11 +181,10 @@ namespace Controle_Cortana
                             {
                                 toggleSwitchQuartoTextBlockFlyout.Text = "Não foi possível \rconectar com o servidor.";
                                 FlyoutBase.ShowAttachedFlyout(toggleSwitchQuarto);
-                                //await Task.Delay(1000);
-                                //FlyoutBase.ShowAttachedFlyout(commandBar);
                             }
                         }
                     }
+                    client.Dispose();
                     break;
                 case desligarQuarto:
                     localSettings.Values[settingQuarto] = false;
@@ -197,10 +200,10 @@ namespace Controle_Cortana
                             {
                                 toggleSwitchQuartoTextBlockFlyout.Text = "Não foi possível \rconectar com o servidor.";
                                 FlyoutBase.ShowAttachedFlyout(toggleSwitchQuarto);
-                                //FlyoutBase.ShowAttachedFlyout(commandBar);
                             }
                         }
                     }
+                    client.Dispose();
                     break;
                 case ligarSala:
                     localSettings.Values[settingSala] = true;
@@ -216,10 +219,10 @@ namespace Controle_Cortana
                             {
                                 toggleSwitchSalaTextBlockFlyout.Text = "Não foi possível \rconectar com o servidor.";
                                 FlyoutBase.ShowAttachedFlyout(toggleSwitchSala);
-                                //FlyoutBase.ShowAttachedFlyout(commandBar);
                             }
                         }
                     }
+                    client.Dispose();
                     break;
                 case desligarSala:
                     localSettings.Values[settingSala] = false;
@@ -235,16 +238,17 @@ namespace Controle_Cortana
                             {
                                 toggleSwitchSalaTextBlockFlyout.Text = "Não foi possível \rconectar com o servidor.";
                                 FlyoutBase.ShowAttachedFlyout(toggleSwitchSala);
-                                //FlyoutBase.ShowAttachedFlyout(commandBar);
                             }
                         }
                     }
+                    client.Dispose();
                     break;
             }
         }
 
         public void toggleSwitchQuarto_Toggled(object sender, RoutedEventArgs e)
         {
+            ToggleSwitch toggleSwitchQuarto = sender as ToggleSwitch;
             if (toggleSwitchQuarto != null)
             {
                 if (toggleSwitchQuarto.IsOn)
@@ -260,6 +264,7 @@ namespace Controle_Cortana
 
         public void toggleSwitchSala_Toggled(object sender, RoutedEventArgs e)
         {
+            ToggleSwitch toggleSwitchSala = sender as ToggleSwitch;
             if (toggleSwitchSala != null)
             {
                 if (toggleSwitchSala.IsOn)
@@ -275,6 +280,7 @@ namespace Controle_Cortana
 
         public void toggleAutomaticoQuarto_Toggled(object sender, RoutedEventArgs e)
         {
+            ToggleSwitch toggleAutomaticoQuarto = sender as ToggleSwitch;
             if (toggleAutomaticoQuarto != null)
             {
                 if (toggleAutomaticoQuarto.IsOn)
@@ -290,6 +296,7 @@ namespace Controle_Cortana
 
         public void toggleAutomaticoSala_Toggled(object sender, RoutedEventArgs e)
         {
+            ToggleSwitch toggleAutomaticoSala = sender as ToggleSwitch;
             if (toggleAutomaticoSala != null)
             {
                 if (toggleAutomaticoSala.IsOn)
@@ -308,48 +315,61 @@ namespace Controle_Cortana
 
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-
                 LightSensorReading reading = e.Reading;
                 sensorDeLuz.Text = "Lux: " + string.Format("{0,5:0.00}", reading.IlluminanceInLux);
-                bool i = true;
-                if (travaInicial)
+                if (reading.IlluminanceInLux < 2)
                 {
-                    if (rootPivot.SelectedIndex == 1)
-                    {
-                        if (x < 1)
-                        {
-                            x++;
-                            i = false;
-                        }
-                        else
-                        {
+                    ligarAutomaticamenteSensor(500);
+                }
+            });
+        }
 
-                            i = true;
-                        }
+        bool travaRootPivot = true;
+        bool travaInicialPivot = true;
+
+        private async void ligarAutomaticamenteSensor(int delay)
+        {
+            if (rootPivot.SelectedIndex == 0)
+            {
+                travaRootPivot = true;
+            }
+            if ((rootPivot.SelectedIndex == 1 && travaRootPivot) || travaInicialPivot)
+            {
+                if (travaInicialPivot)
+                {
+                    await Task.Delay(delay);
+                }
+                travaInicialPivot = false;
+                travaRootPivot = false;
+                if (toggleAutomaticoQuarto.IsOn)
+                {
+                    if (toggleSwitchQuarto.IsOn)
+                    {
+                        ligarDesligar(true, ligarQuarto, true);
                     }
                     else
                     {
-                        x = 0;
+                        toggleSwitchQuarto.IsOn = true;
                     }
                 }
-                else
+                if (toggleAutomaticoSala.IsOn)
                 {
-                    i = false;
+                    if(toggleSwitchSala.IsOn)
+                    {
+                        ligarDesligar(true, ligarSala, true);
+                    }
+                    else
+                    {
+                        toggleSwitchSala.IsOn = true;
+                    }               
                 }
-                if (i == false && toggleAutomaticoQuarto.IsOn && reading.IlluminanceInLux < 2)
-                {
-                    toggleSwitchQuarto.IsOn = true;
-                }
-                if (i == false && toggleAutomaticoSala.IsOn && reading.IlluminanceInLux < 2)
-                {
-                    toggleSwitchSala.IsOn = true;
-                }
-            });
+            }
         }
 
         public void Sensor()
         {
             InitializeComponent();
+
             _lightsensor = LightSensor.GetDefault(); // Get the default light sensor object
 
             // Assign an event handler for the ALS reading-changed event
@@ -407,7 +427,7 @@ namespace Controle_Cortana
             bool[] diasCheckBox = {(bool)segundaCheckBox.IsChecked,(bool)tercaCheckBox.IsChecked,(bool)quartaCheckBox.IsChecked,
                                    (bool)quintaCheckBox.IsChecked,(bool)sextaCheckBox.IsChecked,(bool)sabadoCheckBox.IsChecked,(bool)domingoCheckBox.IsChecked
             };
-            string[] diasSemanaTextBox = { segunda, terca, quarta, quinta, sexta, sabado, domingo};
+            string[] diasSemanaTextBox = { segunda, terca, quarta, quinta, sexta, sabado, domingo };
             semanasTextBlock = "";
             for (int i = 0; i < 7; i++)
             {
@@ -422,12 +442,6 @@ namespace Controle_Cortana
                 diasSemanaAtivosTextBlock.Text = semanasTextBlock;
                 localSettings.Values[diasSemanaAtivosTextBlockSetting] = diasSemanaAtivosTextBlock.Text;
             }
-        }
-
-        public void timerToggle_Toggled(object sender, RoutedEventArgs e)
-        {
-            localSettings.Values[timerToggleSetting] = timerToggle.IsOn;
-            boolTimerToggle = timerToggle.IsOn;
         }
 
         public void quartoCheckBox_Click(object sender, RoutedEventArgs e)
@@ -474,7 +488,7 @@ namespace Controle_Cortana
         private void segundaCheckBox_Click(object sender, RoutedEventArgs e)
         {
             localSettings.Values[Monday] = segundaCheckBox.IsChecked;
-            diasSemanaTextBlock("seg","ter","qua","qui","sex","sab","dom");
+            diasSemanaTextBlock("seg", "ter", "qua", "qui", "sex", "sab", "dom");
         }
 
         private void tercaCheckBox_Click(object sender, RoutedEventArgs e)
@@ -558,17 +572,18 @@ namespace Controle_Cortana
             FlyoutBase.ShowAttachedFlyout(retanguloSala);
         }
 
-        public void alarmeSalvoTextBlock_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        public void alarmeSalvoTextBlock_Tapped(object sender, TappedRoutedEventArgs e)
         {
             FlyoutBase.ShowAttachedFlyout(retanguloSala);
         }
 
-
         ThreadPoolTimer _periodicTimer = null;
 
-        public void gatilhoTimer(int intervaloEmsegundos)
+        public void timerToggle_Toggled(object sender, RoutedEventArgs e)
         {
-            _periodicTimer = ThreadPoolTimer.CreatePeriodicTimer(new TimerElapsedHandler(verificarDiasSemana), TimeSpan.FromSeconds(intervaloEmsegundos));
+            _periodicTimer = ThreadPoolTimer.CreatePeriodicTimer(new TimerElapsedHandler(verificarDiasSemana), TimeSpan.FromSeconds(1));
+            localSettings.Values[timerToggleSetting] = timerToggle.IsOn;
+            boolTimerToggle = timerToggle.IsOn;
         }
 
         public async void verificarDiasSemana(ThreadPoolTimer timer)

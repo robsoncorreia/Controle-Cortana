@@ -11,12 +11,14 @@ namespace SegundoPlano
     public sealed class segundoPlano : IBackgroundTask
     {
         Uri liga_quarto = new Uri("http://192.168.1.2/?pin=LIGA1");
-        HttpClient client = new HttpClient();
- 
+
+
         public async void Run(IBackgroundTaskInstance taskInstance)
         {
-             await client.GetStringAsync(liga_quarto);
+            HttpClient client = new HttpClient();
+            await client.GetStringAsync(liga_quarto);
+            client.Dispose();
         }
     }
-  
+
 }
