@@ -429,8 +429,10 @@ namespace Controle_Cortana
             };
             string[] diasSemanaTextBox = { segunda, terca, quarta, quinta, sexta, sabado, domingo };
             semanasTextBlock = "";
-            for (int i = 0; i < 7; i++)
+            
+            for (int i = 0; i < diasCheckBox.Length; i++)
             {
+                int x = diasCheckBox.Rank;
                 if (diasCheckBox[i])
                 {
                     semanasTextBlock += " " + diasSemanaTextBox[i];
@@ -600,7 +602,7 @@ namespace Controle_Cortana
                 bool[] diasCheckBox = {(bool)segundaCheckBox.IsChecked,(bool)tercaCheckBox.IsChecked,(bool)quartaCheckBox.IsChecked,
                                        (bool)quintaCheckBox.IsChecked,(bool)sextaCheckBox.IsChecked,(bool)sabadoCheckBox.IsChecked,(bool)domingoCheckBox.IsChecked
             };
-                for (int i = 0; i < 7; i++)
+                for (int i = 0; i < diasCheckBox.Length; i++)
                 {
                     if (boolTimerToggle)
                     {
@@ -628,6 +630,12 @@ namespace Controle_Cortana
                     }
                 }
             });
+        }
+
+        public void criarNovosBotoes()
+        {
+            
+         
         }
     }
 }

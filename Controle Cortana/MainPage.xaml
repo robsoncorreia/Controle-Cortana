@@ -28,7 +28,7 @@
                     <Rectangle x:Name="retanguloQuarto" Height="100" Margin="0" VerticalAlignment="Top" Fill="#FFF4F4F5" Stroke="#19000000">
                         <FlyoutBase.AttachedFlyout>
                             <Flyout>
-                                <ListBox x:Name="diaSemanaListBox" BorderThickness="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,-10,0,0">
+                                <ListBox x:Name="diaSemanaListBox" BorderThickness="2" Margin="-12" RequestedTheme="Dark" BorderBrush="Red" Width="180" Padding="2">
                                     <CheckBox x:Name="segundaCheckBox" Content="Segunda" Click="segundaCheckBox_Click"/>
                                     <CheckBox x:Name="tercaCheckBox" Content="Terça" Click="tercaCheckBox_Click" Margin="0,-20,0,0"/>
                                     <CheckBox x:Name="quartaCheckBox" Content="Quarto" Click="quartaCheckBox_Click" Margin="0,-20,0,0"/>
@@ -45,17 +45,21 @@
                             <TimePickerFlyout x:Name="timerPicker" Placement="Top" ClockIdentifier="24HourClock" TimePicked="TimePickerFlyout_TimePicked"/>
                         </FlyoutBase.AttachedFlyout>
                     </Rectangle>
-                    <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" HorizontalAlignment="Left" Margin="26,24,0,0" VerticalAlignment="Top" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" FontSize="15">
+                    <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" HorizontalAlignment="Left" Margin="26,24,0,0" VerticalAlignment="Top" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" FontSize="15" RenderTransformOrigin="2,2">
                         <FlyoutBase.AttachedFlyout>
-                            <Flyout Placement="Left">
-                                <TextBlock x:Name="toggleSwitchQuartoTextBlockFlyout"/>
+                            <Flyout Placement="Right">
+                                <Grid Background="Black" BorderBrush="Red" BorderThickness="2" Margin="-12" Padding="10">
+                                    <TextBlock x:Name="toggleSwitchQuartoTextBlockFlyout" RequestedTheme="Dark"/>
+                                </Grid>
                             </Flyout>
                         </FlyoutBase.AttachedFlyout>
                     </ToggleSwitch>
-                    <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" HorizontalAlignment="Left" Margin="178,24,0,0" VerticalAlignment="Top" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchSala_Toggled" FontSize="15" Canvas.ZIndex="1" CacheMode="BitmapCache">
+                    <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" HorizontalAlignment="Left" Margin="178,24,0,0" VerticalAlignment="Top" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchSala_Toggled" FontSize="15" Canvas.ZIndex="1">
                         <FlyoutBase.AttachedFlyout>
                             <Flyout>
-                                <TextBlock x:Name="toggleSwitchSalaTextBlockFlyout"/>
+                                <Grid RequestedTheme="Dark" Background="Black" BorderBrush="Red" BorderThickness="2" Margin="-12" Padding="10">
+                                    <TextBlock x:Name="toggleSwitchSalaTextBlockFlyout"/>
+                                </Grid>
                             </Flyout>
                         </FlyoutBase.AttachedFlyout>
                     </ToggleSwitch>
@@ -66,7 +70,9 @@
                     <TextBlock x:Name="escolhaHorarioTextBlock" Text="Escolha o horário:" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,223,0,0" Canvas.ZIndex="1" Tapped="TextBlock_Tapped" FontWeight="Bold">
                         <FlyoutBase.AttachedFlyout>
                             <Flyout>
-                                    <TextBlock x:Name="alarmeTextBlockFlyout" Text="" CacheMode="BitmapCache" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                                <Grid RequestedTheme="Dark" Background="Black" BorderBrush="Red" BorderThickness="2" Margin="-12" Padding="10">
+                                     <TextBlock x:Name="alarmeTextBlockFlyout" Text="" CacheMode="BitmapCache" HorizontalAlignment="Center" TextWrapping="Wrap" Canvas.ZIndex="1"/>
+                                </Grid>
                             </Flyout>
                         </FlyoutBase.AttachedFlyout>
                     </TextBlock>
