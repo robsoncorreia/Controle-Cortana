@@ -7,96 +7,115 @@
     xmlns:Net="using:System.Net"
     x:Class="Controle_Cortana.MainPage"
     mc:Ignorable="d">
+    <Page.Background>
+        <SolidColorBrush Color="{ThemeResource SystemBaseHighColor}"/>
+    </Page.Background>
     <Page.BottomAppBar>
-        <CommandBar x:Name="commandBar" ClosedDisplayMode="Minimal" IsTextScaleFactorEnabled="False">
-            <FlyoutBase.AttachedFlyout>
-                <Flyout>
-                    <TextBlock TextWrapping="Wrap" Text="Não foi possivel conectar com o servidor."  />
-                </Flyout>
-            </FlyoutBase.AttachedFlyout>
-            <AppBarButton x:Name="frenteAppBarButton" Icon="Back" VerticalAlignment="Top" Width="48" Height="48" Click="frenteAppBarButton_Click" Visibility="Collapsed"/>
-            <AppBarSeparator HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0" Visibility="Collapsed"/>
-            <AppBarButton x:Name="voltaAppBarButton" Icon="Forward" Width="48" Height="48" VerticalAlignment="Top" Margin="0" Click="voltaAppBarButton_Click" HorizontalAlignment="Left" Visibility="Collapsed"/>
-            <AppBarButton Icon="Edit" VerticalAlignment="Top" Width="44" Height="44" HorizontalAlignment="Left" Click="AppBarButton_Click" Label=""/>
+        <CommandBar x:Name="commandBar" IsTextScaleFactorEnabled="False">
+            <AppBarButton Icon="View" Click="AppBarButton_Click_1" />
         </CommandBar>
     </Page.BottomAppBar>
-    <Grid>
-        <Pivot x:Name="rootPivot" Background="#FFDADADA">
+    <Pivot x:Name="rootPivot">
+        <Pivot.Background>
+            <SolidColorBrush Color="{ThemeResource SystemChromeMediumLowColor}"/>
+        </Pivot.Background>
+        <PivotItem x:Name="pivotItemIluminação" Header="Timer" Margin="0">
+            <Grid Padding="20,0,20,-1" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="120"/>
+                    <RowDefinition Height="78"/>
+                    <RowDefinition Height="78"/>
+                    <RowDefinition Height="78"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
 
-            <PivotItem x:Name="pivotItemIluminação" Header="Timer" Background="{x:Null}">
-                <Grid>
-                    <Rectangle x:Name="retanguloQuarto" Height="100" Margin="0" VerticalAlignment="Top" Fill="#FFF4F4F5" Stroke="#19000000">
+                <TextBlock Tag="titulos" Text="Interruptores" FontSize="30" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" Margin="10,50,0,0" VerticalAlignment="Top" MinWidth="0" >
+                    <FlyoutBase.AttachedFlyout>
+                        <Flyout>
+                            <TextBlock x:Name="toggleSwitchQuartoTextBlockFlyout"/>
+                        </Flyout>
+                    </FlyoutBase.AttachedFlyout>
+                </ToggleSwitch>
+                <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchSala_Toggled" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="140,50,0,0" MinWidth="0">
+                    <FlyoutBase.AttachedFlyout>
+                        <Flyout>
+                            <TextBlock x:Name="toggleSwitchSalaTextBlockFlyout"/>
+                        </Flyout>
+                    </FlyoutBase.AttachedFlyout>
+                </ToggleSwitch>
+
+                <TextBlock x:Name="timerTextBlock" Text="Timer" FontSize="30" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="1">
+                    <FlyoutBase.AttachedFlyout>
+                        <TimePickerFlyout x:Name="timerPicker" Placement="Top" ClockIdentifier="24HourClock" TimePicked="TimePickerFlyout_TimePicked"/>
+                    </FlyoutBase.AttachedFlyout>
+                </TextBlock>
+                <ToggleSwitch x:Name="timerToggle" OffContent="" OnContent="" Toggled="timerToggle_Toggled" Margin="100,0,0,6" VerticalAlignment="Bottom" MinWidth="0" Grid.RowSpan="2" />
+
+                <TextBlock x:Name="escolhaHorarioTextBlock" Text="Escolha o horário:" Tapped="TextBlock_Tapped" Margin="0,4,0,0" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <FlyoutBase.AttachedFlyout>
                             <Flyout>
-                                <ListBox x:Name="diaSemanaListBox" BorderThickness="2" Margin="-12" RequestedTheme="Dark" BorderBrush="Red" Width="180" Padding="2">
-                                    <CheckBox x:Name="segundaCheckBox" Content="Segunda" Click="segundaCheckBox_Click"/>
-                                    <CheckBox x:Name="tercaCheckBox" Content="Terça" Click="tercaCheckBox_Click" Margin="0,-20,0,0"/>
-                                    <CheckBox x:Name="quartaCheckBox" Content="Quarto" Click="quartaCheckBox_Click" Margin="0,-20,0,0"/>
-                                    <CheckBox x:Name="quintaCheckBox" Content="Quinta" Click="quintaCheckBox_Click" Margin="0,-20,0,0"/>
-                                    <CheckBox x:Name="sextaCheckBox" Content="Sexta" Click="sextaCheckBox_Click" Margin="0,-20,0,0"/>
-                                    <CheckBox x:Name="sabadoCheckBox" Content="Sabado" Click="sabadoCheckBox_Click" Margin="0,-20,0,0"/>
-                                    <CheckBox x:Name="domingoCheckBox" Content="Domingo" Click="domingoCheckBox_Click" Margin="0,-20,0,0"/>
-                                </ListBox>
-                            </Flyout>
-                        </FlyoutBase.AttachedFlyout>
-                    </Rectangle>
-                    <Rectangle x:Name="retanguloSala" Fill="#FFF4F4F5" Height="100" Margin="0,100,0,0" VerticalAlignment="Top" Stroke="#19000000" Tapped="retanguloSala_Tapped">
-                        <FlyoutBase.AttachedFlyout>
-                            <TimePickerFlyout x:Name="timerPicker" Placement="Top" ClockIdentifier="24HourClock" TimePicked="TimePickerFlyout_TimePicked"/>
-                        </FlyoutBase.AttachedFlyout>
-                    </Rectangle>
-                    <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" HorizontalAlignment="Left" Margin="26,24,0,0" VerticalAlignment="Top" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" FontSize="15" RenderTransformOrigin="2,2">
-                        <FlyoutBase.AttachedFlyout>
-                            <Flyout Placement="Right">
-                                <Grid Background="Black" BorderBrush="Red" BorderThickness="2" Margin="-12" Padding="10">
-                                    <TextBlock x:Name="toggleSwitchQuartoTextBlockFlyout" RequestedTheme="Dark"/>
-                                </Grid>
-                            </Flyout>
-                        </FlyoutBase.AttachedFlyout>
-                    </ToggleSwitch>
-                    <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" HorizontalAlignment="Left" Margin="178,24,0,0" VerticalAlignment="Top" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchSala_Toggled" FontSize="15" Canvas.ZIndex="1">
-                        <FlyoutBase.AttachedFlyout>
-                            <Flyout>
-                                <Grid RequestedTheme="Dark" Background="Black" BorderBrush="Red" BorderThickness="2" Margin="-12" Padding="10">
-                                    <TextBlock x:Name="toggleSwitchSalaTextBlockFlyout"/>
-                                </Grid>
-                            </Flyout>
-                        </FlyoutBase.AttachedFlyout>
-                    </ToggleSwitch>
-                    <Rectangle x:Name="timePickerRectangle" Fill="#FFF4F4F5" Height="100" Margin="0,200,0,0" VerticalAlignment="Top"  Stroke="#19000000" Tapped="timePickerRectangle_Tapped"/>
-                    <ToggleSwitch x:Name="timerToggle" Margin="110,245,0,0" VerticalAlignment="Top" OffContent="" OnContent="" Toggled="timerToggle_Toggled" FontSize="16" Header=""/>
-                    <TextBlock x:Name="alarmeSalvoTextBlock" Text="Alarme" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="26,246,0,0" FontWeight="Bold" Tapped="alarmeSalvoTextBlock_Tapped"/>
-                    <Rectangle x:Name="autoComodosRectangle" Fill="#FFF4F4F5" Height="114" Margin="0,300,0,0" VerticalAlignment="Top"  Stroke="#19000000"/>
-                    <TextBlock x:Name="escolhaHorarioTextBlock" Text="Escolha o horário:" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,223,0,0" Canvas.ZIndex="1" Tapped="TextBlock_Tapped" FontWeight="Bold">
-                        <FlyoutBase.AttachedFlyout>
-                            <Flyout>
-                                <Grid RequestedTheme="Dark" Background="Black" BorderBrush="Red" BorderThickness="2" Margin="-12" Padding="10">
-                                     <TextBlock x:Name="alarmeTextBlockFlyout" Text="" CacheMode="BitmapCache" HorizontalAlignment="Center" TextWrapping="Wrap" Canvas.ZIndex="1"/>
-                                </Grid>
+                                    <TextBlock x:Name="alarmeTextBlockFlyout" Text="" HorizontalAlignment="Center"/>
                             </Flyout>
                         </FlyoutBase.AttachedFlyout>
                     </TextBlock>
-                    <CheckBox x:Name="quartoCheckBox" VerticalAlignment="Top" Margin="24,356,0,0" Canvas.ZIndex="1" Content="Quarto" FontSize="16" HorizontalAlignment="Left" Click="quartoCheckBox_Click"/>
-                    <CheckBox x:Name="salaCheckBox" Margin="150,356,0,0" VerticalAlignment="Top" Content="Sala" FontSize="16" HorizontalAlignment="Left" Click="salaCheckBox_Click"/>
-                    <TextBlock Text="Quais luzes seram automatizados:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="18,324,0,0" FontSize="15" FontWeight="Bold"/>
-                    <TextBlock x:Name="diasSemanaAtivosTextBlock" HorizontalAlignment="Left" Margin="20,144,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Tapped="diasSemanaAtivosTextBlock_Tapped" Foreground="#FF004600"/>
-                    <TextBlock x:Name="escolhaDiasSemana" HorizontalAlignment="Left" Margin="20,120,0,0" TextWrapping="Wrap" Text="Escolha os dias da semana:" VerticalAlignment="Top" Tapped="escolhaDiasSemana_Tapped" FontWeight="Bold"/>
-                </Grid>
-            </PivotItem>
-            <PivotItem x:Name="pivotItemSensor" Header="Sensor de Luz" Background="{x:Null}">
-                <Grid>
-                    <Rectangle Fill="#FFF4F4F5" Height="100" Margin="0,30" VerticalAlignment="Top"  Stroke="#19000000"/>
-                    <Rectangle x:Name="retangudoAutomaticoQuarto" Fill="#FFF4F4F5" Height="100" Margin="0,132,0,0" VerticalAlignment="Top"  Stroke="#19000000"/>
-                    <Rectangle x:Name="retangudoAutomaticoSala" Fill="#FFF4F4F5" Height="100" Margin="0,234,0,0" VerticalAlignment="Top"  Stroke="#19000000"/>
-                    <TextBlock x:Name="textoSensorLuz" HorizontalAlignment="Left" Margin="30,44,0,70" TextWrapping="Wrap" Text="Sensor de Luminosidade" VerticalAlignment="Top" FontSize="16"/>
-                    <TextBlock x:Name="sensorDeLuz" HorizontalAlignment="Left" Margin="30,80,0,70" TextWrapping="Wrap" Text="Sensor de Luminosidade" VerticalAlignment="Top" FontSize="16"/>
-                    <ToggleSwitch x:Name="toggleAutomaticoSala" Header="Sala Auto." FontSize="16" HorizontalAlignment="Left" Margin="30,249,0,0" VerticalAlignment="Top"  OffContent="Desl." OnContent="Liga" Toggled="toggleAutomaticoSala_Toggled"/>
-                    <ToggleSwitch x:Name="toggleAutomaticoQuarto" Header="Quarto Auto." FontSize="16" HorizontalAlignment="Left" Margin="30,150,0,0" VerticalAlignment="Top"  OffContent="Desl." OnContent="Liga" Toggled="toggleAutomaticoQuarto_Toggled" />
-                </Grid>
-            </PivotItem>
-            <PivotItem x:Name="consumoPivotItem" Header="Consumo" Background="{x:Null}">
-                <Grid/>
-            </PivotItem>
-        </Pivot>
-    </Grid>
+                <TextBlock x:Name="alarmeSalvoTextBlock" Text="Alarme" FontSize="24" FontWeight="Bold" Tapped="alarmeSalvoTextBlock_Tapped" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="14,28,0,0" Grid.Row="2"/>
+
+                <TextBlock Text="Quais luzes seram automatizados:" Margin="0" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <CheckBox x:Name="quartoCheckBox" Content="Quarto" Click="quartoCheckBox_Click" Margin="10,10,0,0" VerticalAlignment="Top" BorderThickness="0,20,0,0" Grid.Row="3" MinWidth="0" MinHeight="0"/>
+                <CheckBox x:Name="salaCheckBox" Content="Sala"  Click="salaCheckBox_Click" VerticalAlignment="Top" Margin="120,10,0,0" HorizontalAlignment="Left" BorderThickness="0,20,0,0" Grid.Row="3" MinWidth="0" MinHeight="0"/>
+
+                <TextBlock Text="Escolha os dias da semana:" Margin="0" Grid.RowSpan="5" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="4"/>
+                <TextBlock x:Name="diasSemanaAtivosTextBlock" Text="TextBlock" Tapped="diasSemanaAtivosTextBlock_Tapped" Margin="11,30,0,0" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <FlyoutBase.AttachedFlyout>
+                            <Flyout>
+                                <ListView x:Name="diaSemanaListBox" SelectionMode="None">
+                                    <CheckBox x:Name="segundaCheckBox" Content="Segunda" Click="segundaCheckBox_Click"/>
+                                    <CheckBox x:Name="tercaCheckBox" Content="Terça" Click="tercaCheckBox_Click"/>
+                                    <CheckBox x:Name="quartaCheckBox" Content="Quarto" Click="quartaCheckBox_Click"/>
+                                    <CheckBox x:Name="quintaCheckBox" Content="Quinta" Click="quintaCheckBox_Click"/>
+                                    <CheckBox x:Name="sextaCheckBox" Content="Sexta" Click="sextaCheckBox_Click"/>
+                                    <CheckBox x:Name="sabadoCheckBox" Content="Sabado" Click="sabadoCheckBox_Click"/>
+                                    <CheckBox x:Name="domingoCheckBox" Content="Domingo" Click="domingoCheckBox_Click"/>
+                                </ListView>
+                            </Flyout>
+                        </FlyoutBase.AttachedFlyout>
+                </TextBlock>
+                <ToggleSwitch x:Name="todosToggleSwitch" Header="" HorizontalAlignment="Left" Margin="200,4,0,0" VerticalAlignment="Top" OnContent="" OffContent="" MinWidth="0" Toggled="todosToggleSwitch_Toggled"/>
+
+                <!--<Button Content="Add Rectangle" Click="AddButton_Click"/>
+                <Button Content="Remove Rectangle" Click="RemoveButton_Click"/>-->
+
+                <!--<ItemsControl Grid.Row="1" x:Name="rectangleItems">
+                    <ItemsControl.ItemContainerTransitions>
+                        <TransitionCollection>
+
+                            -->
+                <!-- You use AddDeleteThemeTransition 
+                 in panels like in a WrapGrid. -->
+                <!--
+                            <AddDeleteThemeTransition/>
+                        </TransitionCollection>
+                    </ItemsControl.ItemContainerTransitions>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapGrid Height="400"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                </ItemsControl>-->
+            </Grid>
+        </PivotItem>
+        <PivotItem x:Name="pivotItemSensor" Header="Sensor de Luz" Background="{x:Null}">
+            <Grid>
+                <TextBlock x:Name="textoSensorLuz" HorizontalAlignment="Left" Margin="30,44,0,70" TextWrapping="Wrap" Text="Sensor de Luminosidade" VerticalAlignment="Top" FontSize="16"/>
+                <TextBlock x:Name="sensorDeLuz" HorizontalAlignment="Left" Margin="30,80,0,70" TextWrapping="Wrap" Text="Sensor de Luminosidade" VerticalAlignment="Top" FontSize="16"/>
+                <ToggleSwitch x:Name="toggleAutomaticoSala" Header="Sala Auto." FontSize="16" HorizontalAlignment="Left" Margin="30,249,0,0" VerticalAlignment="Top"  OffContent="Desl." OnContent="Liga" Toggled="toggleAutomaticoSala_Toggled"/>
+                <ToggleSwitch x:Name="toggleAutomaticoQuarto" Header="Quarto Auto." FontSize="16" HorizontalAlignment="Left" Margin="30,150,0,0" VerticalAlignment="Top"  OffContent="Desl." OnContent="Liga" Toggled="toggleAutomaticoQuarto_Toggled" />
+            </Grid>
+        </PivotItem>
+        <PivotItem x:Name="consumoPivotItem" Header="Consumo" Background="{x:Null}">
+            <Grid/>
+        </PivotItem>
+    </Pivot>
 </Page>

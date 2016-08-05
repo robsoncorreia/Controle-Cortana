@@ -14,6 +14,10 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Input;
 using Windows.System.Threading;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.ViewManagement;
+using Windows.UI;
+using Windows.UI.Xaml.Shapes;
+using Windows.UI.Xaml.Media;
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace Controle_Cortana
@@ -30,6 +34,8 @@ namespace Controle_Cortana
         Uri desliga_quarto = new Uri("http://192.168.1.2/?pin=DESLIGA1");
         Uri liga_sala = new Uri("http://192.168.1.2/?pin=LIGA2");
         Uri desliga_sala = new Uri("http://192.168.1.2/?pin=DESLIGA2");
+        Uri LIGATODOSURI = new Uri("http://192.168.1.2/?pin=LIGA3");
+        Uri DESLIGATODOSURI = new Uri("http://192.168.1.2/?pin=DESLIGA3");
 
         const string settingQuarto = "quartoSetting";
         const string settingSala = "salaSetting";
@@ -46,6 +52,9 @@ namespace Controle_Cortana
         const string desligarQuarto = "desligarQuarto";
         const string ligarSala = "ligarSala";
         const string desligarSala = "desligarSala";
+        const string LIGARTODOS = "LIGARTODOS";
+        const string DESLIGARTODOS = "DESLIGARTODOS";
+        const string TODOSSETTINGS = "LIGARTODOSSETTINGS";
 
         bool boolTimerToggle = false;
         bool boolQuartoCheckBox = false;
@@ -58,8 +67,10 @@ namespace Controle_Cortana
         public MainPage()
         {
             this.InitializeComponent();
-            Current = this;
 
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.BackgroundColor = Colors.DarkBlue;
+            Current = this;
             localSettings = ApplicationData.Current.LocalSettings;
             mostrarTimer();
             Sensor();
@@ -157,6 +168,11 @@ namespace Controle_Cortana
             {
                 diasSemanaAtivosTextBlock.Text = (string)localSettings.Values[diasSemanaAtivosTextBlockSetting];
             }
+            object todosToggleValue = localSettings.Values[TODOSSETTINGS];
+            if (todosToggleValue != null)
+            {
+                todosToggleSwitch.IsOn = (bool)localSettings.Values[TODOSSETTINGS];
+            }
             await Task.Delay(delay);
             travaInicial = true;
         }
@@ -231,6 +247,46 @@ namespace Controle_Cortana
                         try
                         {
                             var result = await client.GetStringAsync(desliga_sala);
+                        }
+                        catch
+                        {
+                            if (flyout)
+                            {
+                                toggleSwitchSalaTextBlockFlyout.Text = "Não foi possível \rconectar com o servidor.";
+                                FlyoutBase.ShowAttachedFlyout(toggleSwitchSala);
+                            }
+                        }
+                    }
+                    client.Dispose();
+                    break;
+
+                case LIGARTODOS:
+                    localSettings.Values[TODOSSETTINGS] = false;
+                    if (enviarSinalServidor)
+                    {
+                        try
+                        {
+                            var result = await client.GetStringAsync(LIGATODOSURI);
+                        }
+                        catch
+                        {
+                            if (flyout)
+                            {
+                                toggleSwitchSalaTextBlockFlyout.Text = "Não foi possível \rconectar com o servidor.";
+                                FlyoutBase.ShowAttachedFlyout(toggleSwitchSala);
+                            }
+                        }
+                    }
+                    client.Dispose();
+                    break;
+
+                case DESLIGARTODOS:
+                    localSettings.Values[TODOSSETTINGS] = false;
+                    if (enviarSinalServidor)
+                    {
+                        try
+                        {
+                            var result = await client.GetStringAsync(DESLIGATODOSURI);
                         }
                         catch
                         {
@@ -354,14 +410,14 @@ namespace Controle_Cortana
                 }
                 if (toggleAutomaticoSala.IsOn)
                 {
-                    if(toggleSwitchSala.IsOn)
+                    if (toggleSwitchSala.IsOn)
                     {
                         ligarDesligar(true, ligarSala, true);
                     }
                     else
                     {
                         toggleSwitchSala.IsOn = true;
-                    }               
+                    }
                 }
             }
         }
@@ -387,9 +443,7 @@ namespace Controle_Cortana
             {
                 //pivotItemSensor.Visibility = Visibility.Collapsed;
                 toggleAutomaticoQuarto.Visibility = Visibility.Collapsed;
-                retangudoAutomaticoQuarto.Visibility = Visibility.Collapsed;
                 toggleAutomaticoSala.Visibility = Visibility.Collapsed;
-                retangudoAutomaticoSala.Visibility = Visibility.Collapsed;
                 textoSensorLuz.Text = "😁";
                 sensorDeLuz.Text = "Dispositivo não possui sensor.";
             }
@@ -429,7 +483,7 @@ namespace Controle_Cortana
             };
             string[] diasSemanaTextBox = { segunda, terca, quarta, quinta, sexta, sabado, domingo };
             semanasTextBlock = "";
-            
+
             for (int i = 0; i < diasCheckBox.Length; i++)
             {
                 int x = diasCheckBox.Rank;
@@ -480,11 +534,6 @@ namespace Controle_Cortana
             {
                 rootPivot.SelectedIndex = 0;
             }
-        }
-
-        public void AppBarButton_Click(object sender, RoutedEventArgs e)
-        {
-            FlyoutBase.ShowAttachedFlyout(retanguloQuarto);
         }
 
         private void segundaCheckBox_Click(object sender, RoutedEventArgs e)
@@ -551,32 +600,22 @@ namespace Controle_Cortana
 
         private void escolhaDiasSemana_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            FlyoutBase.ShowAttachedFlyout(retanguloQuarto);
-        }
-
-        private void retanguloSala_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            FlyoutBase.ShowAttachedFlyout(retanguloQuarto);
+            FlyoutBase.ShowAttachedFlyout(diasSemanaAtivosTextBlock);
         }
 
         private void diasSemanaAtivosTextBlock_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            FlyoutBase.ShowAttachedFlyout(retanguloQuarto);
+            FlyoutBase.ShowAttachedFlyout(diasSemanaAtivosTextBlock);
         }
 
         private void TextBlock_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            FlyoutBase.ShowAttachedFlyout(retanguloSala);
-        }
-
-        private void timePickerRectangle_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            FlyoutBase.ShowAttachedFlyout(retanguloSala);
+            FlyoutBase.ShowAttachedFlyout(timerTextBlock);
         }
 
         public void alarmeSalvoTextBlock_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            FlyoutBase.ShowAttachedFlyout(retanguloSala);
+            FlyoutBase.ShowAttachedFlyout(timerTextBlock);
         }
 
         ThreadPoolTimer _periodicTimer = null;
@@ -634,9 +673,78 @@ namespace Controle_Cortana
 
         public void criarNovosBotoes()
         {
-            
-         
+
+
         }
+        bool theme = false;
+        private void AppBarButton_Click_1(object sender, RoutedEventArgs e)
+        {
+            theme = !theme;
+            if (theme)
+            {
+                rootPivot.RequestedTheme = ElementTheme.Dark;
+                commandBar.RequestedTheme = ElementTheme.Dark;
+            }
+            else
+            {
+                rootPivot.RequestedTheme = ElementTheme.Light;
+                commandBar.RequestedTheme = ElementTheme.Light;
+            }
+
+        }
+
+        private void todosToggleSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            ToggleSwitch todosToggleSwitch = sender as ToggleSwitch;
+            if (todosToggleSwitch != null)
+            {
+                if (todosToggleSwitch.IsOn)
+                {
+                    ligarDesligar(travaInicial, LIGARTODOS, true);
+                    //ligarDesligar(travaInicial, ligarQuarto, false);
+                    //ligarDesligar(travaInicial, ligarSala, false);
+                    //toggleSwitchQuarto.IsOn = true;
+                    //toggleSwitchSala.IsOn = true;
+                }
+                else
+                {
+                    ligarDesligar(travaInicial, DESLIGARTODOS, true);
+                    //ligarDesligar(travaInicial, desligarQuarto, false);
+                    //ligarDesligar(travaInicial, ligarQuarto, false);
+                    //toggleSwitchQuarto.IsOn = false;
+                    //toggleSwitchSala.IsOn = false;
+                }
+            }
+        }
+
+
+        //private void RemoveButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (rectangleItems.Items.Count > 0)
+        //        rectangleItems.Items.RemoveAt(0);
+        //}
+
+        //private void AddButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    string[] diasDaSemanaString = { "domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sabado"};
+        //    TextBlock texto = new TextBlock();
+        //    texto.Text = "Escolha os dias da semana:";
+        //    rectangleItems.Items.Add(texto);
+        //    for (int i = 0; i < 7; i++)
+        //    {
+        //        CheckBox diasDaSemana = new CheckBox();
+        //        diasDaSemana.Content = diasDaSemanaString[i];
+        //        //Color rectColor = new Color();
+        //        //rectColor.R = 200;
+        //        //rectColor.A = 250;
+        //        //Rectangle myRectangle = new Rectangle();
+        //        //myRectangle.Fill = new SolidColorBrush(rectColor);
+        //        //myRectangle.Width = 100;
+        //        //myRectangle.Height = 100;
+        //        //myRectangle.Margin = new Thickness(10);
+        //        rectangleItems.Items.Add(diasDaSemana);
+        //    }
+        //}
     }
 }
 
