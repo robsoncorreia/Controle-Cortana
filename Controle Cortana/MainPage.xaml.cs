@@ -37,30 +37,18 @@ namespace Controle_Cortana
         Uri LIGATODOSURI = new Uri("http://192.168.1.2/?pin=LIGA3");
         Uri DESLIGATODOSURI = new Uri("http://192.168.1.2/?pin=DESLIGA3");
 
-        const string settingQuarto = "quartoSetting";
-        const string settingSala = "salaSetting";
-        const string settingAutoQuarto = "AutoQuartoSetting";
-        const string settingAutoSala = "AutoSalaSetting";
-        const string horaTimerSetting = "horaTimer";
-        const string minutoTimerSetting = "minutoTimer";
-        const string timerToggleSetting = "timerToggleSetting";
-        const string quartoCheckBoxSetting = "quartoCheckBoxSetting";
-        const string salaCheckBoxSetting = "salaCheckBoxSetting";
-        const string cabeçarioAlarmeTextBlockSetting = "cabeçarioAlarmeTextBlock";
-        const string diasSemanaAtivosTextBlockSetting = "diasSemanaAtivosTextBlockSetting";
-        const string ligarQuarto = "ligarQuarto";
-        const string desligarQuarto = "desligarQuarto";
-        const string ligarSala = "ligarSala";
-        const string desligarSala = "desligarSala";
+        const string SETTINGAUTOQUARTO = "AUTOQUARTOSETTING";
+        const string SETTINGAUTOSALA = "AUTOSALASETTING";
+        const string HORATIMERSETTING = "HORATIMER";
+        const string MINUTOTIMERSETTING = "MINUTOTIMER";
+        const string LIGARQUARTO = "LIGARQUARTO";
+        const string DESLIGARQUARTO = "DESLIGARQUARTO";
+        const string LIGARSALA = "LIGARSALA";
+        const string DESLIGARSALA = "DESLIGARSALA";
         const string LIGARTODOS = "LIGARTODOS";
         const string DESLIGARTODOS = "DESLIGARTODOS";
-        const string TODOSSETTINGS = "LIGARTODOSSETTINGS";
-        const string COMBOBOXCOMODOSSETTINGS = "COMBOBOXCOMODOSSETTINGS";
-        const string SENSORTOGGLESWITCHSETTINGS = "SENSORTOGGLESWITCHSETTINGS";
 
         bool boolTimerToggle = false;
-        bool boolQuartoCheckBox = false;
-        bool boolSalaCheckBox = false;
         bool travaInicial = false;
 
         int horaProgramada;
@@ -76,52 +64,69 @@ namespace Controle_Cortana
             localSettings = ApplicationData.Current.LocalSettings;
             mostrarTimer();
             Sensor();
+            gatilhoTimerElapsedHandler();
             Setting(500);
         }
 
         public async void Setting(int delay)
         {
             await Task.Delay(delay);
-            object valueQuarto = localSettings.Values[settingQuarto];
+            object valueQuarto = localSettings.Values[toggleSwitchQuarto.Name.ToString()];
             if (valueQuarto != null)
             {
                 toggleSwitchQuarto.IsOn = ((bool)valueQuarto);
             }
-            object valueSala = localSettings.Values[settingSala];
+            object valueSala = localSettings.Values[toggleSwitchSala.Name.ToString()];
             if (valueSala != null)
             {
                 toggleSwitchSala.IsOn = ((bool)valueSala);
             }
-            object valueHoraProgramada = localSettings.Values[horaTimerSetting];
+            object valueHoraProgramada = localSettings.Values[HORATIMERSETTING];
             if (valueHoraProgramada != null)
             {
                 horaProgramada = (int)valueHoraProgramada;
             }
-            object valueMinutoProgramada = localSettings.Values[minutoTimerSetting];
+            object valueMinutoProgramada = localSettings.Values[MINUTOTIMERSETTING];
             if (valueMinutoProgramada != null)
             {
                 minutoProgramado = (int)valueMinutoProgramada;
             }
-            object valuetimerToggle = localSettings.Values[timerToggleSetting];
+            object valuetimerToggle = localSettings.Values[timerToggleSwitch.Name.ToString()];
             if (valuetimerToggle != null)
             {
-                timerToggleSwitch.IsOn = (bool)valuetimerToggle;
-                boolTimerToggle = (bool)valuetimerToggle;
+                timerToggleSwitch.IsOn = (bool)localSettings.Values[timerToggleSwitch.Name.ToString()];
+                boolTimerToggle = timerToggleSwitch.IsOn;
             }
-            object valueSensorToggleSwitch = localSettings.Values[SENSORTOGGLESWITCHSETTINGS];
+            object valueSensorToggleSwitch = localSettings.Values[sensorToggleSwitch.Name.ToString()];
             if (valueSensorToggleSwitch != null)
             {
                 sensorToggleSwitch.IsOn = (bool)valueSensorToggleSwitch;
             }
-            object diasSemanaAtivosTextBlockValue = localSettings.Values[diasSemanaAtivosTextBlockSetting];
-            if (diasSemanaAtivosTextBlockValue != null)
-            {
-                diasSemanaAtivosTextBlock.Text = (string)localSettings.Values[diasSemanaAtivosTextBlockSetting];
-            }
-            object todosToggleValue = localSettings.Values[TODOSSETTINGS];
+            object todosToggleValue = localSettings.Values[todosToggleSwitch.Name.ToString()];
             if (todosToggleValue != null)
             {
-                todosToggleSwitch.IsOn = (bool)localSettings.Values[TODOSSETTINGS];
+                todosToggleSwitch.IsOn = (bool)todosToggleValue;
+            }
+            CheckBox[] diasCheckBox = {Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday};
+
+            foreach (CheckBox c in diasCheckBox)
+            {
+                if (localSettings.Values[c.Content.ToString()] != null)
+                {
+                    c.IsChecked = (bool)localSettings.Values[c.Content.ToString()];
+                }
+            }
+            if (localSettings.Values[comboBoxComodos.Name.ToString()] != null)
+            {
+                comboBoxComodos.SelectedIndex = (int)localSettings.Values[comboBoxComodos.Name.ToString()];
+            }
+            if (localSettings.Values[sensorComboBox.Name.ToString()] != null)
+            {
+                sensorComboBox.SelectedIndex = (int)localSettings.Values[sensorComboBox.Name.ToString()];
+            }
+            if(localSettings.Values[semanaDiasRun.Name.ToString()] != null)
+            {
+                semanaDiasRun.Text = (string)localSettings.Values[semanaDiasRun.Name.ToString()];
             }
             await Task.Delay(delay);
             travaInicial = true;
@@ -133,8 +138,8 @@ namespace Controle_Cortana
 
             switch (comodo)
             {
-                case ligarQuarto:
-                    localSettings.Values[settingQuarto] = true;
+                case LIGARQUARTO:
+                    localSettings.Values[toggleSwitchQuarto.Name.ToString()] = toggleSwitchQuarto.IsOn;
                     if (enviarSinalServidor)
                     {
                         try
@@ -152,8 +157,8 @@ namespace Controle_Cortana
                     }
                     client.Dispose();
                     break;
-                case desligarQuarto:
-                    localSettings.Values[settingQuarto] = false;
+                case DESLIGARQUARTO:
+                    localSettings.Values[toggleSwitchQuarto.Name.ToString()] = toggleSwitchQuarto.IsOn;
                     if (enviarSinalServidor)
                     {
                         try
@@ -171,8 +176,8 @@ namespace Controle_Cortana
                     }
                     client.Dispose();
                     break;
-                case ligarSala:
-                    localSettings.Values[settingSala] = true;
+                case LIGARSALA:
+                    localSettings.Values[toggleSwitchSala.Name.ToString()] = toggleSwitchSala.IsOn;
                     if (enviarSinalServidor)
                     {
                         try
@@ -190,8 +195,8 @@ namespace Controle_Cortana
                     }
                     client.Dispose();
                     break;
-                case desligarSala:
-                    localSettings.Values[settingSala] = false;
+                case DESLIGARSALA:
+                    localSettings.Values[toggleSwitchSala.Name.ToString()] = toggleSwitchSala.IsOn;
                     if (enviarSinalServidor)
                     {
                         try
@@ -211,7 +216,7 @@ namespace Controle_Cortana
                     break;
 
                 case LIGARTODOS:
-                    localSettings.Values[TODOSSETTINGS] = false;
+                    localSettings.Values[todosToggleSwitch.Name.ToString()] = todosToggleSwitch.IsOn;
                     if (enviarSinalServidor)
                     {
                         try
@@ -231,7 +236,7 @@ namespace Controle_Cortana
                     break;
 
                 case DESLIGARTODOS:
-                    localSettings.Values[TODOSSETTINGS] = false;
+                    localSettings.Values[todosToggleSwitch.Name.ToString()] = todosToggleSwitch.IsOn;
                     if (enviarSinalServidor)
                     {
                         try
@@ -259,11 +264,11 @@ namespace Controle_Cortana
             {
                 if (toggleSwitchQuarto.IsOn)
                 {
-                    ligarDesligar(travaInicial, ligarQuarto, true);
+                    ligarDesligar(travaInicial, LIGARQUARTO, true);
                 }
                 else
                 {
-                    ligarDesligar(travaInicial, desligarQuarto, true);
+                    ligarDesligar(travaInicial, DESLIGARQUARTO, true);
                 }
             }
         }
@@ -275,11 +280,11 @@ namespace Controle_Cortana
             {
                 if (toggleSwitchSala.IsOn)
                 {
-                    ligarDesligar(travaInicial, ligarSala, true);
+                    ligarDesligar(travaInicial, LIGARSALA, true);
                 }
                 else
                 {
-                    ligarDesligar(travaInicial, desligarSala, true);
+                    ligarDesligar(travaInicial, DESLIGARSALA, true);
                 }
             }
         }
@@ -291,27 +296,11 @@ namespace Controle_Cortana
             {
                 if (toggleAutomaticoQuarto.IsOn)
                 {
-                    localSettings.Values[settingAutoQuarto] = true;
+                    localSettings.Values[SETTINGAUTOQUARTO] = true;
                 }
                 else
                 {
-                    localSettings.Values[settingAutoQuarto] = false;
-                }
-            }
-        }
-
-        public void toggleAutomaticoSala_Toggled(object sender, RoutedEventArgs e)
-        {
-            ToggleSwitch toggleAutomaticoSala = sender as ToggleSwitch;
-            if (toggleAutomaticoSala != null)
-            {
-                if (toggleAutomaticoSala.IsOn)
-                {
-                    localSettings.Values[settingAutoSala] = true;
-                }
-                else
-                {
-                    localSettings.Values[settingAutoSala] = false;
+                    localSettings.Values[SETTINGAUTOQUARTO] = false;
                 }
             }
         }
@@ -347,11 +336,11 @@ namespace Controle_Cortana
                     travaRootPivot = false;
                     if (sensorComboBox.SelectedItem == quartoAutoTextBlock)
                     {
-                        ligarDesligar(true, ligarQuarto, true);
+                        ligarDesligar(true, LIGARQUARTO, true);
                     }
                     else if (sensorComboBox.SelectedItem == salaAutoTextBlock)
                     {
-                        ligarDesligar(true, ligarSala, true);
+                        ligarDesligar(true, LIGARSALA, true);
                     }
 
                     else if (sensorComboBox.SelectedItem == todosAutoTextBlock)
@@ -387,17 +376,17 @@ namespace Controle_Cortana
 
         public void mostrarTimer()
         {
-            object valueHoraProgramada = localSettings.Values[horaTimerSetting];
-            object valueMinutoProgramada = localSettings.Values[minutoTimerSetting];
+            object valueHoraProgramada = localSettings.Values[HORATIMERSETTING];
+            object valueMinutoProgramada = localSettings.Values[MINUTOTIMERSETTING];
             if ((valueHoraProgramada != null) && (valueMinutoProgramada != null))
             {
                 if ((int)valueMinutoProgramada < 10)
                 {
-                    //alarmeSalvoTextBlock.Text = (int)valueHoraProgramada + ":0" + (int)valueMinutoProgramada;
+                    horaProgramadaTextBlock.Text = (int)valueHoraProgramada + ":0" + (int)valueMinutoProgramada;
                 }
                 else
                 {
-                    //alarmeSalvoTextBlock.Text = (int)valueHoraProgramada + ":" + (int)valueMinutoProgramada;
+                    horaProgramadaTextBlock.Text = (int)valueHoraProgramada + ":" + (int)valueMinutoProgramada;
                 }
             }
         }
@@ -411,9 +400,13 @@ namespace Controle_Cortana
 
         public void timerToggle_Toggled(object sender, RoutedEventArgs e)
         {
-            _periodicTimer = ThreadPoolTimer.CreatePeriodicTimer(new TimerElapsedHandler(verificarDiasSemana), TimeSpan.FromSeconds(1));
-            localSettings.Values[timerToggleSetting] = timerToggleSwitch.IsOn;
+            localSettings.Values[timerToggleSwitch.Name.ToString()] = timerToggleSwitch.IsOn;
             boolTimerToggle = timerToggleSwitch.IsOn;
+        }
+
+        public void gatilhoTimerElapsedHandler()
+        {
+            _periodicTimer = ThreadPoolTimer.CreatePeriodicTimer(new TimerElapsedHandler(verificarDiasSemana), TimeSpan.FromSeconds(1));
         }
 
         public async void verificarDiasSemana(ThreadPoolTimer timer)
@@ -425,68 +418,58 @@ namespace Controle_Cortana
                 int horaNow = dataTempo.Hour;
                 int minutoNow = dataTempo.Minute;
                 int segundoNow = dataTempo.Second;
+                string hoje = dataTempo.DayOfWeek.ToString();
 
                 string itemSelecionadoText = string.Empty;
-                CheckBox[] diasCheckBox = {segundaCheckBox,tercaCheckBox,quartaCheckBox,
-                                           quintaCheckBox,sextaCheckBox,sabadoCheckBox,domingoCheckBox};
+                CheckBox[] diasCheckBox = {Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday};
 
                 foreach (CheckBox c in diasCheckBox)
                 {
+                    localSettings.Values[c.Content.ToString()] = c.IsChecked;
                     if (c.IsChecked == true)
                     {
                         if (itemSelecionadoText.Length > 1)
                         {
                             itemSelecionadoText += ", ";
                         }
-                        itemSelecionadoText += c.Content;
-                    }
-                }
-                if (itemSelecionadoText == "")
-                {
-                    diasSemanaAtivosTextBlock.Text = "Nenhum dia selecionado.";
-                }
-                else
-                {
-                    diasSemanaAtivosTextBlock.Text = itemSelecionadoText;
-                }
+                        itemSelecionadoText += c.Tag;
 
-                string[] diasSemana = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
-                bool[] diasCheckBoxIsChecked = {(bool)segundaCheckBox.IsChecked,(bool)tercaCheckBox.IsChecked,(bool)quartaCheckBox.IsChecked,
-                                           (bool)quintaCheckBox.IsChecked,(bool)sextaCheckBox.IsChecked,(bool)sabadoCheckBox.IsChecked,(bool)domingoCheckBox.IsChecked
-                };
-                for (int i = 0; i < diasCheckBox.Length; i++)
-                {
-                    if (boolTimerToggle)
-                    {
-                        if (diasCheckBoxIsChecked[i])
+                        if ((c.Name.ToString() == hoje) && (c.IsChecked == true) && (boolTimerToggle))
                         {
-                            if (diasSemana[i] == dataTempo.DayOfWeek.ToString())
+                            if ((horaNow == horaProgramada) && (minutoNow == minutoProgramado) && (segundoNow == 0))
                             {
-                                if ((horaNow == horaProgramada) && (minutoNow == minutoProgramado) && (segundoNow == 0))
+                                if (comboBoxComodos.SelectedIndex == 0)
                                 {
-                                    if (comboBoxComodos.SelectedItem == quartoTextBlock)
-                                    {
-                                        notificacaoTextBlock.Text = "Luz do quarto ligada \rno horário programado.";
-                                        Flyout.ShowAttachedFlyout(pagePage);
-                                        toggleSwitchQuarto.IsOn = true;
-                                    }
-                                    else if (comboBoxComodos.SelectedItem == salaTextBlock)
-                                    {
-                                        notificacaoTextBlock.Text = "Luz da sala ligada \rno horário programado.";
-                                        Flyout.ShowAttachedFlyout(pagePage);
-                                        toggleSwitchSala.IsOn = true;
-                                    }
-                                    else if (comboBoxComodos.SelectedItem == todosTextBlock)
-                                    {
-                                        notificacaoTextBlock.Text = "Luz da sala ligada \rno horário programado.";
-                                        Flyout.ShowAttachedFlyout(pagePage);
-                                        todosToggleSwitch.IsOn = true;
-                                    }
+                                    notificacaoTextBlock.Text = "Luz do quarto ligada \rno horário programado.";
+                                    Flyout.ShowAttachedFlyout(pagePage);
+                                    toggleSwitchQuarto.IsOn = true;
+                                }
+                                else if (comboBoxComodos.SelectedIndex == 1)
+                                {
+                                    notificacaoTextBlock.Text = "Luz da sala ligada \rno horário programado.";
+                                    Flyout.ShowAttachedFlyout(pagePage);
+                                    toggleSwitchSala.IsOn = true;
+                                }
+                                else if (comboBoxComodos.SelectedIndex == 2)
+                                {
+                                    notificacaoTextBlock.Text = "Todas as luzes ligadas \rno horário programado.";
+                                    Flyout.ShowAttachedFlyout(pagePage);
+                                    todosToggleSwitch.IsOn = true;
                                 }
                             }
                         }
-                    }
+                    }              
                 }
+                if (itemSelecionadoText == "")
+                {
+
+                    semanaDiasRun.Text = "Nenhum dia selecionado.";
+                }
+                else
+                {
+                    semanaDiasRun.Text = itemSelecionadoText;
+                }
+                localSettings.Values[semanaDiasRun.Name.ToString()] = semanaDiasRun.Text;
             });
         }
 
@@ -508,7 +491,8 @@ namespace Controle_Cortana
 
         private void todosToggleSwitch_Toggled(object sender, RoutedEventArgs e)
         {
-            ToggleSwitch todosToggleSwitch = sender as ToggleSwitch;
+            localSettings.Values[todosToggleSwitch.Name.ToString()] = todosToggleSwitch.IsOn;
+
             if (todosToggleSwitch != null)
             {
                 if (todosToggleSwitch.IsOn)
@@ -527,8 +511,9 @@ namespace Controle_Cortana
             horaProgramada = timerTimePicker.Time.Hours;
             minutoProgramado = timerTimePicker.Time.Minutes;
 
-            localSettings.Values[horaTimerSetting] = horaProgramada;
-            localSettings.Values[minutoTimerSetting] = minutoProgramado;
+            localSettings.Values[HORATIMERSETTING] = horaProgramada;
+            localSettings.Values[MINUTOTIMERSETTING] = minutoProgramado;
+
             if (minutoProgramado > 9)
             {
                 horaProgramadaTextBlock.Text = "" + horaProgramada + ":" + minutoProgramado;
@@ -543,28 +528,34 @@ namespace Controle_Cortana
         private void todosCheckBox_Click(object sender, RoutedEventArgs e)
         {
             string itemSelecionadoText = string.Empty;
-            CheckBox[] diasCheckBox = {segundaCheckBox,tercaCheckBox,quartaCheckBox,
-                                       quintaCheckBox,sextaCheckBox,sabadoCheckBox,domingoCheckBox};
+            CheckBox[] diasCheckBox = { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday };
             if (todosCheckBox.IsChecked == true)
             {
+
                 foreach (CheckBox c in diasCheckBox)
                 {
                     c.IsChecked = true;
+                    localSettings.Values[c.Name.ToString()] = c.IsChecked;
+                    
                     if (itemSelecionadoText.Length > 1)
                     {
                         itemSelecionadoText += ", ";
                     }
-                    itemSelecionadoText += c.Content;
+                    itemSelecionadoText += c.Tag;
                 }
-                diasSemanaAtivosTextBlock.Text = itemSelecionadoText;
+                semanaDiasRun.Text = itemSelecionadoText;
             }
             else
             {
                 foreach (CheckBox c in diasCheckBox)
                 {
                     c.IsChecked = false;
+                    localSettings.Values[c.Name.ToString()] = c.IsChecked;
+
+                    semanaDiasRun.Text = "Nenhum dia selecionado.";
                 }
             }
+            localSettings.Values[semanaDiasRun.Name.ToString()] = semanaDiasRun.Text;
         }
 
         private void diasSemanaAtivosCabecarioTextBlock_Tapped(object sender, TappedRoutedEventArgs e)
@@ -574,17 +565,22 @@ namespace Controle_Cortana
 
         private void sensorToggleSwitch_Toggled(object sender, RoutedEventArgs e)
         {
-            localSettings.Values[SENSORTOGGLESWITCHSETTINGS] = sensorToggleSwitch.IsOn;
+            localSettings.Values[sensorToggleSwitch.Name.ToString()] = sensorToggleSwitch.IsOn;
         }
 
         private void sensorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            sensorToggleSwitch.IsOn = true;
+            localSettings.Values[sensorComboBox.Name.ToString()] = sensorComboBox.SelectedIndex;
         }
 
         private void comboBoxComodos_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            timerToggleSwitch.IsOn = true;
+            localSettings.Values[comboBoxComodos.Name.ToString()] = comboBoxComodos.SelectedIndex;
+        }
+
+        private void diasSemanaAtivosCabecarioTextBlock_Tapped_1(object sender, TappedRoutedEventArgs e)
+        {
+            Flyout.ShowAttachedFlyout(timerTextBlock);
         }
     }
 }

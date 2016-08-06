@@ -34,7 +34,7 @@
                     </Grid.RowDefinitions>
  
                     <TextBlock Tag="titulos" Text="Interruptores" FontSize="30" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                    <ToggleSwitch x:Name="todosToggleSwitch" Header="" HorizontalAlignment="Left" Margin="200,4,0,0" VerticalAlignment="Top" OnContent="" OffContent="" MinWidth="0" Toggled="todosToggleSwitch_Toggled" Grid.Row="0"/>
+                    <ToggleSwitch x:Name="todosToggleSwitch" Header="" HorizontalAlignment="Left" Margin="196,5,0,0" VerticalAlignment="Top" OnContent="" OffContent="" MinWidth="0" Toggled="todosToggleSwitch_Toggled" Grid.Row="0"/>
 
                     <StackPanel Grid.Row="1" BorderThickness="1" Padding="10" Margin="0">
                         <StackPanel.BorderBrush>
@@ -70,20 +70,20 @@
                 <FlyoutBase.AttachedFlyout>
                     <Flyout>
                         <ListView x:Name="diaSemanaListBox" SelectionMode="None" Margin="24,0,0,0">
-                            <CheckBox x:Name="todosCheckBox" Content="Todos os dias" Click="todosCheckBox_Click"/>
-                            <CheckBox x:Name="segundaCheckBox" Content="Segunda" Margin="24,0,0,0"/>
-                            <CheckBox x:Name="tercaCheckBox" Content="Terça" Margin="24,0,0,0"/>
-                            <CheckBox x:Name="quartaCheckBox" Content="Quarto" Margin="24,0,0,0"/>
-                            <CheckBox x:Name="quintaCheckBox" Content="Quinta" Margin="24,0,0,0"/>
-                            <CheckBox x:Name="sextaCheckBox" Content="Sexta"  Margin="24,0,0,0"/>
-                            <CheckBox x:Name="sabadoCheckBox" Content="Sabado" Margin="24,0,0,0"/>
-                            <CheckBox x:Name="domingoCheckBox" Content="Domingo" Margin="24,0,0,0"/>
+                            <CheckBox Tag="Todos" x:Name="todosCheckBox" Content="Todos os dias" Click="todosCheckBox_Click"/>
+                            <CheckBox Tag="Segunda" x:Name="Monday" Content="Segunda" Margin="24,0,0,0"/>
+                            <CheckBox Tag="Terça" x:Name="Tuesday" Content="Terça" Margin="24,0,0,0"/>
+                            <CheckBox Tag="Quarto" x:Name="Wednesday" Content="Quarto" Margin="24,0,0,0"/>
+                            <CheckBox Tag="Quinta" x:Name="Thursday" Content="Quinta" Margin="24,0,0,0"/>
+                            <CheckBox Tag="Sexta" x:Name="Friday" Content="Sexta"  Margin="24,0,0,0"/>
+                            <CheckBox Tag="Sabado" x:Name="Saturday" Content="Sabado" Margin="24,0,0,0"/>
+                            <CheckBox Tag="Domingo" x:Name="Sunday" Content="Domingo" Margin="24,0,0,0"/>
                         </ListView>
                     </Flyout>
                 </FlyoutBase.AttachedFlyout>
                 </TextBlock>
                 <TextBlock x:Name="horaProgramadaTextBlock" Text="Null" FontSize="24" FontWeight="Bold" Margin="10,34,0,10" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0"/>
-                <ToggleSwitch x:Name="timerToggleSwitch" OffContent="" OnContent="" Toggled="timerToggle_Toggled" Margin="90,3,0,0" VerticalAlignment="Top" MinWidth="0" Grid.Row="0" />
+                <ToggleSwitch x:Name="timerToggleSwitch" OffContent="" OnContent="" Toggled="timerToggle_Toggled" Margin="88,5,0,0" VerticalAlignment="Top" MinWidth="0" Grid.Row="0" />
                 <StackPanel x:Name="timerStackPanel" Grid.Row="1" BorderThickness="1" Padding="10" Margin="0">
 
                     <StackPanel.BorderBrush>
@@ -101,8 +101,11 @@
                     </ComboBox>
 
                     <TextBlock x:Name="diasSemanaAtivosCabecarioTextBlock" Text="Escolha os dias da semana:" Margin="0,20,0,0" Grid.RowSpan="5" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="4" Tapped="diasSemanaAtivosCabecarioTextBlock_Tapped"/>
-                    <TextBlock x:Name="diasSemanaAtivosTextBlock" Text="TextBlock" Margin="0,10,0,0" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Top" Tapped="diasSemanaAtivosCabecarioTextBlock_Tapped"/>
-
+                    <RichTextBlock Margin="0,10,0,0" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Top" Tapped="diasSemanaAtivosCabecarioTextBlock_Tapped" IsTextSelectionEnabled="False" >
+                        <Paragraph >
+                            <Run x:Name="semanaDiasRun" />
+                        </Paragraph>
+                    </RichTextBlock>
                 </StackPanel>
             </Grid>
         </PivotItem>
@@ -123,8 +126,6 @@
                     <TextBlock x:Name="textoSensorLuz" HorizontalAlignment="Left" Margin="0,10,0,0" TextWrapping="Wrap" Text="Sensor de Luminosidade" VerticalAlignment="Top" FontSize="16"/>
                     <TextBlock x:Name="sensorDeLuz" HorizontalAlignment="Left" Margin="0,10,0,0" TextWrapping="Wrap" Text="Sensor de Luminosidade" VerticalAlignment="Top" FontSize="16"/>
                     <RichTextBlock Margin="0,20,0,0" >
-                        <Paragraph >Quando o valor do sensor atigir '0', a luz do comodo selecionado será ligada.</Paragraph>
-                        <Paragraph/>
                         <Paragraph>
                             <Bold>Escolha quais comodos seram ligados:</Bold>
                         </Paragraph>
