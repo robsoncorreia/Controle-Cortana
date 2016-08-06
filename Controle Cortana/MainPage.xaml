@@ -29,33 +29,21 @@
 
             <Grid Padding="20,0,20,0" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
- 
-                    <TextBlock Tag="titulos" Text="Interruptores" FontSize="30" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                    <ToggleSwitch x:Name="todosToggleSwitch" Header="" HorizontalAlignment="Left" Margin="196,5,0,0" VerticalAlignment="Top" OnContent="" OffContent="" MinWidth="0" Toggled="todosToggleSwitch_Toggled" Grid.Row="0"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="1" BorderThickness="1" Padding="10" Margin="0">
-                        <StackPanel.BorderBrush>
-                            <SolidColorBrush Color="{ThemeResource SystemChromeBlackMediumLowColor}"/>
-                        </StackPanel.BorderBrush>
-                        <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" Margin="10,10,0,0" VerticalAlignment="Top" MinWidth="0" Grid.Row="1" >
-                            <FlyoutBase.AttachedFlyout>
-                                <Flyout>
-                                    <TextBlock x:Name="toggleSwitchQuartoTextBlockFlyout"/>
-                                </Flyout>
-                            </FlyoutBase.AttachedFlyout>
-                        </ToggleSwitch>
-                        <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchSala_Toggled" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0" MinWidth="0" Grid.Row="1">
-                            <FlyoutBase.AttachedFlyout>
-                                <Flyout>
-                                    <TextBlock x:Name="toggleSwitchSalaTextBlockFlyout"/>
-                                </Flyout>
-                            </FlyoutBase.AttachedFlyout>
-                        </ToggleSwitch>
-                    </StackPanel>
-                </Grid>
+                <TextBlock Tag="titulos" Text="Interruptores" FontSize="30" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                <ToggleSwitch x:Name="todosToggleSwitch" Header="" HorizontalAlignment="Left" Margin="196,5,0,0" VerticalAlignment="Top" OnContent="" OffContent="" MinWidth="0" Toggled="todosToggleSwitch_Toggled" Grid.Row="0"/>
+
+                <StackPanel Grid.Row="1" BorderThickness="1" Padding="10" Margin="0">
+                    <StackPanel.BorderBrush>
+                        <SolidColorBrush Color="{ThemeResource SystemChromeBlackMediumLowColor}"/>
+                    </StackPanel.BorderBrush>
+                    <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" Margin="10,10,0,0" VerticalAlignment="Top" MinWidth="0" Grid.Row="1"/>
+                    <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchSala_Toggled" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0" MinWidth="0" Grid.Row="1"/>
+                </StackPanel>
+            </Grid>
         </PivotItem>
         <PivotItem x:Name="pivotItemIluminação" Header="Timer" Margin="0">
 
@@ -69,7 +57,7 @@
                 <TextBlock x:Name="timerTextBlock" Text="Timer" FontSize="30" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0">
                 <FlyoutBase.AttachedFlyout>
                     <Flyout>
-                        <ListView x:Name="diaSemanaListBox" SelectionMode="None" Margin="24,0,0,0">
+                        <StackPanel Padding="10" Margin="-10">
                             <CheckBox Tag="Todos" x:Name="todosCheckBox" Content="Todos os dias" Click="todosCheckBox_Click"/>
                             <CheckBox Tag="Segunda" x:Name="Monday" Content="Segunda" Margin="24,0,0,0"/>
                             <CheckBox Tag="Terça" x:Name="Tuesday" Content="Terça" Margin="24,0,0,0"/>
@@ -78,7 +66,7 @@
                             <CheckBox Tag="Sexta" x:Name="Friday" Content="Sexta"  Margin="24,0,0,0"/>
                             <CheckBox Tag="Sabado" x:Name="Saturday" Content="Sabado" Margin="24,0,0,0"/>
                             <CheckBox Tag="Domingo" x:Name="Sunday" Content="Domingo" Margin="24,0,0,0"/>
-                        </ListView>
+                        </StackPanel>
                     </Flyout>
                 </FlyoutBase.AttachedFlyout>
                 </TextBlock>
