@@ -115,24 +115,40 @@ namespace Controle_Cortana
                 string textSpoken = speechRecognitionResult.Text;
                 //string commandMode = SemanticInterpretation("commandMode", speechRecognitionResult);
 
+
                 MainPage mainpage = new MainPage();
-      
+
+                const string LIGARQUARTO = "LIGARQUARTO";
+                const string DESLIGARQUARTO = "DESLIGARQUARTO";
+                const string LIGARSALA = "LIGARSALA";
+                const string DESLIGARSALA = "DESLIGARSALA";
+                const string LIGARTODOS = "LIGARTODOS";
+                const string DESLIGARTODOS = "DESLIGARTODOS";
+
                 switch (voiceCommandName)
                 {                   
-                    case "ligarQuarto":
-                        mainpage.ligarDesligar(true, "ligarQuarto", true);
+                    case LIGARQUARTO:
+                        rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
+                        mainpage.ligarDesligar(true, LIGARQUARTO, true);                       
+                        break;
+                    case DESLIGARQUARTO:
+                        mainpage.ligarDesligar(true, DESLIGARQUARTO, true);
                         rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         break;
-                    case "desligarQuarto":
-                        mainpage.ligarDesligar(true,"desligarQuarto", true);
+                    case LIGARSALA:
+                        mainpage.ligarDesligar(true, LIGARSALA, true);
                         rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         break;
-                    case "ligarSala":
-                        mainpage.ligarDesligar(true, "ligarSala", true);
+                    case DESLIGARSALA:
+                        mainpage.ligarDesligar(true, DESLIGARSALA, true);
                         rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         break;
-                    case "desligarSala":
-                        mainpage.ligarDesligar(true, "desligarSala", true);
+                    case LIGARTODOS:
+                        mainpage.ligarDesligar(true, LIGARTODOS, true);
+                        rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
+                        break;
+                    case DESLIGARTODOS:
+                        mainpage.ligarDesligar(true, DESLIGARTODOS, true);
                         rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         break;
                 }

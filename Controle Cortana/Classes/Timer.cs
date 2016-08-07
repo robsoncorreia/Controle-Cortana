@@ -10,12 +10,6 @@ namespace Controle_Cortana.Classes
 {
     public sealed partial class Timer : Page
     {
-        MainPage rootPage = MainPage.Current;
-        
-        public Timer()
-        {
-            rootPage.ligarDesligar(true,"ligarQuarto",true);
-        }
 
     }
 }

@@ -17,8 +17,9 @@
         <SolidColorBrush Color="{ThemeResource SystemBaseHighColor}"/>
     </Page.Background>
     <Page.BottomAppBar>
-        <CommandBar x:Name="commandBar" IsTextScaleFactorEnabled="False">
+        <CommandBar x:Name="commandBar" IsTextScaleFactorEnabled="False" ClosedDisplayMode="Minimal">
             <AppBarButton Icon="View" Click="AppBarButton_Click_1" />
+            <AppBarButton x:Name="btFala" Icon="Volume" Foreground="Black" Click="btFala_Click"/>
         </CommandBar>
     </Page.BottomAppBar>
     <Pivot x:Name="rootPivot">
@@ -31,18 +32,21 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <TextBlock Tag="titulos" Text="Interruptores" FontSize="30" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" />
                 <ToggleSwitch x:Name="todosToggleSwitch" Header="" HorizontalAlignment="Left" Margin="196,5,0,0" VerticalAlignment="Top" OnContent="" OffContent="" MinWidth="0" Toggled="todosToggleSwitch_Toggled" Grid.Row="0"/>
 
-                <StackPanel Grid.Row="1" BorderThickness="1" Padding="10" Margin="0">
+                <StackPanel x:Name="interruptoresStackPanel"  Grid.Row="1" BorderThickness="1" Padding="10" Margin="0">
                     <StackPanel.BorderBrush>
                         <SolidColorBrush Color="{ThemeResource SystemChromeBlackMediumLowColor}"/>
                     </StackPanel.BorderBrush>
                     <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" Margin="10,10,0,0" VerticalAlignment="Top" MinWidth="0" Grid.Row="1"/>
                     <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchSala_Toggled" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0" MinWidth="0" Grid.Row="1"/>
+                    <ProgressRing x:Name="progresso" Width="50" Margin="0,-74,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                 </StackPanel>
+                <TextBlock x:Name="debug" Grid.Row="3"/>
             </Grid>
         </PivotItem>
         <PivotItem x:Name="pivotItemIluminação" Header="Timer" Margin="0">
@@ -58,14 +62,14 @@
                 <FlyoutBase.AttachedFlyout>
                     <Flyout>
                         <StackPanel Padding="10" Margin="-10">
-                            <CheckBox Tag="Todos" x:Name="todosCheckBox" Content="Todos os dias" Click="todosCheckBox_Click"/>
-                            <CheckBox Tag="Segunda" x:Name="Monday" Content="Segunda" Margin="24,0,0,0"/>
-                            <CheckBox Tag="Terça" x:Name="Tuesday" Content="Terça" Margin="24,0,0,0"/>
-                            <CheckBox Tag="Quarto" x:Name="Wednesday" Content="Quarto" Margin="24,0,0,0"/>
-                            <CheckBox Tag="Quinta" x:Name="Thursday" Content="Quinta" Margin="24,0,0,0"/>
-                            <CheckBox Tag="Sexta" x:Name="Friday" Content="Sexta"  Margin="24,0,0,0"/>
-                            <CheckBox Tag="Sabado" x:Name="Saturday" Content="Sabado" Margin="24,0,0,0"/>
-                            <CheckBox Tag="Domingo" x:Name="Sunday" Content="Domingo" Margin="24,0,0,0"/>
+                            <CheckBox x:Name="todosCheckBox" Content="todos" Click="todosCheckBox_Click"/>
+                            <CheckBox x:Name="Monday" Content="segunda" Margin="24,0,0,0"/>
+                            <CheckBox x:Name="Tuesday" Content="terça" Margin="24,0,0,0"/>
+                            <CheckBox x:Name="Wednesday" Content="quarto" Margin="24,0,0,0"/>
+                            <CheckBox x:Name="Thursday" Content="quinta" Margin="24,0,0,0"/>
+                            <CheckBox x:Name="Friday" Content="sexta"  Margin="24,0,0,0"/>
+                            <CheckBox x:Name="Saturday" Content="sabado" Margin="24,0,0,0"/>
+                            <CheckBox x:Name="Sunday" Content="domingo" Margin="24,0,0,0"/>
                         </StackPanel>
                     </Flyout>
                 </FlyoutBase.AttachedFlyout>
@@ -73,7 +77,14 @@
                 <TextBlock x:Name="horaProgramadaTextBlock" Text="Null" FontSize="24" FontWeight="Bold" Margin="10,34,0,10" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0"/>
                 <ToggleSwitch x:Name="timerToggleSwitch" OffContent="" OnContent="" Toggled="timerToggle_Toggled" Margin="88,5,0,0" VerticalAlignment="Top" MinWidth="0" Grid.Row="0" />
                 <StackPanel x:Name="timerStackPanel" Grid.Row="1" BorderThickness="1" Padding="10" Margin="0">
-
+                    <!--<StackPanel.Resources>
+                        <Storyboard x:Name="fechaTimer">
+                            <FadeOutThemeAnimation Storyboard.TargetName="timerStackPanel" />
+                        </Storyboard>
+                        <Storyboard x:Name="abreTimer">
+                            <FadeInThemeAnimation Storyboard.TargetName="timerStackPanel" />
+                        </Storyboard>
+                    </StackPanel.Resources>-->
                     <StackPanel.BorderBrush>
                         <SolidColorBrush Color="{ThemeResource SystemChromeBlackMediumLowColor}"/>
                     </StackPanel.BorderBrush>
@@ -110,9 +121,9 @@
                     <StackPanel.BorderBrush>
                         <SolidColorBrush Color="{ThemeResource SystemChromeBlackMediumLowColor}"/>
                     </StackPanel.BorderBrush>
-
                     <TextBlock x:Name="textoSensorLuz" HorizontalAlignment="Left" Margin="0,10,0,0" TextWrapping="Wrap" Text="Sensor de Luminosidade" VerticalAlignment="Top" FontSize="16"/>
                     <TextBlock x:Name="sensorDeLuz" HorizontalAlignment="Left" Margin="0,10,0,0" TextWrapping="Wrap" Text="Sensor de Luminosidade" VerticalAlignment="Top" FontSize="16"/>
+                    
                     <RichTextBlock Margin="0,20,0,0" >
                         <Paragraph>
                             <Bold>Escolha quais comodos seram ligados:</Bold>

@@ -18,13 +18,14 @@ using Windows.UI.ViewManagement;
 using Windows.UI;
 using Windows.UI.Xaml.Shapes;
 using Windows.UI.Xaml.Media;
+using Windows.Media.SpeechSynthesis;
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace Controle_Cortana
 {
     public sealed partial class MainPage : Page
     {
-        public static MainPage Current;
+
 
         ApplicationDataContainer localSettings = null;
 
@@ -47,10 +48,11 @@ namespace Controle_Cortana
         const string DESLIGARSALA = "DESLIGARSALA";
         const string LIGARTODOS = "LIGARTODOS";
         const string DESLIGARTODOS = "DESLIGARTODOS";
-
+        public string semConeccao = "🖥 Não foi possível conectar com o servidor.";
         bool boolTimerToggle = false;
         bool travaInicial = false;
-
+        bool travaRootPivot = true;
+        bool travaInicialPivot = true;
         int horaProgramada;
         int minutoProgramado;
 
@@ -60,12 +62,12 @@ namespace Controle_Cortana
 
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
             titleBar.BackgroundColor = Colors.DarkBlue;
-            Current = this;
+
             localSettings = ApplicationData.Current.LocalSettings;
             mostrarTimer();
             Sensor();
             gatilhoTimerElapsedHandler();
-            Setting(500);
+            Setting(400);
         }
 
         public async void Setting(int delay)
@@ -107,7 +109,7 @@ namespace Controle_Cortana
             {
                 todosToggleSwitch.IsOn = (bool)todosToggleValue;
             }
-            CheckBox[] diasCheckBox = {Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday};
+            CheckBox[] diasCheckBox = { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday };
 
             foreach (CheckBox c in diasCheckBox)
             {
@@ -124,7 +126,7 @@ namespace Controle_Cortana
             {
                 sensorComboBox.SelectedIndex = (int)localSettings.Values[sensorComboBox.Name.ToString()];
             }
-            if(localSettings.Values[semanaDiasRun.Name.ToString()] != null)
+            if (localSettings.Values[semanaDiasRun.Name.ToString()] != null)
             {
                 semanaDiasRun.Text = (string)localSettings.Values[semanaDiasRun.Name.ToString()];
             }
@@ -132,14 +134,37 @@ namespace Controle_Cortana
             travaInicial = true;
         }
 
+        public async void falarString(string oQueSeraDito)
+        {
+            // The string to speak with SSML customizations.
+            string Ssml =
+                @"<speak version='1.0' " + "xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='pt-BR'>"
+                + oQueSeraDito +
+                "<prosody rate='slow' contour='(0%,+20Hz) (10%,+30%) (40%,+10Hz)'/>" +
+                "</speak>";
+
+            // The media object for controlling and playing audio.
+            MediaElement mediaElement = new MediaElement();
+            var synth = new SpeechSynthesizer();
+
+            // Generate the audio stream from plain text.
+            SpeechSynthesisStream stream = await synth.SynthesizeSsmlToStreamAsync(Ssml);
+
+            // Send the stream to the media object.
+            mediaElement.SetSource(stream, stream.ContentType);
+            mediaElement.Play();
+        }
+
         public async void ligarDesligar(bool enviarSinalServidor, string comodo, bool flyout)
         {
+
             HttpClient client = new HttpClient();
 
             switch (comodo)
             {
                 case LIGARQUARTO:
-                    localSettings.Values[toggleSwitchQuarto.Name.ToString()] = toggleSwitchQuarto.IsOn;
+                    progresso.IsActive = true;
+                    localSettings.Values[toggleSwitchQuarto.Name.ToString()] = true;
                     if (enviarSinalServidor)
                     {
                         try
@@ -150,15 +175,21 @@ namespace Controle_Cortana
                         {
                             if (flyout)
                             {
-                                notificacaoTextBlock.Text = "Não foi possível \rconectar com o servidor.";
+                                notificacaoTextBlock.Text = semConeccao;
                                 FlyoutBase.ShowAttachedFlyout(pagePage);
+                                if (fala)
+                                {
+                                    falarString(semConeccao);
+                                }
                             }
                         }
                     }
                     client.Dispose();
+                    progresso.IsActive = false;
                     break;
                 case DESLIGARQUARTO:
-                    localSettings.Values[toggleSwitchQuarto.Name.ToString()] = toggleSwitchQuarto.IsOn;
+                    progresso.IsActive = true;
+                    localSettings.Values[toggleSwitchQuarto.Name.ToString()] = false;
                     if (enviarSinalServidor)
                     {
                         try
@@ -169,15 +200,21 @@ namespace Controle_Cortana
                         {
                             if (flyout)
                             {
-                                notificacaoTextBlock.Text = "Não foi possível \rconectar com o servidor.";
+                                notificacaoTextBlock.Text = semConeccao;
                                 FlyoutBase.ShowAttachedFlyout(pagePage);
+                                if (fala)
+                                {
+                                    falarString(semConeccao);
+                                }
                             }
                         }
                     }
                     client.Dispose();
+                    progresso.IsActive = false;
                     break;
                 case LIGARSALA:
-                    localSettings.Values[toggleSwitchSala.Name.ToString()] = toggleSwitchSala.IsOn;
+                    progresso.IsActive = true;
+                    localSettings.Values[toggleSwitchSala.Name.ToString()] = true;
                     if (enviarSinalServidor)
                     {
                         try
@@ -188,15 +225,21 @@ namespace Controle_Cortana
                         {
                             if (flyout)
                             {
-                                notificacaoTextBlock.Text = "Não foi possível \rconectar com o servidor.";
+                                notificacaoTextBlock.Text = semConeccao;
                                 FlyoutBase.ShowAttachedFlyout(pagePage);
+                                if (fala)
+                                {
+                                    falarString(semConeccao);
+                                }
                             }
                         }
                     }
                     client.Dispose();
+                    progresso.IsActive = false;
                     break;
                 case DESLIGARSALA:
-                    localSettings.Values[toggleSwitchSala.Name.ToString()] = toggleSwitchSala.IsOn;
+                    progresso.IsActive = true;
+                    localSettings.Values[toggleSwitchSala.Name.ToString()] = false;
                     if (enviarSinalServidor)
                     {
                         try
@@ -207,16 +250,22 @@ namespace Controle_Cortana
                         {
                             if (flyout)
                             {
-                                notificacaoTextBlock.Text = "Não foi possível \rconectar com o servidor.";
+                                notificacaoTextBlock.Text = semConeccao;
                                 FlyoutBase.ShowAttachedFlyout(pagePage);
+                                if (fala)
+                                {
+                                    falarString(semConeccao);
+                                }
                             }
                         }
                     }
                     client.Dispose();
+                    progresso.IsActive = false;
                     break;
 
                 case LIGARTODOS:
-                    localSettings.Values[todosToggleSwitch.Name.ToString()] = todosToggleSwitch.IsOn;
+                    progresso.IsActive = true;
+                    localSettings.Values[todosToggleSwitch.Name.ToString()] = true;
                     if (enviarSinalServidor)
                     {
                         try
@@ -227,16 +276,22 @@ namespace Controle_Cortana
                         {
                             if (flyout)
                             {
-                                notificacaoTextBlock.Text = "Não foi possível \rconectar com o servidor.";
+                                notificacaoTextBlock.Text = semConeccao;
                                 FlyoutBase.ShowAttachedFlyout(pagePage);
+                                if (fala)
+                                {
+                                    falarString(semConeccao);
+                                }
                             }
                         }
                     }
                     client.Dispose();
+                    progresso.IsActive = false;
                     break;
 
                 case DESLIGARTODOS:
-                    localSettings.Values[todosToggleSwitch.Name.ToString()] = todosToggleSwitch.IsOn;
+                    progresso.IsActive = true;
+                    localSettings.Values[todosToggleSwitch.Name.ToString()] = false;
                     if (enviarSinalServidor)
                     {
                         try
@@ -247,12 +302,17 @@ namespace Controle_Cortana
                         {
                             if (flyout)
                             {
-                                notificacaoTextBlock.Text = "Não foi possível \rconectar com o servidor.";
+                                notificacaoTextBlock.Text = semConeccao;
                                 FlyoutBase.ShowAttachedFlyout(pagePage);
+                                if (fala)
+                                {
+                                    falarString(semConeccao);
+                                }
                             }
                         }
                     }
                     client.Dispose();
+                    progresso.IsActive = false;
                     break;
             }
         }
@@ -310,6 +370,7 @@ namespace Controle_Cortana
 
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
+
                 LightSensorReading reading = e.Reading;
                 sensorDeLuz.Text = "Lux: " + string.Format("{0,5:0.00}", reading.IlluminanceInLux);
                 if (reading.IlluminanceInLux < 2)
@@ -318,9 +379,6 @@ namespace Controle_Cortana
                 }
             });
         }
-
-        bool travaRootPivot = true;
-        bool travaInicialPivot = true;
 
         private void ligarAutomaticamenteSensor(int delay)
         {
@@ -368,10 +426,8 @@ namespace Controle_Cortana
                 // Establish the even thandler
                 _lightsensor.ReadingChanged += new TypedEventHandler<LightSensor, LightSensorReadingChangedEventArgs>(ReadingChanged);
             }
-            else
-            {
-                pivotItemSensor.Visibility = Visibility.Collapsed;
-            }
+            textoSensorLuz.Visibility = Visibility.Collapsed;
+            sensorDeLuz.Text = "O dispositivo não possui\nsensor de luminosidade.💡";
         }
 
         public void mostrarTimer()
@@ -420,8 +476,17 @@ namespace Controle_Cortana
                 int segundoNow = dataTempo.Second;
                 string hoje = dataTempo.DayOfWeek.ToString();
 
+                //if (rootPivot.SelectedIndex == 1)
+                //{
+                //    abreTimer.Begin();
+                //}
+                //else
+                //{
+                //    fechaTimer.Begin();
+                //}
+
                 string itemSelecionadoText = string.Empty;
-                CheckBox[] diasCheckBox = {Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday};
+                CheckBox[] diasCheckBox = { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday };
 
                 foreach (CheckBox c in diasCheckBox)
                 {
@@ -432,33 +497,33 @@ namespace Controle_Cortana
                         {
                             itemSelecionadoText += ", ";
                         }
-                        itemSelecionadoText += c.Tag;
+                        itemSelecionadoText += c.Content;
 
-                        if ((c.Name.ToString() == hoje) && (c.IsChecked == true) && (boolTimerToggle))
+                        if ((c.Name.Equals(hoje)) && (c.IsChecked == true) && (boolTimerToggle))
                         {
                             if ((horaNow == horaProgramada) && (minutoNow == minutoProgramado) && (segundoNow == 0))
                             {
                                 if (comboBoxComodos.SelectedIndex == 0)
                                 {
-                                    notificacaoTextBlock.Text = "Luz do quarto ligada \rno horário programado.";
+                                    notificacaoTextBlock.Text = "⌚ Luz do quarto ligada \rno horário programado.";
                                     Flyout.ShowAttachedFlyout(pagePage);
                                     toggleSwitchQuarto.IsOn = true;
                                 }
                                 else if (comboBoxComodos.SelectedIndex == 1)
                                 {
-                                    notificacaoTextBlock.Text = "Luz da sala ligada \rno horário programado.";
+                                    notificacaoTextBlock.Text = "⌚ Luz da sala ligada \rno horário programado.";
                                     Flyout.ShowAttachedFlyout(pagePage);
                                     toggleSwitchSala.IsOn = true;
                                 }
                                 else if (comboBoxComodos.SelectedIndex == 2)
                                 {
-                                    notificacaoTextBlock.Text = "Todas as luzes ligadas \rno horário programado.";
+                                    notificacaoTextBlock.Text = "⌚ Todas as luzes ligadas \rno horário programado.";
                                     Flyout.ShowAttachedFlyout(pagePage);
                                     todosToggleSwitch.IsOn = true;
                                 }
                             }
                         }
-                    }              
+                    }
                 }
                 if (itemSelecionadoText == "")
                 {
@@ -474,6 +539,7 @@ namespace Controle_Cortana
         }
 
         bool theme = false;
+
         private void AppBarButton_Click_1(object sender, RoutedEventArgs e)
         {
             theme = !theme;
@@ -536,12 +602,12 @@ namespace Controle_Cortana
                 {
                     c.IsChecked = true;
                     localSettings.Values[c.Name.ToString()] = c.IsChecked;
-                    
+
                     if (itemSelecionadoText.Length > 1)
                     {
                         itemSelecionadoText += ", ";
                     }
-                    itemSelecionadoText += c.Tag;
+                    itemSelecionadoText += c.Content;
                 }
                 semanaDiasRun.Text = itemSelecionadoText;
             }
@@ -581,6 +647,25 @@ namespace Controle_Cortana
         private void diasSemanaAtivosCabecarioTextBlock_Tapped_1(object sender, TappedRoutedEventArgs e)
         {
             Flyout.ShowAttachedFlyout(timerTextBlock);
+        }
+
+        bool fala = false;
+        private void btFala_Click(object sender, RoutedEventArgs e)
+        {
+            var vermelho = new SolidColorBrush(Color.FromArgb(255, 200, 50, 50));
+            var verde = new SolidColorBrush(Color.FromArgb(255, 50, 200, 50));
+            //AppBarButton bt = new AppBarButton();
+            //bt.Icon.Style = FontIcon.
+
+            fala = !fala;
+            if (fala)
+            {
+                btFala.Foreground = verde;
+            }
+            else
+            {
+                btFala.Foreground = vermelho;
+            }
         }
     }
 }

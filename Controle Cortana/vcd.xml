@@ -2,29 +2,48 @@
 <VoiceCommands xmlns="http://schemas.microsoft.com/voicecommands/1.2">
   <CommandSet xml:lang="pt-br"  Name="controleLuzesBR">
     <CommandPrefix> Controle de luzes </CommandPrefix>
-    <Example> Controle de luze ligar luz da sala </Example>
-    <Command Name="ligarSala">
-      <Example> Controle de luz ligar luz da sala </Example>
+    
+    <Example> Controle de luzes ligar luz da sala </Example>
+    
+    <Command Name="LIGARSALA">
+      <Example> Controle de luzes ligar luz da sala </Example>
       <ListenFor> ligar [luz] [da] sala </ListenFor>
       <Feedback> ligando luz da sala... </Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
-    <Command Name="desligarSala">
-      <Example> Controle de luze ligar luz da sala </Example>
+    
+    <Command Name="DESLIGARSALA">
+      <Example> Controle de luzes desligar luz da sala </Example>
       <ListenFor> desligar [luz] [da] sala </ListenFor>
       <Feedback> desligando luz da sala... </Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
-    <Command Name="ligarQuarto">
+    
+    <Command Name="LIGARQUARTO">
       <Example> Controle de luz ligar luz do quarto </Example>
       <ListenFor> ligar [luz] [do] quarto </ListenFor>
       <Feedback> ligando luz do quarto...</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
-    <Command Name="desligarQuarto">
+    
+    <Command Name="DESLIGARQUARTO">
       <Example> Controle de luz desligar luz do quarto </Example>
       <ListenFor> desligar [luz] [do] quarto </ListenFor>
       <Feedback> desligando luz do quarto...</Feedback>
+      <Navigate Target="MainPage.xaml"/>
+    </Command>
+    
+     <Command Name="LIGARTODOS">
+      <Example> Controle de luz ligar todas as luzes </Example>
+      <ListenFor> ligar todas [as] [luzes] </ListenFor>
+      <Feedback> ligando todas as luzes...</Feedback>
+      <Navigate Target="MainPage.xaml"/>
+    </Command>
+    
+    <Command Name="DESLIGARTODOS">
+      <Example> Controle de luz desligar todas as luzes </Example>
+      <ListenFor> desligar todas [as] [luzes] </ListenFor>
+      <Feedback> desligando todas as luzes... [</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
     <!--<PhraseList Label="comodos">
