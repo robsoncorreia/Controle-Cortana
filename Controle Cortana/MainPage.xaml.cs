@@ -19,6 +19,7 @@ using Windows.UI;
 using Windows.UI.Xaml.Shapes;
 using Windows.UI.Xaml.Media;
 using Windows.Media.SpeechSynthesis;
+using Controle_Cortana.Paginas;
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace Controle_Cortana
@@ -654,8 +655,6 @@ namespace Controle_Cortana
         {
             var vermelho = new SolidColorBrush(Color.FromArgb(255, 200, 50, 50));
             var verde = new SolidColorBrush(Color.FromArgb(255, 50, 200, 50));
-            //AppBarButton bt = new AppBarButton();
-            //bt.Icon.Style = FontIcon.
 
             fala = !fala;
             if (fala)
@@ -666,6 +665,20 @@ namespace Controle_Cortana
             {
                 btFala.Foreground = vermelho;
             }
+        }
+        
+
+        private void AppBarToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+            if (rootFrame.Content == null)
+            {
+                // When the navigation stack isn't restored navigate to the first page,
+                // configuring the new page by passing required information as a navigation
+                // parameter.
+                rootFrame.Navigate(typeof(Configuracoes));
+            }
+
         }
     }
 }

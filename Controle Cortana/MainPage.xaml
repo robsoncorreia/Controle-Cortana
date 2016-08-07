@@ -19,7 +19,8 @@
     <Page.BottomAppBar>
         <CommandBar x:Name="commandBar" IsTextScaleFactorEnabled="False" ClosedDisplayMode="Minimal">
             <AppBarButton Icon="View" Click="AppBarButton_Click_1" />
-            <AppBarButton x:Name="btFala" Icon="Volume" Foreground="Black" Click="btFala_Click"/>
+            <AppBarButton x:Name="btFala" Icon="Volume" Click="btFala_Click"/>
+            <AppBarToggleButton Icon="Edit" Click="AppBarToggleButton_Click"/>
         </CommandBar>
     </Page.BottomAppBar>
     <Pivot x:Name="rootPivot">
