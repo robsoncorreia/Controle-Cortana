@@ -137,12 +137,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SegundoPlano\SegundoPlano.csproj">
-      <Project>{0a1896a5-932a-4432-a667-1b1505125482}</Project>
-      <Name>SegundoPlano</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Classes\" />
     <Folder Include="Paginas\" />
   </ItemGroup>
