@@ -19,14 +19,13 @@ using Windows.UI;
 using Windows.UI.Xaml.Shapes;
 using Windows.UI.Xaml.Media;
 using Windows.Media.SpeechSynthesis;
-using Controle_Cortana.Paginas;
+
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace Controle_Cortana
 {
     public sealed partial class MainPage : Page
     {
-
 
         ApplicationDataContainer localSettings = null;
 
@@ -141,7 +140,7 @@ namespace Controle_Cortana
             string Ssml =
                 @"<speak version='1.0' " + "xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='pt-BR'>"
                 + oQueSeraDito +
-                "<prosody rate='slow' contour='(0%,+20Hz) (10%,+30%) (40%,+10Hz)'/>" +
+                "<prosody rate='fast' contour='(0%,+20Hz) (10%,+30%) (40%,+10Hz)'/>" +
                 "</speak>";
 
             // The media object for controlling and playing audio.
@@ -170,14 +169,15 @@ namespace Controle_Cortana
                     {
                         try
                         {
-                            var result = await client.GetStringAsync(liga_quarto);
+                            var result = await client.GetStreamAsync(liga_quarto);
                         }
-                        catch
+                        catch (Exception ex)
                         {
+
                             if (flyout)
                             {
-                                notificacaoTextBlock.Text = semConeccao;
-                                FlyoutBase.ShowAttachedFlyout(pagePage);
+                                notificacaoTextBlock.Text = ex.Message;
+                                FlyoutBase.ShowAttachedFlyout(interruptoresStackPanel);
                                 if (fala)
                                 {
                                     falarString(semConeccao);
@@ -197,12 +197,12 @@ namespace Controle_Cortana
                         {
                             var result = await client.GetStringAsync(desliga_quarto);
                         }
-                        catch
+                        catch(Exception ex)
                         {
                             if (flyout)
                             {
-                                notificacaoTextBlock.Text = semConeccao;
-                                FlyoutBase.ShowAttachedFlyout(pagePage);
+                                notificacaoTextBlock.Text = ex.Message;
+                                FlyoutBase.ShowAttachedFlyout(interruptoresStackPanel);
                                 if (fala)
                                 {
                                     falarString(semConeccao);
@@ -222,12 +222,14 @@ namespace Controle_Cortana
                         {
                             var result = await client.GetStringAsync(liga_sala);
                         }
-                        catch
+                        catch(Exception ex)
                         {
                             if (flyout)
                             {
-                                notificacaoTextBlock.Text = semConeccao;
-                                FlyoutBase.ShowAttachedFlyout(pagePage);
+                                notificacaoTextBlock.Text = ex.Message;
+                                
+                                    FlyoutBase.ShowAttachedFlyout(interruptoresStackPanel);
+                              
                                 if (fala)
                                 {
                                     falarString(semConeccao);
@@ -247,12 +249,12 @@ namespace Controle_Cortana
                         {
                             var result = await client.GetStringAsync(desliga_sala);
                         }
-                        catch
+                        catch (Exception ex)
                         {
                             if (flyout)
                             {
-                                notificacaoTextBlock.Text = semConeccao;
-                                FlyoutBase.ShowAttachedFlyout(pagePage);
+                                notificacaoTextBlock.Text = ex.Message;
+                                FlyoutBase.ShowAttachedFlyout(interruptoresStackPanel);
                                 if (fala)
                                 {
                                     falarString(semConeccao);
@@ -273,12 +275,12 @@ namespace Controle_Cortana
                         {
                             var result = await client.GetStringAsync(LIGATODOSURI);
                         }
-                        catch
+                        catch (Exception ex)
                         {
                             if (flyout)
                             {
-                                notificacaoTextBlock.Text = semConeccao;
-                                FlyoutBase.ShowAttachedFlyout(pagePage);
+                                notificacaoTextBlock.Text = ex.Message;
+                                FlyoutBase.ShowAttachedFlyout(interruptoresStackPanel);
                                 if (fala)
                                 {
                                     falarString(semConeccao);
@@ -299,12 +301,12 @@ namespace Controle_Cortana
                         {
                             var result = await client.GetStringAsync(DESLIGATODOSURI);
                         }
-                        catch
+                        catch (Exception ex)
                         {
                             if (flyout)
                             {
-                                notificacaoTextBlock.Text = semConeccao;
-                                FlyoutBase.ShowAttachedFlyout(pagePage);
+                                notificacaoTextBlock.Text = ex.Message;
+                                FlyoutBase.ShowAttachedFlyout(interruptoresStackPanel);
                                 if (fala)
                                 {
                                     falarString(semConeccao);
@@ -665,20 +667,6 @@ namespace Controle_Cortana
             {
                 btFala.Foreground = vermelho;
             }
-        }
-        
-
-        private void AppBarToggleButton_Click(object sender, RoutedEventArgs e)
-        {
-            Frame rootFrame = Window.Current.Content as Frame;
-            if (rootFrame.Content == null)
-            {
-                // When the navigation stack isn't restored navigate to the first page,
-                // configuring the new page by passing required information as a navigation
-                // parameter.
-                rootFrame.Navigate(typeof(Configuracoes));
-            }
-
         }
     }
 }

@@ -129,26 +129,26 @@ namespace Controle_Cortana
                 {                   
                     case LIGARQUARTO:
                         rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
-                        mainpage.ligarDesligar(true, LIGARQUARTO, true);                       
+                        mainpage.ligarDesligar(true, LIGARQUARTO, false);                       
                         break;
                     case DESLIGARQUARTO:
-                        mainpage.ligarDesligar(true, DESLIGARQUARTO, true);
+                        mainpage.ligarDesligar(true, DESLIGARQUARTO, false);
                         rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         break;
                     case LIGARSALA:
-                        mainpage.ligarDesligar(true, LIGARSALA, true);
+                        mainpage.ligarDesligar(true, LIGARSALA, false);
                         rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         break;
                     case DESLIGARSALA:
-                        mainpage.ligarDesligar(true, DESLIGARSALA, true);
+                        mainpage.ligarDesligar(true, DESLIGARSALA, false);
                         rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         break;
                     case LIGARTODOS:
-                        mainpage.ligarDesligar(true, LIGARTODOS, true);
+                        mainpage.ligarDesligar(true, LIGARTODOS, false);
                         rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         break;
                     case DESLIGARTODOS:
-                        mainpage.ligarDesligar(true, DESLIGARTODOS, true);
+                        mainpage.ligarDesligar(true, DESLIGARTODOS, false);
                         rootFlame.Navigate(typeof(MainPage), vcArgs.Result);
                         break;
                 }

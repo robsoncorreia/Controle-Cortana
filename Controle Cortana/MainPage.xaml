@@ -8,11 +8,7 @@
     x:Class="Controle_Cortana.MainPage"
     x:Name="pagePage"
     mc:Ignorable="d">
-    <FlyoutBase.AttachedFlyout>
-        <Flyout Placement="Top">
-            <TextBlock x:Name="notificacaoTextBlock"/>
-        </Flyout>
-    </FlyoutBase.AttachedFlyout>
+
     <Page.Background>
         <SolidColorBrush Color="{ThemeResource SystemBaseHighColor}"/>
     </Page.Background>
@@ -20,8 +16,8 @@
         <CommandBar x:Name="commandBar" IsTextScaleFactorEnabled="False" ClosedDisplayMode="Minimal">
             <AppBarButton Icon="View" Click="AppBarButton_Click_1" />
             <AppBarButton x:Name="btFala" Icon="Volume" Click="btFala_Click"/>
-            <AppBarToggleButton Icon="Edit" Click="AppBarToggleButton_Click"/>
         </CommandBar>
+        
     </Page.BottomAppBar>
     <Pivot x:Name="rootPivot">
         <Pivot.Background>
@@ -40,6 +36,11 @@
                 <ToggleSwitch x:Name="todosToggleSwitch" Header="" HorizontalAlignment="Left" Margin="196,5,0,0" VerticalAlignment="Top" OnContent="" OffContent="" MinWidth="0" Toggled="todosToggleSwitch_Toggled" Grid.Row="0"/>
 
                 <StackPanel x:Name="interruptoresStackPanel"  Grid.Row="1" BorderThickness="1" Padding="10" Margin="0">
+                    <FlyoutBase.AttachedFlyout>
+                        <Flyout Placement="Top">
+                            <TextBlock x:Name="notificacaoTextBlock"/>
+                        </Flyout>
+                    </FlyoutBase.AttachedFlyout>
                     <StackPanel.BorderBrush>
                         <SolidColorBrush Color="{ThemeResource SystemChromeBlackMediumLowColor}"/>
                     </StackPanel.BorderBrush>
@@ -47,7 +48,6 @@
                     <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchSala_Toggled" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0" MinWidth="0" Grid.Row="1"/>
                     <ProgressRing x:Name="progresso" Width="50" Margin="0,-74,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                 </StackPanel>
-                <TextBlock x:Name="debug" Grid.Row="3"/>
             </Grid>
         </PivotItem>
         <PivotItem x:Name="pivotItemIluminação" Header="Timer" Margin="0">

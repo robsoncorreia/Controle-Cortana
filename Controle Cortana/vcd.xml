@@ -43,7 +43,7 @@
     <Command Name="DESLIGARTODOS">
       <Example> Controle de luz desligar todas as luzes </Example>
       <ListenFor> desligar todas [as] [luzes] </ListenFor>
-      <Feedback> desligando todas as luzes... [</Feedback>
+      <Feedback> desligando todas as luzes... </Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
     <!--<PhraseList Label="comodos">
@@ -53,7 +53,7 @@
     </PhraseList>-->
   </CommandSet>
 
-  <CommandSet xml:lang="en-us"  Name="controleLuzesEN">
+  <!--<CommandSet xml:lang="en-us"  Name="controleLuzesEN">
     <CommandPrefix> Control lights </CommandPrefix>
     <Example> Control lights turn on room </Example>
     <Command Name="ligarSala">
@@ -80,5 +80,5 @@
       <Feedback> turning off light bedroom......</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
-  </CommandSet>
+  </CommandSet>-->
 </VoiceCommands>
