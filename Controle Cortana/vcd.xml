@@ -7,29 +7,29 @@
     
     <Command Name="LIGARSALA">
       <Example> Controle de luzes ligar luz da sala </Example>
-      <ListenFor> ligar [luz] [da] sala </ListenFor>
-      <Feedback> ligando luz da sala... </Feedback>
+      <ListenFor> ligar [a] [luz] [da] sala </ListenFor>
+      <Feedback> ligando a luz da sala... </Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
     
     <Command Name="DESLIGARSALA">
       <Example> Controle de luzes desligar luz da sala </Example>
-      <ListenFor> desligar [luz] [da] sala </ListenFor>
-      <Feedback> desligando luz da sala... </Feedback>
+      <ListenFor> desligar [a] [luz] [da] sala </ListenFor>
+      <Feedback> desligando a luz da sala... </Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
     
     <Command Name="LIGARQUARTO">
       <Example> Controle de luz ligar luz do quarto </Example>
-      <ListenFor> ligar [luz] [do] quarto </ListenFor>
-      <Feedback> ligando luz do quarto...</Feedback>
+      <ListenFor> ligar [a] [luz] [do] quarto </ListenFor>
+      <Feedback> ligando  a luz do quarto...</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
     
     <Command Name="DESLIGARQUARTO">
       <Example> Controle de luz desligar luz do quarto </Example>
-      <ListenFor> desligar [luz] [do] quarto </ListenFor>
-      <Feedback> desligando luz do quarto...</Feedback>
+      <ListenFor> desligar [a] [luz] [do] quarto </ListenFor>
+      <Feedback> desligando a luz do quarto...</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
     
