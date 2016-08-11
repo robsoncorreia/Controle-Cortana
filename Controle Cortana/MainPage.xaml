@@ -44,9 +44,18 @@
                     <StackPanel.BorderBrush>
                         <SolidColorBrush Color="{ThemeResource SystemChromeBlackMediumLowColor}"/>
                     </StackPanel.BorderBrush>
-                    <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" Margin="10,10,0,0" VerticalAlignment="Top" MinWidth="0" Grid.Row="1"/>
+                    <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" Margin="10,10,0,0" VerticalAlignment="Top" MinWidth="0" Grid.Row="1" Holding="toggleSwitchQuarto_Holding">
+                        <FlyoutBase.AttachedFlyout>
+                            <Flyout>
+                                <StackPanel>
+                                    <TextBlock Text="Nome do botão"/>
+                                    <TextBox x:Name="nomeBotao"/>
+                                </StackPanel>
+                            </Flyout>
+                        </FlyoutBase.AttachedFlyout>
+                    </ToggleSwitch>
                     <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchSala_Toggled" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0" MinWidth="0" Grid.Row="1"/>
-                    <ProgressRing x:Name="progresso" Width="50" Margin="0,-74,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                    <ProgressRing x:Name="progresso" Width="50" Margin="108,-101,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 </StackPanel>
             </Grid>
         </PivotItem>

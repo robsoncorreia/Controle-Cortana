@@ -161,9 +161,14 @@ namespace Controle_Cortana
 
             HttpClient client = new HttpClient();
 
+            Thickness margemTop = progresso.Margin;
+
             switch (comodo)
             {
                 case LIGARQUARTO:
+                    margemTop.Top = -101;
+                    progresso.Margin = margemTop;
+
                     progresso.IsActive = true;
                     localSettings.Values[toggleSwitchQuarto.Name.ToString()] = true;
                     if (enviarSinalServidor)
@@ -172,7 +177,7 @@ namespace Controle_Cortana
                         {
                             var result = await client.GetStreamAsync(liga_quarto);
                         }
-                        catch (Exception ex)
+                        catch 
                         {
 
                             if (flyout)
@@ -190,6 +195,9 @@ namespace Controle_Cortana
                     progresso.IsActive = false;
                     break;
                 case DESLIGARQUARTO:
+                    margemTop.Top = -101;
+                    progresso.Margin = margemTop;
+
                     progresso.IsActive = true;
                     localSettings.Values[toggleSwitchQuarto.Name.ToString()] = false;
                     if (enviarSinalServidor)
@@ -198,7 +206,7 @@ namespace Controle_Cortana
                         {
                             var result = await client.GetStringAsync(desliga_quarto);
                         }
-                        catch(Exception ex)
+                        catch
                         {
                             if (flyout)
                             {
@@ -215,6 +223,9 @@ namespace Controle_Cortana
                     progresso.IsActive = false;
                     break;
                 case LIGARSALA:
+                    margemTop.Top = -31;
+                    progresso.Margin = margemTop;
+
                     progresso.IsActive = true;
                     localSettings.Values[toggleSwitchSala.Name.ToString()] = true;
                     if (enviarSinalServidor)
@@ -223,7 +234,7 @@ namespace Controle_Cortana
                         {
                             var result = await client.GetStringAsync(liga_sala);
                         }
-                        catch(Exception ex)
+                        catch
                         {
                             if (flyout)
                             {
@@ -242,6 +253,9 @@ namespace Controle_Cortana
                     progresso.IsActive = false;
                     break;
                 case DESLIGARSALA:
+                    margemTop.Top = -31;
+                    progresso.Margin = margemTop;
+
                     progresso.IsActive = true;
                     localSettings.Values[toggleSwitchSala.Name.ToString()] = false;
                     if (enviarSinalServidor)
@@ -250,7 +264,7 @@ namespace Controle_Cortana
                         {
                             var result = await client.GetStringAsync(desliga_sala);
                         }
-                        catch (Exception ex)
+                        catch
                         {
                             if (flyout)
                             {
@@ -276,7 +290,7 @@ namespace Controle_Cortana
                         {
                             var result = await client.GetStringAsync(LIGATODOSURI);
                         }
-                        catch (Exception ex)
+                        catch 
                         {
                             if (flyout)
                             {
@@ -669,6 +683,11 @@ namespace Controle_Cortana
             {
                 btFala.Foreground = vermelho;
             }
+        }
+
+        private void toggleSwitchQuarto_Holding(object sender, HoldingRoutedEventArgs e)
+        {
+            Flyout.
         }
     }
 }
