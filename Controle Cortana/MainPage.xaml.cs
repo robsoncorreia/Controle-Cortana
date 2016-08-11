@@ -19,6 +19,7 @@ using Windows.UI;
 using Windows.UI.Xaml.Shapes;
 using Windows.UI.Xaml.Media;
 using Windows.Media.SpeechSynthesis;
+using System.Diagnostics;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -48,7 +49,7 @@ namespace Controle_Cortana
         const string DESLIGARSALA = "DESLIGARSALA";
         const string LIGARTODOS = "LIGARTODOS";
         const string DESLIGARTODOS = "DESLIGARTODOS";
-        public string semConeccao = "🖥 Não foi possível conectar com o servidor.";
+        public string semConeccao = "🖥 Não foi possível\rconectar com o servidor.";
         bool boolTimerToggle = false;
         bool travaInicial = false;
         bool travaRootPivot = true;
@@ -176,7 +177,7 @@ namespace Controle_Cortana
 
                             if (flyout)
                             {
-                                notificacaoTextBlock.Text = ex.Message;
+                                notificacaoTextBlock.Text = semConeccao;
                                 FlyoutBase.ShowAttachedFlyout(interruptoresStackPanel);
                                 if (fala)
                                 {
@@ -201,7 +202,7 @@ namespace Controle_Cortana
                         {
                             if (flyout)
                             {
-                                notificacaoTextBlock.Text = ex.Message;
+                                notificacaoTextBlock.Text = semConeccao;
                                 FlyoutBase.ShowAttachedFlyout(interruptoresStackPanel);
                                 if (fala)
                                 {
@@ -226,7 +227,7 @@ namespace Controle_Cortana
                         {
                             if (flyout)
                             {
-                                notificacaoTextBlock.Text = ex.Message;
+                                notificacaoTextBlock.Text = semConeccao;
                                 
                                     FlyoutBase.ShowAttachedFlyout(interruptoresStackPanel);
                               
@@ -253,7 +254,7 @@ namespace Controle_Cortana
                         {
                             if (flyout)
                             {
-                                notificacaoTextBlock.Text = ex.Message;
+                                notificacaoTextBlock.Text = semConeccao;
                                 FlyoutBase.ShowAttachedFlyout(interruptoresStackPanel);
                                 if (fala)
                                 {
@@ -279,7 +280,7 @@ namespace Controle_Cortana
                         {
                             if (flyout)
                             {
-                                notificacaoTextBlock.Text = ex.Message;
+                                notificacaoTextBlock.Text = semConeccao;
                                 FlyoutBase.ShowAttachedFlyout(interruptoresStackPanel);
                                 if (fala)
                                 {
@@ -303,9 +304,10 @@ namespace Controle_Cortana
                         }
                         catch (Exception ex)
                         {
+                            Debug.Write(ex);
                             if (flyout)
                             {
-                                notificacaoTextBlock.Text = ex.Message;
+                                notificacaoTextBlock.Text = semConeccao;
                                 FlyoutBase.ShowAttachedFlyout(interruptoresStackPanel);
                                 if (fala)
                                 {
