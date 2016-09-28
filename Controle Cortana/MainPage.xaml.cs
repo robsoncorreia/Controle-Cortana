@@ -32,12 +32,15 @@ namespace Controle_Cortana
 
         public LightSensor _lightsensor;
 
-        Uri liga_quarto = new Uri("http://192.168.1.2/?pin=LIGA1");
-        Uri desliga_quarto = new Uri("http://192.168.1.2/?pin=DESLIGA1");
+        //Uri liga_quarto = new Uri("http://192.168.1.2/?pin=LIGA1");
+        //Uri desliga_quarto = new Uri("http://192.168.1.2/?pin=DESLIGA1");
         Uri liga_sala = new Uri("http://192.168.1.2/?pin=LIGA2");
         Uri desliga_sala = new Uri("http://192.168.1.2/?pin=DESLIGA2");
         Uri LIGATODOSURI = new Uri("http://192.168.1.2/?pin=LIGA3");
         Uri DESLIGATODOSURI = new Uri("http://192.168.1.2/?pin=DESLIGA3");
+
+        string urlLigarToggle1 = "http://192.168.1.2/?pin=LIGA1";
+        string urlDesligarToggle1 = "http://192.168.1.2/?pin=DESLIGA1";
 
         const string SETTINGAUTOQUARTO = "AUTOQUARTOSETTING";
         const string SETTINGAUTOSALA = "AUTOSALASETTING";
@@ -131,6 +134,25 @@ namespace Controle_Cortana
             {
                 semanaDiasRun.Text = (string)localSettings.Values[semanaDiasRun.Name.ToString()];
             }
+            if (localSettings.Values[nomeBotao.Name.ToString()] != null)
+            {
+                toggleSwitchQuarto.Header = (string)localSettings.Values[nomeBotao.Name.ToString()];
+                nomeBotao.Text = (string)localSettings.Values[nomeBotao.Name.ToString()];
+            }
+            if (localSettings.Values[nomeBotaoSala.Name.ToString()] != null)
+            {
+                toggleSwitchSala.Header = (string)localSettings.Values[nomeBotaoSala.Name.ToString()];
+            }
+            if (localSettings.Values[urlLigadoToggle1TextBox.Name.ToString()] != null)
+            {
+                urlLigarToggle1 = (string)localSettings.Values[urlLigadoToggle1TextBox.Name.ToString()];
+                urlLigadoToggle1TextBox.Text = (string)localSettings.Values[urlLigadoToggle1TextBox.Name.ToString()];
+            }
+            if (localSettings.Values[urlDesligadoToggle1TextBox.Name.ToString()] != null)
+            {
+                urlDesligarToggle1 = (string)localSettings.Values[urlDesligadoToggle1TextBox.Name.ToString()];
+                urlDesligadoToggle1TextBox.Text = (string)localSettings.Values[urlDesligadoToggle1TextBox.Name.ToString()];
+            }
             await Task.Delay(delay);
             travaInicial = true;
         }
@@ -175,11 +197,10 @@ namespace Controle_Cortana
                     {
                         try
                         {
-                            var result = await client.GetStreamAsync(liga_quarto);
+                            var result = await client.GetStreamAsync(urlLigarToggle1);
                         }
                         catch 
                         {
-
                             if (flyout)
                             {
                                 notificacaoTextBlock.Text = semConeccao;
@@ -190,8 +211,11 @@ namespace Controle_Cortana
                                 }
                             }
                         }
+                        finally
+                        {
+                            client.Dispose();
+                        }
                     }
-                    client.Dispose();
                     progresso.IsActive = false;
                     break;
                 case DESLIGARQUARTO:
@@ -204,7 +228,7 @@ namespace Controle_Cortana
                     {
                         try
                         {
-                            var result = await client.GetStringAsync(desliga_quarto);
+                            var result = await client.GetStringAsync(urlDesligarToggle1);
                         }
                         catch
                         {
@@ -239,9 +263,9 @@ namespace Controle_Cortana
                             if (flyout)
                             {
                                 notificacaoTextBlock.Text = semConeccao;
-                                
-                                    FlyoutBase.ShowAttachedFlyout(interruptoresStackPanel);
-                              
+
+                                FlyoutBase.ShowAttachedFlyout(interruptoresStackPanel);
+
                                 if (fala)
                                 {
                                     falarString(semConeccao);
@@ -290,7 +314,7 @@ namespace Controle_Cortana
                         {
                             var result = await client.GetStringAsync(LIGATODOSURI);
                         }
-                        catch 
+                        catch
                         {
                             if (flyout)
                             {
@@ -685,9 +709,58 @@ namespace Controle_Cortana
             }
         }
 
-        private void toggleSwitchQuarto_Holding(object sender, HoldingRoutedEventArgs e)
+        private void nomeBotao_TextChanged(object sender, TextChangedEventArgs e)
         {
-            Flyout.
+            toggleSwitchQuarto.Header = nomeBotao.Text;
+            localSettings.Values[nomeBotao.Name.ToString()] = nomeBotao.Text;
+        }
+
+        private void toggleSwitchQuarto_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            Flyout.ShowAttachedFlyout(toggleSwitchQuarto);
+        }
+
+        private void toggleSwitchSala_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            Flyout.ShowAttachedFlyout(toggleSwitchSala);
+        }
+
+        private void nomeBotaoSala_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            toggleSwitchSala.Header = nomeBotaoSala.Text;
+            localSettings.Values[nomeBotaoSala.Name.ToString()] = nomeBotaoSala.Text;
+        }
+
+        private void urlLigadoToggle1TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            urlLigarToggle1 = urlLigadoToggle1TextBox.Text;
+            localSettings.Values[urlLigadoToggle1TextBox.Name.ToString()] = urlLigadoToggle1TextBox.Text;
+        }
+
+        private void urlDesligadoToggle1TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            urlDesligarToggle1 = urlDesligadoToggle1TextBox.Text;
+            localSettings.Values[urlDesligadoToggle1TextBox.Name.ToString()] = urlDesligadoToggle1TextBox.Text;
+        }
+
+        private void plusButton_Click(object sender, RoutedEventArgs e)
+        {
+         
+
+            ToggleSwitch novoBotao = new ToggleSwitch();
+            novoBotao.Header = "Novo";
+
+            string nome = "nome";
+            int numero = 0;
+            numero++;
+            novoBotao.Name = nome + numero;
+
+            Thickness marginNovoBotao = nomeBotao.Margin;
+            marginNovoBotao.Left = 10;
+
+            novoBotao.Margin = marginNovoBotao;
+
+            interruptoresStackPanel.Children.Add(novoBotao);
         }
     }
 }

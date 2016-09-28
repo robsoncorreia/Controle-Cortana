@@ -16,6 +16,7 @@
         <CommandBar x:Name="commandBar" IsTextScaleFactorEnabled="False" ClosedDisplayMode="Minimal">
             <AppBarButton Icon="View" Click="AppBarButton_Click_1" />
             <AppBarButton x:Name="btFala" Icon="Volume" Click="btFala_Click"/>
+            <AppBarButton x:Name="plusButton" Icon="Add" Click="plusButton_Click"/>
         </CommandBar>
         
     </Page.BottomAppBar>
@@ -34,7 +35,6 @@
 
                 <TextBlock Tag="titulos" Text="Interruptores" FontSize="30" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" />
                 <ToggleSwitch x:Name="todosToggleSwitch" Header="" HorizontalAlignment="Left" Margin="196,5,0,0" VerticalAlignment="Top" OnContent="" OffContent="" MinWidth="0" Toggled="todosToggleSwitch_Toggled" Grid.Row="0"/>
-
                 <StackPanel x:Name="interruptoresStackPanel"  Grid.Row="1" BorderThickness="1" Padding="10" Margin="0">
                     <FlyoutBase.AttachedFlyout>
                         <Flyout Placement="Top">
@@ -44,17 +44,30 @@
                     <StackPanel.BorderBrush>
                         <SolidColorBrush Color="{ThemeResource SystemChromeBlackMediumLowColor}"/>
                     </StackPanel.BorderBrush>
-                    <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" Margin="10,10,0,0" VerticalAlignment="Top" MinWidth="0" Grid.Row="1" Holding="toggleSwitchQuarto_Holding">
+                    <ToggleSwitch x:Name="toggleSwitchQuarto" Header="Quarto" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchQuarto_Toggled" Margin="10,0,0,0" VerticalAlignment="Top" MinWidth="0" Grid.Row="1" RightTapped="toggleSwitchQuarto_RightTapped">
                         <FlyoutBase.AttachedFlyout>
-                            <Flyout>
+                            <Flyout Placement="Full">
                                 <StackPanel>
                                     <TextBlock Text="Nome do botão"/>
-                                    <TextBox x:Name="nomeBotao"/>
+                                    <TextBox x:Name="nomeBotao" TextChanged="nomeBotao_TextChanged"/>
+                                    <TextBlock Text="Url quando ligado" VerticalAlignment="Top" Margin="0,10,0,0"/>
+                                    <TextBox x:Name="urlLigadoToggle1TextBox" Text="" TextChanged="urlLigadoToggle1TextBox_TextChanged"/>
+                                    <TextBlock Text="Url quando desligado" Margin="0,10,0,0"/>
+                                    <TextBox x:Name="urlDesligadoToggle1TextBox" Text="" TextChanged="urlDesligadoToggle1TextBox_TextChanged" />
                                 </StackPanel>
                             </Flyout>
                         </FlyoutBase.AttachedFlyout>
                     </ToggleSwitch>
-                    <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchSala_Toggled" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0" MinWidth="0" Grid.Row="1"/>
+                    <ToggleSwitch x:Name="toggleSwitchSala" Header="Sala" OffContent="Desl." OnContent="Liga" Toggled="toggleSwitchSala_Toggled" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,0,0,0" MinWidth="0" Grid.Row="1" RightTapped="toggleSwitchSala_RightTapped">
+                        <FlyoutBase.AttachedFlyout>
+                            <Flyout>
+                                <StackPanel>
+                                    <TextBlock Text="Nome do botão"/>
+                                    <TextBox x:Name="nomeBotaoSala" TextChanged="nomeBotaoSala_TextChanged"/>
+                                </StackPanel>
+                            </Flyout>
+                        </FlyoutBase.AttachedFlyout>
+                    </ToggleSwitch>
                     <ProgressRing x:Name="progresso" Width="50" Margin="108,-101,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 </StackPanel>
             </Grid>
